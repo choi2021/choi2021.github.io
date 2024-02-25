@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://devhudi.github.io/sitemap-index.xml
-Host: https://devhudi.github.io
+Sitemap: https://choi2021.github.io/sitemap-index.xml
+Host: https://choi2021.github.io
