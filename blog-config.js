@@ -2,7 +2,7 @@ module.exports = {
   title: "Troy DevLog",
   description: "주도적으로 성장하는 개발자, Troy의 시행착오가 담긴 개발일지입니다.",
   author: "Troy",
-  siteUrl: "https://devhudi.github.io/gatsby-starter-hoodie/",
+  siteUrl: "https://choi2021.github.io",
   links: {
     github: "https://github.com/choi2021",
     linkedIn: "https://www.linkedin.com/in/%EC%98%81%EC%A4%80-%EC%B5%9C-3a316825a/",
