@@ -1,6 +1,6 @@
 module.exports = {
   title: "Troy DevLog",
-  description: "안녕하세요 주도적으로 성장하는 개발자, Troy입니다.",
+  description: "주도적으로 성장하는 개발자, Troy의 시행착오가 담긴 개발일지입니다.",
   author: "Troy",
   siteUrl: "https://devhudi.github.io/gatsby-starter-hoodie/",
   links: {
@@ -13,11 +13,11 @@ module.exports = {
     // medium: "https://medium.com",
     // blogger: "https://blogger.com",
     email: "mailto:juni2004c@gmail.com",
-    resume: "https://hudi.blog",
-    link: "https://hudi.blog",
+    // resume: "https://hudi.blog",
+    // link: "https://hudi.blog",
   },
   utterances: {
-    repo: "devHudi/gatsby-starter-hoodie",
+    repo: "choi2021/troy.blog",
     type: "pathname",
   },
 }
