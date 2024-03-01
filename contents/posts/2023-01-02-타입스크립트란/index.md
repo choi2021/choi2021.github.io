@@ -2,7 +2,7 @@
 title: 'TS study: 타입스크립트란'
 date: 2023-01-02
 slug: typescript-타입스크립트란
-tags: [Typescript]
+tags: [typescript]
 series: Typescript
 ---
 

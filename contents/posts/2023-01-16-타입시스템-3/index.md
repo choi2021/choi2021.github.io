@@ -2,7 +2,7 @@
 title: "TS study: 타입 시스템 (3)"
 date: 2023-01-16
 slug: typescript-타입시스템-3
-tags: [Typescript]
+tags: [typescript]
 series: Typescript
 ---
 
