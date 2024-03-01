@@ -36,7 +36,7 @@ tags: [회고, 리액트 네이티브]
 
 [뭐 듣고 있는지는 모르겠지만 혼자 심각하게 듣다가 찍힌 나]
 
-<img src={require('./내사진.jpeg').default} width="400"/>
+<img src='./내사진.jpeg' width="400"/>
 
 
 

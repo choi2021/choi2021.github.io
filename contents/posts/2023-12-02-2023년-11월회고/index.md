@@ -36,7 +36,7 @@ tags: [회고, 리액트 네이티브]
 [[ESLint Custom Rule](https://eslint.org/docs/latest/extend/custom-rules) ] 
 
 
-<img src={require('./eslint_custom.png').default} />
+<img src='./eslint_custom.png' />
 
 
 meta 같은 경우는 아주 간단하게 어떻게 할지를 정의하면 되니까 쉽게 작성이 가능했지만, 내가 원하는 요구사항인 `catch문에 대해 감지해서 비어있을 때 규칙을 어겼다고 보고하기`  위해서는 ESLint가 우리 소스코드를 읽는 방법에 대해 이해가 필요했다.

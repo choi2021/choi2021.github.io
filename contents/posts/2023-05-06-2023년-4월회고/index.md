@@ -24,7 +24,7 @@ tags: [회고, 리액트 네이티브]
 [현재 PROD에 배포된 고수회원가입 카테고리 선택 화면 ]
 
 
-<img src={require('./고수회원가입.jpeg').default} width="400"/>
+<img src='./고수회원가입.jpeg' width="400"/>
 
 #### 기기에서만 보였던 ViewPager 에러
 
