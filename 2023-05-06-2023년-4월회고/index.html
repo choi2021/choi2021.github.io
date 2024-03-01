@@ -248,7 +248,14 @@ data-styled.g45[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"yzdKT,ivqWaF,"}
 <h3>1. 고수 회원가입 퍼널 개선</h3>
 <p>고수 회원가입 퍼널 개선 업무는 3월부터 진행해 4월 13일에 배포되었다. 클래스 컴포넌트로 2년이 넘었던 레거시 코드였기 때문에 코드 베이스를 우선 이해하는데 많은 시간이 걸렸다. 코드 베이스 중 가장 어려웠던 부분은 단연코 <code class="language-text">ViewPager</code>와 스크롤 이벤트였다.</p>
 <p>[현재 PROD에 배포된 고수회원가입 카테고리 선택 화면 ]</p>
-<p>&#x3C;img src={require('./고수회원가입.jpeg').default} width="400"/></p>
+<span class='gatsby-resp-image-wrapper' style='position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 648px; margin-bottom: 16px;'>
+      <a class='gatsby-resp-image-link' href='/static/2b94a1b8e4e878b1f2474a9a57583dae/4ed6c/%EA%B3%A0%EC%88%98%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.jpg' style='display: block' target='_blank' rel='noopener'>
+    <span class='gatsby-resp-image-background-image' style="padding-bottom: 222.3529411764706%; position: relative; bottom: 0; left: 0; background-image: url('data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAsABQDASIAAhEBAxEB/8QAGQABAAMBAQAAAAAAAAAAAAAAAAECAwQF/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAED/9oADAMBAAIQAxAAAAH3ZgWBW0WISOTfJc9WQ//EABwQAAICAgMAAAAAAAAAAAAAAAACEhMQIBEiQf/aAAgBAQABBQLTjX3FvaSklKkK0KkP/8QAFhEBAQEAAAAAAAAAAAAAAAAAACIg/9oACAEDAQE/AcWt/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwFf/8QAGxAAAgIDAQAAAAAAAAAAAAAAADIBERAwQYH/2gAIAQEABj8Czw5oqvRoGgUUU//EAB0QAAICAgMBAAAAAAAAAAAAAAARASFRYSAx8bH/2gAIAQEAAT8hVumRuWIm8hMBivAhRwRHupq0L6ewewaBqGgf/9oADAMBAAIAAwAAABCgCADX3//EABkRAAIDAQAAAAAAAAAAAAAAAAABcaHRIP/aAAgBAwEBPxDiKvCKvD//xAAWEQEBAQAAAAAAAAAAAAAAAAAAISD/2gAIAQIBAT8QxEf/xAAgEAACAgICAgMAAAAAAAAAAAABEQAhUWEx8RDBcZHR/9oACAEBAAE/ECKEDCwTOBQ3xAjVOId0ZuAPrEGRERwPoomBNAlsuNk+X5BLAGdJ1udblvsMfzRs/s7Qz//Z'); background-size: cover; display: block;"></span>
+  <img class='gatsby-resp-image-image' alt='      ' title='' src='/static/2b94a1b8e4e878b1f2474a9a57583dae/4ed6c/%EA%B3%A0%EC%88%98%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.jpg' srcset='/static/2b94a1b8e4e878b1f2474a9a57583dae/0b705/%EA%B3%A0%EC%88%98%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.jpg 170w,
+/static/2b94a1b8e4e878b1f2474a9a57583dae/31389/%EA%B3%A0%EC%88%98%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.jpg 340w,
+/static/2b94a1b8e4e878b1f2474a9a57583dae/4ed6c/%EA%B3%A0%EC%88%98%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.jpg 648w' sizes='(max-width: 648px) 100vw, 648px' style='width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;' loading='lazy' decoding='async'>
+  </a>
+    </span>
 <h4>기기에서만 보였던 ViewPager 에러</h4>
 <p>View Pager는 하나의 스크린 컴포넌트에서 ViewPager로 감싸둔 자식 컴포넌트들을 순서대로 페이지 전환 효과를 줄수 있게 도와주는 라이브러리로 현재 모바일 챕터에서 사용하는 패키지는 <code class="language-text">https://github.com/callstack/react-native-pager-view</code> 이다.</p>
 <p>당시에 시뮬레이터에서는 정상동작하다가 빌드버전을 확인했을 때 viewPager로 설정해둔 컴포넌트들의 순서가 뒤섞이는 문제가 발생했다. 시뮬레이터에서 문제상황을 재연할 수 있어야 디버깅이 가능한데 시뮬레이터에서는 정상적이고 빌드 버전, 실 기기에서만 나타나는 이슈였기 때문에 디버깅에 큰 어려움을 겪었다. </p>
