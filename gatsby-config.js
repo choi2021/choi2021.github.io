@@ -177,5 +177,12 @@ module.exports = {
         ],
       },
     },
+    {
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+        trackingId: `G-25P5NRC49L`,
+        head: true,
+      },
+    },
   ],
 }
