@@ -17,7 +17,7 @@ module.exports = {
     // link: "https://hudi.blog",
   },
   utterances: {
-    repo: "choi2021/troy.blog",
+    repo: "choi2021/choi2021.github.io",
     type: "pathname",
   },
 }
