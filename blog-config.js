@@ -1,6 +1,6 @@
 module.exports = {
   title: "Troy DevLog",
-  description: "주도적으로 성장하는 개발자, Troy의 개발일지입니다.",
+  description: "매일의 시행착오를 기록하는 개발일지입니다.",
   author: "Troy",
   siteUrl: "https://choi2021.github.io",
   links: {
