@@ -3,7 +3,7 @@ title: "Typescript: EveryDay Types"
 slug: typescript-everyday-types
 date: 2023-10-17
 tags: ["typescript"]
-series: Typescript
+series: "Typescript"
 ---
 
 

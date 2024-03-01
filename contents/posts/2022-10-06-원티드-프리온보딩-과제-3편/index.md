@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 사전과제-과제 3편'
+title: '원티드 프리온보딩 사전과제 3편'
 date: 2022-10-06
 slug: 2022-10-06-원티드 프리온보딩-과제-3편
 tags: [원티드프리온보딩]
@@ -12,7 +12,7 @@ series: 원티드프리온보딩
 
 네 번째 과제의 내용은 다음과 같다.
 
-![image-20221007002757982](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007002757982.png)
+![네번째과제](assignment4.png)
 
 과제를 스타일링과 API를 연결하는 두 가지 일로 분리해서 작업했다.
 
@@ -20,7 +20,7 @@ series: 원티드프리온보딩
 
 스타일링을 위해서 우선 의미없지만 API요청으로 받을 투두와 동일한 형식의 state를 만든 후에, TodoItem이라는 component에 prop으로 전달 해주는 형식으로 투두리스트를 구성했다. TodoItem는 다섯 번째 과제 내용 중에 수정 버튼과 제출 취소 버튼이 필요하지만 우선 간단하게 투두 내용과 완료 여부만 보여주게 구성했다.
 
-```react
+```jsx
 //Todo.jsx
 function Todo() {
   const inputRef = useRef();
@@ -76,15 +76,15 @@ export default TodoItem;
 
 ```
 
-아래 사진은 스타일 링을 완료한 모습이다.
+아래 사진은 스타일링을 완료한 모습이다.
 
-![image-20221007003606559](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007003606559.png)
+![UI 제작 완료](UI제작완료.png)
 
 ### 2. API 연결하기
 
-API는 createTodo와 getTodos 두 가지를 연결해야 했다. 두 API를 연결하기 위한 형식으로 Authorization이란 부분이 header에 포함되어야 했는데, 오늘 HTTP를 공부했지만 처음 보는 부분이라 [사이월드님의 블로그][https://cyworld.tistory.com/1163] 에 올라온 코드를 참고해서 작성했다. API 문서에 Authorization: Bearer access_token이라고 되어있었는데 그냥 토큰을 전달하는 식으로 코드를 짰어서 401 unauthorized 에러가 계속해서 떴다.
+API는 createTodo와 getTodos 두 가지를 연결해야 했다. 두 API를 연결하기 위한 형식으로 Authorization이란 부분이 header에 포함되어야 했는데, 오늘 HTTP를 공부했지만 처음 보는 부분이라 [사이월드님의 블로그](https://cyworld.tistory.com/1163)에 올라온 코드를 참고해서 작성했다. API 문서에 Authorization: Bearer access_token이라고 되어있었는데 그냥 토큰을 전달하는 식으로 코드를 짰어서 401 unauthorized 에러가 계속해서 떴다.
 
-![post 에러](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/post 에러.PNG)
+![post 에러](post 에러.PNG)
 
 ```javascript
 export function postCreateTodo(todo) {
@@ -101,11 +101,11 @@ export function postCreateTodo(todo) {
 }
 ```
 
-bearer이란 부분이 생소했는데 알아보니 헤더의 Authorization에는 `<type> <cretential> `형식으로 들어가야 하는데 type에 Bearer로 쓰는게 Scheme,관례와 같다고 한다. [참고한 블로그:https://www.ssemi.net/what-is-the-bearer-authentication/]
+bearer이란 부분이 생소했는데 알아보니 헤더의 Authorization에는 `<type> <cretential> `형식으로 들어가야 하는데 type에 Bearer로 쓰는게 Scheme,관례와 같다고 한다. ([참고한 블로그](www.ssemi.net/what-is-the-bearer-authentication/))
 
 그래서 Bearer를 그대로 입력한 후에 로컬스토리지에 저장되어 있는 토큰을 전달해주면 API 요청에 성공할 수 있었다.
 
-![image-20221007004604375](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007004604375.png)
+![요청 성공](요청성공.png)
 
 ```javascript
 export function postCreateTodo(todo) {
@@ -134,7 +134,7 @@ export function getTodos() {
 
 어제 작업할 때 app.jsx 에서 token을 state로 갖고 있게 했는데 굳이 그럴 필요 없이 useEffect에서 간단하게 토큰 유무만 체크해도 redirection이 가능했다.
 
-```react
+```jsx
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
@@ -161,7 +161,7 @@ export default App;
 
 다섯 번째 과제 내용은 다음과 같다.
 
-![image-20221007142931351](../assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007142931351.png)
+![다섯번째 과제](assignment5.png)
 
 네 번째와 마찬가지로 스타일링 수정과 API연결로 나눠서 일을 생각했다. 다른 점이 있었다면 이전에는 API 연결에 필요한 형식을 맞추는 데 어려움이 있었다면 이번에는 스타일링을 수정하는데 어려움이 있었다. 투두 리스트를 처음에 구성할 때 완료여부랑 투두 내용만 보여주면 되었다가, 수정버튼, 수정모드에서 제출과 취소버튼이 추가 되면서 구성을 바꾸는데에 오래걸렸다.
 
@@ -169,15 +169,11 @@ export default App;
 
 처음 과제를 이해할 때는 완료여부를 클릭으로 상태를 바꿔주기만 하면 되는 줄 이해해서, 누르기만하면 바뀌게 했지만 다시 과제를 읽어보면서 수정모드에서 바꿀 수 있게 해야했다. 어떻게 구성을 바꿔야할까 고민하다가 수정모드에서 item 내부에 input과 함께 complete와 not yet 두가지 버튼을 모두 보여주고 선택할 수 있게 하는 형식으로 수정하게 되었다.
 
-[수정모드 전 화면]
+![수정모드 전](수정모드전.png)
 
-![image-20221007143723982](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007143723982.png)
+![수정모드 후](수정모드후.png)
 
-[수정모드 후 화면]
-
-![image-20221007143751138](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007143751138.png)
-
-```react
+```jsx
 function TodoItem({
   todoItem: { isCompleted, userId, id, todo },
   todoItem,
@@ -256,9 +252,9 @@ input에 현재 이미 작성되어있던 내용을 담아줄까 고민도 했�
 
 삭제와 업데이트 중에서 상대적으로 삭제하는 기능은 쉽게 구성할 수 있었다. API 요구사항이 해당하는 todo의 id만 전달하면 되었기 때문에 간단하게 삭제버튼이 눌러지면 해당 item의 id를 전달하고 todo에서는 filter로 해당 id와 같은 요소를 삭제하고, api로 동일한 id를 전달해 서버에서 삭제해주었다.
 
-![image-20221007144435695](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007144435695.png)
+![삭제기능추가 요구사항](삭제기능추가.png)
 
-```react
+```tsx
 //TodoItem.jsx
 function TodoItem({
   todoItem: { isCompleted, userId, id, todo },
@@ -349,7 +345,7 @@ export function deleteTodo(id) {
 
 이미 네 번째 과제를 하면서 필요한 헤더나 구성을 이해하고 있어서 상대적으로 쉽게 처리해 204 No content 응답을 받았다.
 
-![삭제](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/삭제.PNG)
+![삭제](삭제.PNG)
 
 #### 2.2 수정기능 추가하기
 
@@ -363,7 +359,7 @@ export function deleteTodo(id) {
 
 update를 위해서 todos에서 전달한 updated 오브젝트의 id와 같은 값의 todo만 mapping 하고 api에서는 obj를 통째로 전달해서 필요한 값만 내부에서 전달하는 형식으로 코드를 구성했다.
 
-```react
+```jsx
 //TodoItem.jsx
 
 function TodoItem({
@@ -542,6 +538,6 @@ export function updateTodos(obj) {
 
 결과는 204 No content로 성공한 결과를 보여주었다. 그리고 userId를 따로 저장해두고 함께 전달해야하나 걱정했지만 토큰만 전달하면 서버에서 이미 알고 있기 때문에 추가적으로 저장할 필요가 없다는 점도 알게 되었다.
 
-![image-20221007150404606](/assets/img/2022-10-06-원티드 프리온보딩 과제 3편/image-20221007150404606.png)
+![204 응답](204응답.png)
 
 여기까지 총 5가지 과제 내용을 모두 성공적으로 했지만 예외 처리를 할 부분과 회원가입/로그인 페이지의 코드 분리 등 아직 리팩토링이 필요하다고 생각되었다.

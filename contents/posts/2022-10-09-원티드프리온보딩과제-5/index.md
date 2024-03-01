@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 과제-폴더 구조 수정'
+title: '원티드 프리온보딩 사전과제 5편'
 date: 2022-10-09
 slug: 원티드-프리온보딩-과제-폴더-구조-수정
 tags: [원티드프리온보딩]
@@ -95,7 +95,7 @@ src
 
 Todo를 예로, 모든 스타일링 component들을 다 styles.js에서 받아와 복잡했던 todo.jsx의 import가 S로 간단해지고, styles.js도 간단하게 object만 export하면 되기에 효율적인 방식이라 생각되었다.
 
-```react
+```jsx
 //todo/styles.js
 
 const S = { TodoContent, TodoForm, TodoLayout, TodoList };

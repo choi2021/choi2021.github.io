@@ -1,6 +1,6 @@
 ---
-title: '원티드 프리온보딩 과제-리팩토링:todoBtn 컴포넌트 분리,에러핸들링'
-date    : 2022-10-12
+title: '원티드 프리온보딩 사전과제 8편'
+date: 2022-10-12
 slug: 원티드-프리온보딩-과제-8
 tags: [원티드프리온보딩]
 series: 원티드프리온보딩
@@ -9,13 +9,9 @@ series: 원티드프리온보딩
 
 ## 최적화를 위한 todo Btn 컴포넌트 분리
 
-TodoItem은 memo를 통해 최적화를 해두었기 때문에 투두 아이템에 클릭을 하면 다른 투두아이템들이 re-rendering되는 것은 막았다.
+TodoItem은 memo를 통해 최적화를 해두었기 때문에 투두 아이템에 클릭을 하면 다른 투두아이템들이 re-rendering되는 것은 막았다. 하지만 같은 TodoItem 내부에서 클릭되지 않은 버튼들이 다시 re-rendering이 되는 것을 보고, TodoBtn 컴포넌트로 분리하고 memo로 감싸준 다음, 전달해주는 함수들은 useCallback을 통해 불필요한 re-rendering을 막았다.
 
-하지만 같은 TodoItem 내부에서 클릭되지 않은 버튼들이 다시 re-rendering이 되는 것을 보고, TodoBtn 컴포넌트로 분리하고 memo로 감싸준 다음,
-
-전달해주는 함수들은 useCallback을 통해 불필요한 re-rendering을 막았다.
-
-```react
+```jsx
 //TodoBtn.jsx
 
 function TodoBtn({ name, clicked, onClick, text }) {
@@ -287,7 +283,7 @@ export async function postSignUp(email, password) {
 
 분리 후에 성공한 경우는 둘 다 access_token이 들어있는 객체를 전달받기 때문에 access_token이라는 프로퍼티의 유무에 따라 성공과 에러 처리를 하게 했다.
 
-```react
+```jsx
 //auth.jsx
 
 const handleLoginSubmit = useCallback(

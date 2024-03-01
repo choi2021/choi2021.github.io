@@ -3,7 +3,7 @@ title: "Typescript: The Basics"
 date: 2023-10-16
 slug: typescript-the-basics
 tags: ["typescript"]
-series: Typescript
+series: "Typescript"
 ---
 
 

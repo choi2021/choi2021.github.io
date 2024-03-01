@@ -3,7 +3,7 @@ title: "Typescript: Narrowing"
 date: 2023-10-17
 slug: typescript-narrowing
 tags: ["typescript"]
-series: Typescript
+series: "Typescript"
 ---
 
 

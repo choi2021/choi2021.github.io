@@ -18,7 +18,7 @@ series: 원티드프리온보딩
 
 useReducer는 중첩된 상태나 여러가지 상태를 하나의 오브젝트로 묶어서 관리할 때 등, 복잡한 상태관리 로직을 간단하게 처리할 수 있는 react hook이다. useReducer의 로직은 useState와 유사하게, 우리가 관리해야 할 **상태**가 있고, 상태를 어떻게 처리할지를 담고 있는 **action**과 전달받은 action에 따라 처리해주는 **dispatch**가 있다.
 
-```react
+```jsx
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case ActionType.SET_IS_LOADING:
@@ -380,7 +380,7 @@ react-helmet은 react 라이브러리로 index.html의 head 내용을 동적으�
 <img width="800" src="https://user-images.githubusercontent.com/104304569/199743653-4db5c757-19ed-44d5-b238-1a94bc88a255.png"/>
 <br/>
 
-```react
+```jsx
 import { Helmet } from 'react-helmet-async';
 
 const Meta = ({ attribute, amount, id }: MetaProps) => {

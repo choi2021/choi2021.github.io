@@ -2,7 +2,7 @@
 title:  "Typescript: Keyof, TypeOf, Indexed"
 slug: typescript-keyof-typeof-indexed
 tags: ["typescript"]
-series: Typescript
+series: "Typescript"
 date: 2023-11-16
 
 ---

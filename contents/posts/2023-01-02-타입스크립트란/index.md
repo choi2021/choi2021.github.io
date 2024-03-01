@@ -3,7 +3,7 @@ title: 'TS study: 타입스크립트란'
 date: 2023-01-02
 slug: typescript-타입스크립트란
 tags: [typescript]
-series: Typescript
+series: "Typescript"
 ---
 
 타입스크립트로 기본적인 타입을 정하고 사용하고 있지만, 매번 막히는 문제들과 잘 사용하는 기준을 세우기 위해  [이펙티브 타입스크립트](https://search.shopping.naver.com/book/catalog/32473346832)를 읽고 정리해나가려 한다.

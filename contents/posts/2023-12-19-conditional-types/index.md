@@ -3,7 +3,7 @@ title:  "Typescript: Conditional Types"
 slug: typescript-conditional-types
 date: 2023-12-19
 tags: [typescript]
-series: Typescript
+series: "Typescript"
 ---
 
 ## Conditional Types 🤩

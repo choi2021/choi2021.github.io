@@ -3,7 +3,7 @@ title:  "Typescript: Object Types"
 date: 2023-10-31
 slug: typescript-object-types
 tags: ["typescript"]
-series: Typescript
+series: "Typescript"
 ---
 
 

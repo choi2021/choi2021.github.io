@@ -236,7 +236,7 @@ context API는 prop-drilling (상태를 전달하기 위해 여러 컴포넌트�
 
 기존 코드에서는 App.jsx에서 상태로 관리되고 있었고 signIn, signUp, todo모두에서 useEffect에서 상태에 따라 redirect하는 기능이 있었다. context API를 이용한다면 반복되는 로직을 없앨 수 있어서 더 좋은 코드가 될 수 있다고 생각되었다.
 
-```react
+```jsx
 import { createContext } from 'react';
 import { useState } from 'react';
 

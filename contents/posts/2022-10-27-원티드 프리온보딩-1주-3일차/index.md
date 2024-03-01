@@ -66,7 +66,7 @@ react/function-component-definition : 0 // 컴포넌트 작성 시 화살표 함
 
 context API를 이용해서 로그인 상태를 전역상태로 관리하려 했다. 원래 개인적인 프로젝트에서는 잘 작동하던 코드가 다음과 같은 에러를 던졌다.
 
-```react
+```jsx
 export const LoginProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     !!getLocalStorage({ name: TOKEN_NAME })
@@ -87,7 +87,7 @@ The object passed as the value prop to the Context provider
 
 contextAPI의 단점인 전체적인 리렌더링을 마주할 수 있는 좋은 기회가 되었다.
 
-```react
+```jsx
 export const LoginProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     !!getLocalStorage({ name: TOKEN_NAME })

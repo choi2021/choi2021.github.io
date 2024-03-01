@@ -26,7 +26,7 @@ Local의 json파일의 데이터를 불러오는 것은 크게 어렵지 않았�
 
 줄바꿈하고 나면 형식이 지켜져서 나올 거라 생각했지만 p태그로 감싸져 있어서 형식이 지켜지지 않아 **`<pre>`태그**로 바꾸었더니 내가 생각했던 대로 전달된 것을 볼 수 있었다.
 
-```react
+```jsx
 
 //projects.json
 {
@@ -97,7 +97,7 @@ export default SliderItem;
 ![slider2](slider2.png)
 styled-components는 props를 편리하게 전달할 수 있기 때문에 보여주고 있는 project의 id와 와 SliderItem의 길이를 전달해 간단하게 애니메이션이 가능했다.
 
-```react
+```jsx
 const SliderContainer = styled.div`
   width: ${(props) => props.length};
   height: 100%;
@@ -216,7 +216,7 @@ TypeIt은 텍스트 애니메이션 자바스크립트 라이브러리로 이번
 
 Framer-motion을 공부하면서 핸드폰 잠금 방식의 버튼을 이용하면 재밌겠다 생각해 추가하게 되었다. 코드는 너무 간단히 motion 컴포넌트에 layout을 전달한 후에 부모 컴포넌트의 justify-content만 변경하면 간단하게 구현할 수 있었다. 클릭된 버튼으로 main페이지로 이동할 수 있게 useNavigate를 버튼에 onClick 이벤트 핸들러에 전달했다.
 
-```react
+```jsx
 const Button = styled(motion.button)`
   display: flex;
   justify-content: ${(props) => props.on};
@@ -261,7 +261,7 @@ function Home(props) {
 
 화면이 자연스럽게 넘어가는 효과를 위해서 Framer-motion을 이용해서 App.jsx에 AnimatePresence를 추가한 후, 각 페이지 전체 container Component에 variant를 전달했다.
 
-```react
+```jsx
 //app.jsx
 function App() {
   return (
@@ -322,7 +322,7 @@ export default Main;
 
 영상에서 설명은 페이지 이동시 AnimatePresence가 작동하려면 이동하는 페이지의 url을 전달해서 전 component와 다른 component라고 알려 주어야 한다고 한다. **uselocation**을 이용해서 key로 useloaction.pathName을, location에는 선언한 useLoaction을 그대로 전달해서 해결할 수 있었다.
 
-```react
+```jsx
 
 function App() {
   const location = useLocation();

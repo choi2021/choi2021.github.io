@@ -3,8 +3,7 @@ title: "Typescript: More On Functions"
 date: 2023-10-23
 slug: typescript-more-on-functions
 tags: ["typescript"]
-series: Typescript
-
+series: "Typescript"
 ---
 
 

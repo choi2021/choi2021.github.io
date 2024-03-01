@@ -3,7 +3,7 @@ title: "TS study: 타입시스템 (1)"
 date: 2023-01-07
 slug: typescript-타입시스템-1
 tags: [typescript]
-series: Typescript
+series: "Typescript"
 ---
 
 

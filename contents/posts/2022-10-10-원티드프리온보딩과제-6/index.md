@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 과제-HTTP에러정리, fetch 에러핸들링 시도'
+title: '원티드 프리온보딩 사전과제 6편'
 date: 2022-10-10
 slug: 원티드-프리온보딩-과제-6
 tags: [원티드프리온보딩]
@@ -29,7 +29,7 @@ series: 원티드프리온보딩
 
 404 Not found의 경우 "해당 사용자가 존재하지 않습니다"로 메시지가 오기 때문에 그대로 메시지 상태로 담아 UI로 보여주었다.
 
-```react
+```jsx
 const exceptionTest = (data, setMessage, process) => {
     if (data.statusCode >= 400) {
       if (data.statusCode == 401) { //추가한 예외처리 부분
@@ -65,17 +65,17 @@ const exceptionTest = (data, setMessage, process) => {
   };
 ```
 
-![image-20221011150151529](/assets/img/2022-10-10-원티드 프리온보딩 과제 6편/image-20221011150151529.png)
+![에러메시지 맵핑](로그인개선.png)
 
 #### 1.3 Todo
 
 todo의 경우, input에 작성된 내용으로 수정하는 기능을 추가했는데 api 연결 과정에서 빈칸으로 보내고 마주하게 된 에러였다. 에러 status코드는 400 Bad request로 message는 "todo should not be empty"로 반환되는 것을 확인할 수 있었다.
 
-![image-20221011150739522](/assets/img/2022-10-10-원티드 프리온보딩 과제 6편/image-20221011150739522.png)
+![400에러](Todo.png)
 
 에러 처리를 위해서 고민했을 때 빈 내용을 보낼 수 없게 하기 위해서 input창이 비어있는지 확인하는 상태를 추가했고 비어 있다면 placeholder로 알려 주는 로직을 추가함으로, 에러를 처리했다.
 
-```react
+```jsx
 function TodoItem({
   todoItem: { isCompleted, userId, id, todo },
   todoItem,
@@ -122,11 +122,11 @@ export default TodoItem;
 
 ```
 
-![image-20221011151228238](/assets/img/2022-10-10-원티드 프리온보딩 과제 6편/image-20221011151228238.png)
+![배열이 비어있을 떄 안내 개선](placeholder.png)
 
 Todo 자체의 input창에서도 똑같은 에러가 나타날 수 있으니 제출을 못하게 막기보다는 isBlank상태를 추가해 사용자에게 알려 주는 방향으로 하는 게 더 좋은 방법이라 생각되어 todo에서도 같은 방법으로 수정해주었다.
 
-```react
+```jsx
 unction Todo() {
   const inputRef = useRef();
   const [todos, setTodos] = useState([]);
@@ -187,7 +187,7 @@ api/
 
 #### 2.2 Fetch 에러처리
 
-​ Server의 API를 사용할 때 모두 fetch를 이용하고 try-catch 구문을 이용해서 에러를 잡아보려 했다. 하지만 fetch자체적으로 HTTP 오류 상태를 수신해도 cath로 에러가 잡히지 않는다는 mdn 문서 내용을 보게되었다. (https://developer.mozilla.org/ko/docs/Web/API/Fetch_API/Using_Fetch)
+​ Server의 API를 사용할 때 모두 fetch를 이용하고 try-catch 구문을 이용해서 에러를 잡아보려 했다. 하지만 fetch자체적으로 HTTP 오류 상태를 수신해도 cath로 에러가 잡히지 않는다는 mdn 문서 내용을 보게되었다.[참고 문서](https://developer.mozilla.org/ko/docs/Web/API/Fetch_API/Using_Fetch)
 
 ```javascript
 export async function postSignUp(data) {
@@ -210,7 +210,7 @@ export async function postSignUp(data) {
 }
 ```
 
-![image-20221011171540189](/assets/img/2022-10-10-원티드 프리온보딩 과제 6편/image-20221011171540189.png)
+![fetch에러](fetch에러.png)
 
 fetch로 사용할 때는 대신 response의 ok 프로퍼티가 false로 설정되기 때문에 에러를 전달하기 위해서는 try-catch보다는 ok 프로퍼티로 먼저 수정해 줄 필요가 있었다. 바꾸고 나서 콘솔창에 에러 발생에 대해 나오는 걸 확인할 수 있었다. fetch의 이러한 특징 때문에 에러를 발생 시키고 에러에 따라 다른 작업을 해야 한다면 우선 respones.ok를 확인 후 throw error를 던진 후에 try-catch구문을 이용해서 에러를 처리해주면 좀 더 깔끔하게 에러 처리가 가능할 것 같다고 생각되었다.
 
@@ -234,6 +234,6 @@ export async function postSignUp(data) {
 }
 ```
 
-![image-20221011173527875](/assets/img/2022-10-10-원티드 프리온보딩 과제 6편/image-20221011173527875.png)
+![에러던지기](에러던지기.png)
 
 어떻게 던진 에러를 처리할 지는 내일 좀 더 에러 핸들링에 대해 공부한 후에 적용해보기로 생각했다.

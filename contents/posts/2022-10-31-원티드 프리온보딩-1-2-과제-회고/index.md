@@ -164,7 +164,7 @@ export default IssueList;
 
 자료구조를 object로 바꾼 덕분에 detail페이지에서 보여줄 때도 다른 api 호출없이 useParam으로 받아온 id값으로 issues에 접근해 데이터를 불러올 수 있었다.
 
-```react
+```jsx
 import React, { memo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import S from './styles';
@@ -207,7 +207,7 @@ export default memo(IssueItem);
 
 list의 특정부분에 추가된 것을 보여준 것을 해본 적이 없어서 고민하다, mapping을 할 때 index가 4가 되었을 때 issueItem 컴포넌트와 함께 adBox 컴포넌트를 보여주는 방식을 선택했다. 하지만 key가 계속해서 중복된다는 에러가 발생했다.
 
-```react
+```jsx
 import React, { useContext } from 'react';
 import S from './styles';
 import IssueItem from '../issueItem/IssueItem';
@@ -253,7 +253,7 @@ export default IssueList;
 <br/> 
 어디서 계속해서 에러가 나오는지 찾는 중에 issueItem에 key값을 주었기 때문에 에러가 발생되었다는 것을 알게되었다. 해결하기 위해서 fragment가 아니라 div로 감싸주고 div에 key값을 전달해줘 에러를 해결할 수 있었다.
 
-```react
+```jsx
 import React, { useContext } from 'react';
 import S from './styles';
 import IssueItem from '../issueItem/IssueItem';
@@ -313,7 +313,7 @@ export default IssueList;
 
 Observation을 하는 로직을 관심사 분리를 할 수 있게 useObservation이라는 Hook으로 로직들을 정리했다. Hook은 관찰할 ref를 반환해 ref를 우리가 원하는 타겟으로 연결할 수 있다.
 
-```react
+```jsx
 import { useCallback, useEffect, useRef } from 'react';
 
 const option = {
@@ -350,7 +350,7 @@ export default useObservation;
 
 어려웠던 점은 **초기 렌더링 시에 전달해주었던 callback이 실행되어서 계속해서 page 2인 상태로 시작되는 점**이었다. 이것을 막기 위해서 useFetch의 isLoading상태를 이용해서 로딩이 아닐 때만 useObservation에 전달해준 callback 함수가 실행되게 했다.
 
-```react
+```jsx
 import React, { useContext } from 'react';
 import S from './styles';
 import IssueItem from '../issueItem/IssueItem';
@@ -407,7 +407,7 @@ export default IssueList;
 
 에러 해결을 위해서 팀원분들의 도움을 받아 useFetch에 lastPage라는 상태를 추가했고, 더 이상 불러올 데이터가 없으면 빈 배열로 받아오는 점을 이용해 data.length가 0일 때 lastPage를 True로 바꿔 해결할 수 있었다.
 
-```react
+```jsx
 //useFetch.jsx
 
 const useFetch = () => {

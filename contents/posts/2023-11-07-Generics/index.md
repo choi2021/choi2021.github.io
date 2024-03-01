@@ -3,7 +3,7 @@ title:  "Typescript: Generics"
 date: 2023-11-07
 slug: typescript-generics
 tags: ["typescript"]
-series: Typescript
+series: "Typescript"
 ---
 
 

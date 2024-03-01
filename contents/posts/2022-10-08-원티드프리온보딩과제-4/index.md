@@ -1,7 +1,7 @@
 ---
-title: '원티드 프리온보딩 과제-login/register 컴포넌트화'
+title: '원티드 프리온보딩 사전과제 4편'
 date: 2022-10-08
-slug: 원티드-프리온보딩-과제-login-register-컴포넌트화
+slug: 원티드-프리온보딩-과제-4
 tags: [원티드프리온보딩]
 series: 원티드프리온보딩
 ---
@@ -19,7 +19,7 @@ series: 원티드프리온보딩
 
 기능구현을 위해 우선은 한번에 코딩을 하다보니 login.jsx에 많은 코드중복이 보였다. 우선 /경로에 로그인과 회원가입을 동시에 보여주다보니 login.jsx보다는 **auth.jsx**로 이름을 바꾸고, authForm.jsx로 컴포넌트를 추가해 로그인과 회원가입 모두 같은 구성을 갖게 만들었다.
 
-```react
+```jsx
 ///이전 코드
 function Login(props) {
   return (
@@ -152,7 +152,7 @@ login.jsx내부의 함수들에도 코드중복이 많이 존재했다. handleLo
 
 ​ 회원가입과 로그인의 input 값들의 유효성검사를 실행하고 통과했을 때 제출버튼을 활성화하는 함수로 아예 똑같은 코드를 반복하고 있어 하나로 합쳤다. 둘의 다른 점은 다른 setState함수를 사용한다는 점이었는데, 이부분은 authForm으로 컴포넌트로 분리하면서 각각 다른 상태와 setState함수를 전달하기 때문에 컴포넌트에 handleChange를 prop으로 전달 후에, 컴포넌트 내부에서 setState를 함수로 전달해 연결했다.
 
-```react
+```jsx
 //이전 코드
 const handleLoginChange = (e) => {
     const { name, value } = e.currentTarget;
@@ -200,7 +200,7 @@ const handleLoginChange = (e) => {
 
 ​ 상태도 유사한점이 많아 하나로 합치고 싶었지만 각각 다른 데이터를 보관하기 때문에 오히려 합쳐져있던 message상태를 각각 loginMessage와 registerMessage로 분리해, 컴포넌트에 상태들과 함수를 prop으로 전달했다.
 
-```react
+```jsx
 //이전코드
   const [loginInfo, setLoginInfo] = useState({
     email: '',
@@ -257,7 +257,7 @@ const handleLoginChange = (e) => {
 
 수정하고 나니 좀 더 가독성이 좋고, 이후에 예외처리를 수정할 때 좀 더 편하게 할 수 있게 따로 exceptionTest 함수를 만들기 잘했다는 생각이 들었다.
 
-```react
+```jsx
 //수정 전 코드
 const handleLoginSubmit = (e) => {
     e.preventDefault();
