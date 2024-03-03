@@ -58,14 +58,14 @@ async function concurrentOrParallelRun(startTime) {
 - 각 테이블에 도착하는 시간, 주문을 받는 시간, 음식이 나오는 시간이 같다.
 
 
-<table>
+<table width="800" >
     <tr>
         <th>Sequential</th>
         <th>Concurrent</th>
      </tr>
   <tr>
-    <td><img src="sequential.png" width="500"></td>
-    <td><img src="concurrent.png" width="500" ></td>
+    <td><img src="sequential.png"></td>
+    <td><img src="concurrent.png"></td>
    </tr>
   </tr>
 </table>
