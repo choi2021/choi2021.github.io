@@ -2,7 +2,7 @@
 title: "CDN은 뭘까?"
 date: 2023-03-01
 slug: web-cdn
-tags: [web, network]
+tags: [web, 네트워크]
 ---
 
 

@@ -2,7 +2,7 @@
 title: 'HTTP 정리'
 date: 2022-10-06
 slug: http-정리
-tags: [네트워크, 웹]
+tags: [네트워크]
 ---
 
 어제 온보딩 과제를 하면서 API들 사용할 때, 각 메소드들을 이해하지 않고 사용하고 있다는 점이 많이 느껴져 [**캡틴판교**님의 블로그](https://joshua1988.github.io/web-development/http-part1/) 와 [드림코딩의 Node.js 강의](https://academy.dream-coding.com/courses/node) 참고해서 한번 정리해보려 한다.
