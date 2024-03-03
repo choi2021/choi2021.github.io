@@ -58,7 +58,7 @@ async function concurrentOrParallelRun(startTime) {
 - 각 테이블에 도착하는 시간, 주문을 받는 시간, 음식이 나오는 시간이 같다.
 
 
-<table width="800" >
+<table width="100%" >
     <tr>
         <th>Sequential</th>
         <th>Concurrent</th>
@@ -98,15 +98,15 @@ async function concurrentOrParallelRun(startTime) {
 concurrentRun(new Date());
 ```
 
-아래 사진은 위 10개의 테이블에 대한 코드를 실행한 결과다. 아래결과를 보면 순서가 sequential하게 유지되고, 테이블별 각 동작 완료시간의 차이가 나는 것을 볼 수 있다.
+아래 사진은 위 10개의 테이블에 대한 코드를 실행한 결과다. 아래결과를 보면 테이블 1부터 10까지 순서가 유지되고, 테이블별 각 동작 완료시간의 차이가 나는 것을 볼 수 있다.
 
 ![테이블이 10개일 때 결과](moretable.png)
 
-이를 통해 `Promise.all()`은 병렬적으로 처리하는 것이 아니라 자바스크립트의 **동시성**을 이용해 순차적으로 진행하지만 빠르게 진행함으로서 성능의 이점을 얻을 수 있는 메소드임을 알 수 있었다.
+이를 통해 `Promise.all()`은 병렬적(parallelism)으로 처리하는 것이 아니라 자바스크립트의 **동시성**(concurrency)을 이용해 순차적으로 진행하지만 빠르게 진행함으로서 성능의 이점을 얻을 수 있는 메소드임을 알 수 있었다.
 
 
 ## 번외: 병렬을 지원하면 결과가 어떻게 달라질까
-내가 했던 parallel에 대한 두가지 가정이 실제 병렬 처리 지원하는 언어에서 유의미하게 동작하는지에 대해 알아보고자 ChatGPT를 이용해 `Go`언어로 유사한 코드를 작성해 확인해보았다.
+내가 했던 parallelism에 대한 두가지 가정이 실제 병렬 처리 지원하는 언어에서 유의미하게 동작하는지에 대해 알아보고자 ChatGPT를 이용해 `Go`언어로 유사한 코드를 작성해보았다.
 
 ```
 package main
@@ -144,8 +144,8 @@ func main() {
 ![go언어로 작성한 코드 결과](goresult.png)
 
 결과를 보면 테이블 도착과 주문받음까지 진행 순서가 테이블 1부터 진행하지 않고 (첫번째 가정의 독립적인 스레드), 완료한 시간을 보면 동일하게 처리된 것 (두번째 가정의 같은 시간에 완료)을 볼 수 있었다.
-이를 통해 Promise.all()은 병렬적으로 처리하는 것이 아니라 자바스크립트의 **동시성**을 이용해 순차적으로 진행하지만 빠르게 진행함으로서 성능의 이점을 얻을 수 있는 메소드임을 한번 더 확인할 수 있었다.
+이를 통해 앞선 두가지 가정이 병렬처리가 가능한 언어의 특징을 잘보여주는 가정이었고, Promise.all()은 병렬적으로 처리하는 것이 아니라 자바스크립트의 **동시성**을 이용하는 메소드임을 한번 더 확인할 수 있었다.
 
 [참조]
 - [Does Promise.all Execute in Parallel? How Promise.all Works in JavaScript](https://javascript.plainenglish.io/does-promise-all-execute-in-parallel-how-promise-all-works-in-javascript-fffc2e8d455d)
-
+- [Speed up your code with Promise.all](https://dev.to/dperrymorrow/speed-up-your-code-with-promiseall-3d4i)
