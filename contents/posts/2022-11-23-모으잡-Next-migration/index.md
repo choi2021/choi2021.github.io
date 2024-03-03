@@ -18,7 +18,7 @@ series: 모으잡
 
 (공식홈페이지 설명: [Migrating from Create React App ](https://nextjs.org/docs/migrating/from-create-react-app))
 
-### 1. Package.json과 dependencies 정리하기
+### 1. 리액트네이티브.json과 dependencies 정리하기
 
 CRA에서는 당연했던 react-scripts와 react-router-dom은 next js를 사용하면서 제거해야했다. react-scripts 대신에 next를 이용하고, next 자체적으로 pages폴더내 파일을 routing해주기 때문이었다.
 
