@@ -3,8 +3,8 @@ title: "이벤트 루프 in React/React native 1편"
 description: "이벤트 루프의 동작원리를 React와 React Native의 코드를 이용해 알아보자. 1편은 callback과 Promise를 React와 React Native 예제 코드와 함께 정리해보려 한다."
 date: 2024-03-17
 slug: React와-React-Native로-알아보는-이벤트 루프-1편
-series: "이벤트 루프"
-tags: [성능, javascript, React, ReactNative]
+series: "이벤트 루프 in React/React native"
+tags: [성능, javascript, React, ReactNative, eventloop]
 ---
 
 [앞선 글](https://choi2021.github.io/2024-03-03-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0/)을 통해 Promise.all는 자바스크립트의 **동시성**을 이용한 메소드임을 정리해보았다. 
