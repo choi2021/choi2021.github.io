@@ -13,7 +13,7 @@ tags: [성능, javascript, React, ReactNative]
 이벤트 루프는 자바스크립트에서 코드를 실행하고 이벤트를 처리하는 역할을 하며, **단일 스레드**로 동작하는 자바스크립트에서 **비동기 처리**를 가능하게 한다.
 이벤트 루프의 동작을 코드로 같이 정리해보자.
 
-### ⬇️ 동기 처리
+## ⬇️ 동기 처리
 ```javascript
 const foo = () => console.log("First");
 const bar = () => console.log("Second");
@@ -25,9 +25,10 @@ baz();
 ```
 위 코드를 실행하면 First, Second, Third 순서로 출력이 된다. 이는 **동기적**으로 실행되는 코드로 자바스크립트는 기본적으로 코드를 위에서 아래로 **순서대로** 읽고 실행한다.
 
-### ⏩ 비동기 처리: callback 함수
+## ⏩ 비동기 처리
 그러면 이제 비동기 함수들에 대해서 알아보자.
 
+### ⏩ 비동기 처리: callback 함수
 ```javascript
 const foo = () => console.log("First");
 const bar = () => setTimeout(() => console.log("Second"), 0);
