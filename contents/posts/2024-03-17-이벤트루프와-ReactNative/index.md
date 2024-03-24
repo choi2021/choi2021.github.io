@@ -315,8 +315,8 @@ export default App;
 
 아래 영상을 보면 리액트 코드를 동작시켰을 때 다음과 같이 이벤트루프가 동작하게 된다.
 1. 버튼 클릭시 makeInfinitePromise 함수가 실행된다.
-2. Promise.resolve().then()이 실행되면서 microtask queue에 콜백함수가 쌓이게 된다.
-3. 이벤트 루프는 callstack이 비어있으면 microtask queue에 있는 콜백함수를 call stack으로 가져와 실행한다.
+2. Promise.resolve().then()이 실행되면서 microtask queue에 then 내부 콜백함수가 쌓이게 된다.
+3. 이벤트 루프는 callstack이 비어있으면 microtask queue에 있는 함수를 call stack으로 가져와 실행한다.
 4. 이때 다시 callback 함수가 실행되면서 Promise.resolve().then()이 실행되고 microtask queue에 쌓이게 된다. <br/> (무한 루프)
 5. 1번부터 4번까지의 과정이 반복되면서 더이상 동작할 수 없어 멈추는 것을 확인할 수 있다.
 
