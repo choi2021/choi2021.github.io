@@ -124,7 +124,7 @@ export default App;
 2. setTimeout이 실행되면서 task queue에 콜백함수가 쌓이게 된다.
 3. 이벤트 루프는 callstack이 비어있으면 queue되어 있는 콜백함수를 call stack으로 가져와 실행한다. (count 값이 1씩 증가)
 4. 이때 다시 callback 함수가 실행되면서 setTimeout이 실행되고 task queue에 쌓이게 된다. <br/> (무한 루프)
-5. 이 사이에 input에 값을 입력하면 이벤트 핸들러에 작성된 코드가 callstack에 추가된다. (동기적으로 쌓기)
+5. 이 사이에 input에 값을 입력하면 상태를 업데이트하게 되고 업데이트된 상태를 이용해 일정 시간마다 다시 DOM을 그리는 과정이 진행된다. (리액트의 렌더링 과정)
 6. callStack에 쌓인 작업을 실행하면서 console을 찍고 화면을 리렌더링한다. 
 7. 6번과정 이후 call stack이 비어있으면 다시 task queue에 있는 콜백함수를 call stack으로 옮겨 실행한다.
 8. 1~7까지의 과정을 반복한다.
@@ -320,7 +320,9 @@ export default App;
 4. 이때 다시 callback 함수가 실행되면서 Promise.resolve().then()이 실행되고 microtask queue에 쌓이게 된다. <br/> (무한 루프)
 5. 1번부터 4번까지의 과정이 반복되면서 더이상 동작할 수 없어 멈추는 것을 확인할 수 있다.
 
-Promise가 microtask queue에 계속해서 쌓이기 때문에 **이벤트루프가 머물러 있게 되어** 다른 작업을 처리하지 못해 발생하게 된다.
+그러면 **왜 set함수가 동작하지 않는 것처럼** 보이는지 의문이 생길 수 있다. 이는 리액트의 렌더링 과정과 연관되어 있다.
+
+set함수는 promise를 통해 계속해서 호출되어 V-DOM에 변경사항이 계산된다. 하지만 실제 DOM을 다시 그리는 과정(Commit phase)은 이벤트 루프가 micro task에만 머무르게 되어 UI업데이트를 위한 렌더링 과정을 처리하는게 불가능해져 set함수가 동작하지 않는 것처럼 보이게 된다.
 
 <table>
  <tr>
