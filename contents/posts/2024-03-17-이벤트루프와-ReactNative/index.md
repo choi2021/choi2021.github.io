@@ -1,5 +1,6 @@
 ---
-title: "이벤트 루프 in React/RN 1편- callback, Promise"
+title: "이벤트 루프 in React/React native 1편"
+description: "이벤트 루프의 동작원리를 React와 React Native의 코드를 이용해 알아보자. 1편은 callback과 Promise를 React와 React Native 예제 코드와 함께 정리해보려 한다."
 date: 2024-03-17
 slug: React와-React-Native로-알아보는-이벤트 루프-1편
 series: "이벤트 루프"
