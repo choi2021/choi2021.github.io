@@ -130,10 +130,6 @@ export default App;
 7. 6번과정 이후 call stack이 비어있으면 다시 task queue에 있는 콜백함수를 call stack으로 옮겨 실행한다.
 8. 1~7까지의 과정을 반복한다.
 
-
-
-
-
 이를 통해 확인할 수 있는 것은 이벤트루프는 task Queue에 다른 작업이 queue되어 있더라도 **하나씩 callstack에 가져와서 처리**하기 때문에 JS 스레드가 멈추지 않고 계속해서 작동하는 것을 확인할 수 있다.
 
 추가적으로 RN에서도 확인해보면 리액트와 동일하게 작동하며 RN의 performance tool을 이용해 JS 스레드를 보았을 때도 멈추지않고 동작하고 있는 것을 볼 수 있다. 
@@ -319,11 +315,8 @@ export default App;
 2. Promise.resolve().then()이 실행되면서 microtask queue에 then 내부 콜백함수가 쌓이게 된다.
 3. 이벤트 루프는 callstack이 비어있으면 microtask queue에 있는 함수를 call stack으로 가져와 실행한다.
 4. 이때 다시 callback 함수가 실행되면서 Promise.resolve().then()이 실행되고 microtask queue에 쌓이게 된다. <br/> (무한 루프)
-5. 1번부터 4번까지의 과정이 반복되면서 더이상 동작할 수 없어 멈추는 것을 확인할 수 있다.
+5. 1번부터 4번까지의 과정이 반복된다.
 
-그러면 **왜 set함수가 동작하지 않는 것처럼** 보이는지 의문이 생길 수 있다. 이는 리액트의 렌더링 과정과 연관되어 있다.
-
-set함수는 promise를 통해 계속해서 호출되어 V-DOM에 변경사항이 계산된다. 하지만 실제 DOM을 다시 그리는 과정(Commit phase)은 이벤트 루프가 micro task에만 머무르게 되어 UI업데이트를 위한 렌더링 과정을 처리하는게 불가능해져 set함수가 동작하지 않는 것처럼 보이게 된다.
 
 <table>
  <tr>
@@ -336,7 +329,13 @@ set함수는 promise를 통해 계속해서 호출되어 V-DOM에 변경사항�
   </tr>
 </table>
 
-추가적으로 유사한 코드를 RN에서 어떻게 동작하는지 알아보자.
+예제를 통해 microtask queue가 모두 비어질 때까지 계속해서 microtask queue의 작업을 하는 것을 알 수 있었다. 추가적으로 callback 때와 다르게 클릭 후 count가 올라가지 않는 모습을 보인다. 이는 then 콜백에 포함된 **set함수가 동작하지 않는 것처럼** 보인다.
+
+이부분을 이해하려면 리액트의 렌더링 과정에 대해 이해할 필요가 있다. set함수는 promise를 통해 계속해서 호출되어 V-DOM에 변경사항이 계산된다(render phase, reconciliation). 하지만 실제 DOM을 다시 그리는 과정(Commit phase)은 이벤트 루프가 microtask queue에 갇히게 되어 UI업데이트가 불가능하기 때문에 계산한 DOM을 실제 DOM에 반영하지 못하게 된다.
+이로인해 set함수가 동작하지 않는 것처럼 보이게 된다.
+
+
+유사한 코드를 RN에서는 어떻게 동작하는지 알아보자.
 
 [RN 코드]
 ```tsx
@@ -382,12 +381,10 @@ function App(): React.JSX.Element {
 
 export default App;
 ```
-Main 스레드와 JS 스레드가 함께 동작하기 때문에 JS 스레드가 무한루프에 빠져도 Main 스레드가 동작하고 있어 TextInput에 값을 입력할수 있다.
-하지만 JS 스레드는 동일하게 **microtask queue에 머물러있기 때문에** JS 스레드의 프레임 측정이 불가능해지고 TouchableOpacity의 애니메이션도 돌아오지 않는 것을 볼 수 있다.
 
 <table width="400">
  <tr>
-    <th>RN 코드 실행 영상 with JS thread</th>
+    <th>RN 코드 실행 영상 </th>
   </tr>
   <tr>
     <td>
@@ -396,4 +393,8 @@ Main 스레드와 JS 스레드가 함께 동작하기 때문에 JS 스레드가 
   </tr>
 </table>
 
-이를 통해 Promise는 callback과 다르게 **microtask queue**를 통해 동작하며, 이벤트 루프는 **microtask queue에 쌓인 모든 작업을 처리한 후에 다시 돌기 시작**한다는 것을 확인할 수 있다.
+React Native는 Main 스레드와 JS 스레드가 **비동기적으로** 소통하며 동작하기 때문에 JS 스레드가 무한루프에 빠져도 Main 스레드가 동작할 수 있어 TextInput에 값을 입력할 수 있었다.
+하지만 JS 스레드는 동일하게 **microtask queue에 머물러있기 때문에** JS 스레드의 프레임 측정이 불가능해지고 TouchableOpacity의 애니메이션도 돌아오지 않는 것을 볼 수 있다.
+
+
+이를 통해 Promise는 callback과 다르게 **microtask queue**를 통해 동작하며, 이벤트 루프는 **microtask queue에 쌓인 모든 작업을 처리한 후에** 다시 돌기 시작한다는 것을 확인할 수 있다.
