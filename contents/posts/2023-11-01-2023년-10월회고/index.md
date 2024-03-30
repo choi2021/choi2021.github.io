@@ -90,10 +90,6 @@ function use_견적발송(...arg){
 
  **Firebase Performance**는 리액트 네이티브에서 이용하기 위해서 [React-native-firebase](https://github.com/invertase/react-native-firebase)를 이용할 수 있다. 기존 우리 프로젝트는 안드로이드와 ios 프로젝트로 구분해서 데이터를 쌓고 있었고, 기존 화면 렌더링 속도를 측정하기 위해 존재하던 유틸과 React-native-firebase docs를 참고해 코드를 작성하려했다. 
 
-[React native Firebase의 Custom Tracing 설명과 예제]
-
-<img src="https://github.com/choi2021/choi2021.github.io/assets/80830981/dddd1671-61d8-489a-b4a0-cb498c0077c2" />
-
 [처음 구현한 견적 발송 측정 util]
 
 ```typescript
@@ -167,7 +163,6 @@ function use_견적발송(...arg){
 
  두가지 문제점의 원인을 찾기위해서 RN Debugger의 로그로 찾아보려했지만 Firebase Performance와 관련된 로그를 볼수 없어 어려움을 겪었다. 여러가지를 찾아보다 안드로이드 스튜디오의 **LogCat**을 이용해 안드로이드 시뮬레이터에서 확인할 수 있는 Firebase Performance 로그를 분석했다.
 
-<img src="https://github.com/choi2021/choi2021.github.io/assets/80830981/2f4fc425-42d3-43bc-854a-16d4fa9a1c19" />
 
  LogCat으로 확인해본 결과, 첫번째 기록에 대한 로그는 정상동작했지만 실제로 두번째 견적발송 시도시에는 아무 기록이 되지 않는 것을 볼 수 있었다. 계속해서 시도하면서 Trace데이터의 특징을 발견하게 되었다. 
 
