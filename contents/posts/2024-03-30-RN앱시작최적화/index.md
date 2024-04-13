@@ -2,7 +2,7 @@
 title: "App Start time 줄이기"
 description: "24년 1Q동안 App Start time 단축일감을 진행하며 겪었던 시행착오들을 기록해보자"
 date: 2024-04-03
-slug: RN-앱-시작시간-최적화
+slug: app-start-time-줄이기
 tags: [성능, ReactNative]
 ---
 
