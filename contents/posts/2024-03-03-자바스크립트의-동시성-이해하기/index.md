@@ -2,6 +2,7 @@
 title: "Promise.all의 동시성 이해하기"
 date: 2024-03-03
 slug: 자바스크립트의-동시성-이해하기
+description: "자바스크립트의 동시성에 대해 알아보자"
 tags: [javascript, 성능]
 ---
 
