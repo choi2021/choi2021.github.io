@@ -6,15 +6,16 @@ slug: onViewableItemsChanged-이해해보기
 tags: [react-native, FlatList]
 ---
 
-스쿼드 기능 개발을 하면서 목록의 **특정 아이템이 50% 노출되었을 때** 트래커를 찍어달라는 요구사항을 구현하는 과정에서 알게된 
-FlatList에서 `onViewableItemsChanged` 이벤트를 정리해보려 한다.
+기능 개발을 하면서 목록의 **특정 아이템이 50% 노출되었을 때** 트래커가 발송시키는 요구사항을 받게 되었다. 이를 구현하는 과정에서 알게된 
+FlatList의 `onViewableItemsChanged` prop에 대해 정리해보려 한다.
 
-## 🤔 onViewableItemsChanged 이벤트란?
+## 🤔 onViewableItemsChanged란?
 [onViewableItemsChanged](https://reactnative.dev/docs/flatlist#onviewableitemschanged)는 RN의 FlatList에 전달할 수 있는 prop으로 FlatList가 스크롤에 의해 보여지는 아이템들(viewableItems)이 변경됨에 따라 호출되는 함수로
 현재 viewableItems는 어떤 것이고, 변경된 items는 어떤 것인지에 대한 정보를 제공한다.
 
 [onViewableItemsChanged의 타입 정의]
 ```typescript
+{}
 onViewableItemsChanged?: ((
     info: { 
         viewableItems: Array<ViewToken>; 
@@ -91,7 +92,7 @@ const Item = ({title}: ItemProps) => (
     </View>
 );
 
-const TargetIndex=2
+const TARGET_INDEX=2
 
 const App = () => {
     const isShown=useRef(false)
@@ -104,7 +105,7 @@ const App = () => {
             return;
         }
 
-        const isTargetInView=viewableItems.some((item)=>item.index===TargetIndex)
+        const isTargetInView=viewableItems.some((item)=>item.index===TARGET_INDEX)
         console.log(isTargetInView)
         if(isTargetInView){
             console.log('타켓 노출') // Tracker 찍기
@@ -275,4 +276,4 @@ export default App;
 만약에 onViewableItemsChanged를 이용하지 않고 특정 요소의 영역이 노출되었을 때를 확인하려면 Viewport높이, 요소의 위치, scroll offset 위치를 직접 계산해서 확인해야 한다.
 다행히 RN에서는 내장된 prop으로 이를 자체적으로 계산해주기 때문에 편리하게 사용할 수 있다.
 
-조금 더 자세한 under the hood 내용은 [Understand onViewableItemsChanged in FlatList](https://suelan.github.io/2020/01/21/onViewableItemsChanged/)을 참조할 수 있다.
+조금 더 자세한 under the hood 내용은 [Understand onViewableItemsChanged in FlatList](https://suelan.github.io/2020/01/21/onViewableItemsChanged/)을 참고할 수 있다.
