@@ -3,7 +3,7 @@ title: '👀 onViewableItemsChanged 이해해보기'
 date: 2024-04-21
 description: "flatlist에서 onViewableItemsChanged 이벤트를 이해해보자"
 slug: onViewableItemsChanged-이해해보기
-tags: [react-native, FlatList]
+tags: [ReactNative, FlatList]
 ---
 
 기능 개발을 하면서 목록의 **특정 아이템이 50% 노출되었을 때** 트래커가 발송시키는 요구사항을 받게 되었다. 이를 구현하는 과정에서 알게된 
