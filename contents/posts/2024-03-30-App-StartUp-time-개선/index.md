@@ -1,5 +1,5 @@
 ---
-title: "App Start time 줄이기"
+title: "App StartUp time 개선"
 description: "24년 1Q동안 App Start time 단축일감을 진행하며 겪었던 시행착오들을 기록해보자"
 date: 2024-04-03
 slug: app-start-time-줄이기
@@ -8,13 +8,13 @@ tags: [성능, ReactNative]
 
 24년 1Q동안은 스쿼드가 아닌 모바일 챕터에 속해, App Start time 줄이기 업무를 담당했다. App Start Time을 줄이기 위해 시도하고 조사하며 겪었던 시행착오들을 기록해보려한다.
 
-## ⚠️ App Start time이란?
-앱 시작 시간 (start time)은 **앱을 실행하고 첫 화면이 랜딩되기까지**의 시간을 의미한다. 
+## ⚠️ App StartUp time이란?
+앱 시작 시간 (StartUp time)은 **앱을 실행하고 첫 화면이 랜딩되기까지**의 시간을 의미한다. 
 시작시간을 줄이는 것에 대한 작업의 비즈니스적 가치는 앱을 이용하는 모든 유저가 필수적으로 거쳐야하는 퍼널을 빠르게 완료함으로서, 앱을 보다 빠르게 이용할 수 있게 해 사용자 경험을 개선하는 것에 있다.
 
 그러면 이제 App Start time을 단축하기 위해 어떤 시도를 했는지 알아보자.
 
-## 📌 App Start time 측정하기
+## 📌 App StartUp time 측정하기
 
 성능을 비교하기 위해서는 항상 기준이 필요하다. 성능 비교를 위해 작년 4Q에 진행했던  [견적발송 개선 작업](https://choi2021.github.io/2023-11-01-2023%EB%85%84-10%EC%9B%94%ED%9A%8C%EA%B3%A0/)과 동일하게 **Firebase Performance**를 이용해 측정했다. 
 다행이었던 부분은 이전에 측정을 시도했던 코드가 남아있어 참고해서 작업을 진행할 수 있었다.
