@@ -15,7 +15,6 @@ FlatList의 `onViewableItemsChanged` prop에 대해 정리해보려 한다.
 
 [onViewableItemsChanged의 타입 정의]
 ```typescript
-{}
 onViewableItemsChanged?: ((
     info: { 
         viewableItems: Array<ViewToken>; 
