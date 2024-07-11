@@ -123,7 +123,7 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
   </tr>
  <tr>
     <td><img src="native-containedTransparentModal-ios.gif" alt="card" width="300"/></td>
-    <td><img src="native-fullScreenModal-ios.gif" alt="modal" width="300"/></td>
+    <td><img src="native-full-screen-modal-ios.gif" alt="modal" width="300"/></td>
   </tr>
  <tr>
     <th>formSheet</th>
@@ -157,7 +157,7 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
   </tr>
  <tr>
     <td><img src="native-containedTransparentModal-android.gif" alt="card" width="300"/></td>
-    <td><img src="native-fullScreenModal-android.gif" alt="modal" width="300"/></td>
+    <td><img src="native-full-screen-modal-android.gif" alt="modal" width="300"/></td>
   </tr>
   <tr>
     <th>formSheet</th>
