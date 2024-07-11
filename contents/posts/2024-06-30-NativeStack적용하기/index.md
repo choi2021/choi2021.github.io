@@ -50,9 +50,9 @@ stack navigator에서는 `card`, `modal`, `transparent modal` 3가지 옵션을 
 [iOS Presentation별 화면전환 애니메이션]
 <table>
   <tr>
-    <td align="center">Card</td>
-    <td align="center">Modal</td>
-    <td align="center">Transparent Modal</td>
+    <th align="center">Card</th>
+    <th align="center">Modal</th>
+    <th align="center">Transparent Modal</th>
   </tr>
   <tr>
     <td><img src="js-card-ios.gif" alt="js-card-ios" width="400"/></td>
@@ -100,27 +100,35 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
 - `formSheet`: iOS는 `UIModalPresentationFormSheet` 모달 스타일을 이용하고 Android는 modal과 동일하게 처리된다.
 
 [iOS Presentation]
-<table>
+<table width="100%">
   <tr>
     <th>card</th>
     <th>modal</th>
-    <th>transparent modal</th>
-    <th>contained modal</th>
   </tr>
   <tr>
     <td><img src="native-card-ios.gif" alt="card" width="300"/></td>
     <td><img src="native-modal-ios.gif" alt="modal" width="300"/></td>
+  </tr>
+  <tr>
+    <th>transparent modal</th>
+    <th>contained modal</th>
+  </tr>
+ <tr>
     <td><img src="native-transparentModal-ios.gif" alt="card" width="300"/></td>
     <td><img src="native-containedModal-ios.gif" alt="modal" width="300"/></td>
   </tr>
-<tr>
+ <tr>
     <th>contained transparent modal</th>
     <th>fullScreen modal</th>
-    <th>formSheet</th>
   </tr>
  <tr>
     <td><img src="native-containedTransparentModal-ios.gif" alt="card" width="300"/></td>
     <td><img src="native-fullScreenModal-ios.gif" alt="modal" width="300"/></td>
+  </tr>
+ <tr>
+    <th>formSheet</th>
+  </tr>
+ <tr>
     <td><img src="native-formsheet-ios.gif" alt="card" width="300"/></td>
   </tr>
 </table>
@@ -130,23 +138,31 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
   <tr>
     <th>card</th>
     <th>modal</th>
-    <th>transparent modal</th>
-    <th>contained modal</th>
   </tr>
   <tr>
     <td><img src="native-card-android.gif" alt="card" width="300"/></td>
     <td><img src="native-modal-android.gif" alt="modal" width="300"/></td>
+  </tr>
+ <tr>
+    <th>transparent modal</th>
+    <th>contained modal</th>
+  </tr>
+  <tr>
     <td><img src="native-transparentModal-android.gif" alt="card" width="300"/></td>
     <td><img src="native-containedModal-android.gif" alt="modal" width="300"/></td>
   </tr>
-<tr>
+  <tr>
     <th>contained transparent modal</th>
     <th>fullScreen modal</th>
-    <th>formSheet</th>
   </tr>
  <tr>
     <td><img src="native-containedTransparentModal-android.gif" alt="card" width="300"/></td>
     <td><img src="native-fullScreenModal-android.gif" alt="modal" width="300"/></td>
+  </tr>
+  <tr>
+    <th>formSheet</th>
+  </tr>
+ <tr>
     <td><img src="native-formsheet-android.gif" alt="card" width="300"/></td>
   </tr>
 </table>
