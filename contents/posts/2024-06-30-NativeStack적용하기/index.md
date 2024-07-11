@@ -102,10 +102,10 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
 [iOS Presentation]
 <table>
   <tr>
-    <td>card</td>
-    <td>modal</td>
-    <td>transparent modal</td>
-    <td>contained modal</td>
+    <th>card</th>
+    <th>modal</th>
+    <th>transparent modal</th>
+    <th>contained modal</th>
   </tr>
   <tr>
     <td><img src="native-card-ios.gif" alt="card" width="300"/></td>
@@ -114,9 +114,9 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
     <td><img src="native-containedModal-ios.gif" alt="modal" width="300"/></td>
   </tr>
 <tr>
-    <td>contained transparent modal</td>
-    <td>fullScreen modal</td>
-    <td>formSheet</td>
+    <th>contained transparent modal</th>
+    <th>fullScreen modal</th>
+    <th>formSheet</th>
   </tr>
  <tr>
     <td><img src="native-containedTransparentModal-ios.gif" alt="card" width="300"/></td>
@@ -128,10 +128,10 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
 [android Presentation (Android 14, API Level 34)]
 <table>
   <tr>
-    <td>card</td>
-    <td>modal</td>
-    <td>transparent modal</td>
-    <td>contained modal</td>
+    <th>card</th>
+    <th>modal</th>
+    <th>transparent modal</th>
+    <th>contained modal</th>
   </tr>
   <tr>
     <td><img src="native-card-android.gif" alt="card" width="300"/></td>
@@ -140,9 +140,9 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
     <td><img src="native-containedModal-android.gif" alt="modal" width="300"/></td>
   </tr>
 <tr>
-    <td>contained transparent modal</td>
-    <td>fullScreen modal</td>
-    <td>formSheet</td>
+    <th>contained transparent modal</th>
+    <th>fullScreen modal</th>
+    <th>formSheet</th>
   </tr>
  <tr>
     <td><img src="native-containedTransparentModal-android.gif" alt="card" width="300"/></td>
@@ -217,8 +217,8 @@ export const ScaleFromCenterAndroid: TransitionPreset = {
 
 <table>
   <tr>
-    <td>기존 안드로이드 화면전환</td>
-    <td>Native Stack 화면 전환</td>
+    <th>기존 안드로이드 화면전환</th>
+    <th>Native Stack 화면 전환</th>
   </tr>
   <tr>
     <td><img src="js-card-android.gif" alt="card" width="300"/></td>
@@ -248,9 +248,9 @@ iOS에서는 `modal`와 `formsheet` 옵션을 적용했을 때, 기존 제품내
 [제품내 모달과 Modal 옵션]
 <table>
   <tr>
-    <td>기존 제품내 모달 화면</td>
-    <td>modal iOS</td>
-    <td>modal android</td>
+    <th>기존 제품내 모달 화면</th>
+    <th>modal iOS</th>
+    <th>modal android</th>
   </tr>
   <tr>
     <td><img src="stack-modal-ios.gif" alt="card" width="300"/></td>
@@ -263,9 +263,9 @@ iOS에서는 `modal`와 `formsheet` 옵션을 적용했을 때, 기존 제품내
 [제품내 모달과 formsheet 옵션]
 <table>
   <tr>
-    <td>기존 제품내 모달 화면</td>
-    <td>formsheet iOS</td>
-    <td>formsheet android</td>
+    <th>기존 제품내 모달 화면</th>
+    <th>formsheet iOS</th>
+    <th>formsheet android</th>
   </tr>
   <tr>
     <td><img src="stack-modal-ios.gif" alt="card" width="300"/></td>
