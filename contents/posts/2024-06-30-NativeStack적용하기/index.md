@@ -3,7 +3,7 @@ title: '🖥️ Native Stack 적용하기'
 date: 2024-07-06
 description: "react-navigation의 Stack Navigator에서 Native Stack Navigator로 화면전환 성능 개선하기"
 slug: Native Stack 적용하기
-tags: [회고, react-navigation, react-native, 성능]
+tags: [회고, react-navigation, react-native, 성능, Native Stack]
 ---
 
 2분기 TechOKR 작업으로 선정된 **화면전환간 성능 개선** 작업을 담당하면서 **Native Stack Navigator**을 제품에 도입하게 되었다. 해당 작업을 진행하게된 배경, 적용과정에 대해 정리하면서 새롭게 알게된 내용, 시행착오를 기록해보려 한다. 
@@ -65,9 +65,9 @@ stack navigator에서는 `card`, `modal`, `transparent modal` 3가지 옵션을 
 [Android Presentation별 화면전환 애니메이션]
 <table>
   <tr>
-    <td align="center">Card</td>
-    <td align="center">Modal</td>
-    <td align="center">Transparent Modal</td>
+    <th align="center">Card</th>
+    <th align="center">Modal</th>
+    <th align="center">Transparent Modal</th>
   </tr>
   <tr>
     <td><img src="js-card-android.gif" alt="modal" width="300"/></td>
