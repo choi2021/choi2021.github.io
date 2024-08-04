@@ -3,7 +3,7 @@ title: '👏 2024년 7월회고 '
 date: 2024-08-03
 description: "24년 7월에 대한 회고"
 slug: 2024년-7월회고
-tags: [회고]
+tags: [회고, FE Accelerator, es-toolkit, mmkv]
 ---
 
 7월은 새롭게 한분기를 시작하는 달로, 챕터 내에서는 하고 싶었던 MMKV 데이터 스토리지 마이그레이션과 로딩 경험 개선 두가지 일감을 담당해 진행했고,
