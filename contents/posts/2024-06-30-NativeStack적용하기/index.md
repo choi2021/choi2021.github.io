@@ -28,8 +28,8 @@ Native Stack은 이전 1분기에 [startup-time 개선 작업](https://choi2021.
 [[react native 공식문서의 Navigating between screens](https://reactnative.dev/docs/0.73/navigation)]
 ![react native 공식문서의 Navigating between screens](react-native-navigating.png)
 
-[[React Navigation v2의 소개된 메로리 사용량 비교 데이터](https://twitter.com/janicduplessis/status/1039979591815897088?s=21)]
-![React Navigation v2의 소개된 메로리 사용량 비교 데이터](x-memory-comparison.png)
+[[React Navigation v2의 소개된 메모리 사용량 비교 데이터](https://twitter.com/janicduplessis/status/1039979591815897088?s=21)]
+![React Navigation v2의 소개된 메모리 사용량 비교 데이터](x-memory-comparison.png)
 
 추가로 현재 React Native는 Expo를 공식적인 프레임워크로 추천하고 있는 흐름 속에 expo에서 사용하는 routing 시스템인 Expo router도 동일하게 React Native Screens를 이용해 file-based routing 방식으로 지원하고 있다.
 
