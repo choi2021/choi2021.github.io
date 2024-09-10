@@ -22,7 +22,7 @@ Native Stack은 이전 1분기에 [startup-time 개선 작업](https://choi2021.
 
 ![당시 기획해두었던 아이디어들](ideas.png)
 
-이후에 일감으로 발전시켰던 이유로 기존 제품에 stackNavigator를 이용하면서 큰 이슈는 없었지만, React Native 공식문서의 Navigation 예제가 NativeStack을 이용하는 방식으로 소개되는 것으로 수정되었고 (커뮤니티에서 성능을 위해 권장하는 방법), 
+이후에 일감으로 발전시켰던 이유로 기존 제품에 stackNavigator를 이용하면서 화면 전환간 버벅임이 발생하는 경우가 간헐적으로 있었고, React Native 공식문서의 Navigation 예제가 NativeStack을 이용하는 방식으로 소개되는 것으로 수정되었고 (커뮤니티에서 성능을 위해 권장하는 방법), 
 화면전환 애니메이션을 Native 스레드에서 진행하게 되면 JS 스레드가 바쁘게 진행될 때에도 안정적으로 화면 전환 애니메이션을 보장할 수 있을 것을 기대하며 작업을 시작하게 되었다.
 
 [[react native 공식문서의 Navigating between screens](https://reactnative.dev/docs/0.73/navigation)]
