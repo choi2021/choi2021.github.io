@@ -12,8 +12,8 @@ tags: [UX, suspense, async]
 
 <table>
     <tr>
-        <td>예시 100ms</td>
-        <td>예시 300ms</td>
+        <th>예시 100ms</th>
+        <th>예시 300ms</th>
     </tr>
     <tr>
         <td><img src="100MS_SKELETON.gif" alt="100ms 로딩"></td>
@@ -343,14 +343,18 @@ export default function PaginatedProjects() {
 SuspenseQuery 훅들을 적용했을 때 부수적인 장점으로 코드적으로 뿐만 아니라, 타입적으로도 성공했을 때에 대한 타입을 명확하게 지정시켜준다.
 덕분에 라이브러리 내의 초기값으로 정의된 undefined과 구분되어 별도로 undefined을 좁혀주는 Validation 없이 적용이 가능했다. 
 
-<table>
+<table width="100%">
     <tr>
-        <td>useQuery 타입 정의</td>
-        <td>useSuspenseQuery 타입 정의</td>
+        <th>useQuery 타입 정의</th>
     </tr>
     <tr>
-        <td><img src="query_type.png" alt="Query 타입 정의" width="500"></td>
-        <td><img src="suspense_query_type.png" alt="SuspenseQuery 타입 정의" width="500"></td>
+        <td><img src="queryType.png"  ></td>
+    </tr>
+    <tr>
+        <th>useSuspenseQuery 타입 정의</th>
+    </tr>
+    <tr>
+        <td><img src="suspense_query_type.png" ></td>
     </tr>
 </table>
 
@@ -442,8 +446,16 @@ UI로 교체해 개선했다.
 
 <table>
     <tr>
-        <td>기존 전역 로딩 UI</td>
-        <td>개선된 전역 로딩 UI</td>
+        <th>기존 전역 로딩 UI</th>
+        <th>개선된 전역 로딩 UI</th>
+    </tr>
+    <tr>
+        <td><img src="loading_before.gif" alt="기존 로딩 UI" width="332"></td>
+        <td><img src="loading_after.gif" alt="개선된 로딩 UI" width="332"></td>
+    </tr>
+    <tr>
+        <th>기존 전역 로딩 UI</th>
+        <th>개선된 전역 로딩 UI</th>
     </tr>
     <tr>
         <td><img src="loading_before.gif" alt="기존 로딩 UI" width="332"></td>
@@ -458,8 +470,8 @@ UI로 교체해 개선했다.
 
 <table>
     <tr>
-        <td>200ms 이하로 걸릴 때</td>
-        <td>200ms 이상으로 걸릴 때</td>
+        <th>200ms 이하로 걸릴 때</th>
+        <th>200ms 이상으로 걸릴 때</th>
     </tr>
     <tr>
         <td><img src="200ms_under.gif" alt="200ms_under" width="332"></td>
