@@ -3,7 +3,7 @@ title: '⏳ 로딩 경험 개선'
 date: 2024-09-25
 description: "3분기동안 진행한 로딩경험 개선작업을 정리합니다"
 slug: loading-ux-improvement
-tags: [UX, suspense, async]
+tags: [UX, suspense]
 ---
 
 ## ❓로딩 경험 개선은 왜 필요할까
