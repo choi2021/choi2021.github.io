@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 2-2 과제회고'
+title: "원티드 프리온보딩 2-2 과제회고"
 date: 2022-11-07
 slug: wanted-pre-onboarding-2-2-review
 tags: [회고, 원티드프리온보딩]
@@ -28,19 +28,19 @@ series: 원티드프리온보딩
 
 ```typescript
 type GetAdListResponse = {
-  ads: AdType[];
-  counts: number;
-};
+  ads: AdType[]
+  counts: number
+}
 
 type GetTrendResponse = {
   report: {
-    daily: TrendType[];
-  };
-};
+    daily: TrendType[]
+  }
+}
 
 interface AdService {
-  getAdList: () => Promise<GetAdListResponse>;
-  getTrend: () => Promise<GetTrendResponse>;
+  getAdList: () => Promise<GetAdListResponse>
+  getTrend: () => Promise<GetTrendResponse>
 }
 ```
 
@@ -51,16 +51,16 @@ API 통신을 위한 class이므로 각 메소드는 통신결과인 promise를 
 우리가 정의한 interface를 구현하는 class인 AdserviceImpl를 다음과 같이 만들 수 있다.
 
 ```typescript
-import { AxiosError, AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance } from "axios"
 import {
   AdService,
   GetAdListResponse,
   GetTrendResponse,
-} from 'models/interface';
-import HTTPError from '../network/httpError';
+} from "models/interface"
+import HTTPError from "../network/httpError"
 
-const AD_LIST_URL = '/ad-list-data-set.json';
-const AD_TREND_URL = '/trend-data-set.json';
+const AD_LIST_URL = "/ad-list-data-set.json"
+const AD_TREND_URL = "/trend-data-set.json"
 
 class AdServiceImpl implements AdService {
   constructor(private axiosInstance: AxiosInstance) {}
@@ -69,34 +69,34 @@ class AdServiceImpl implements AdService {
     try {
       const { data } = await this.axiosInstance.get<GetAdListResponse>(
         AD_LIST_URL
-      );
-      return data;
+      )
+      return data
     } catch (error) {
-      const { response } = error as unknown as AxiosError;
+      const { response } = error as unknown as AxiosError
       if (response) {
-        throw new HTTPError(response?.status, response?.statusText);
+        throw new HTTPError(response?.status, response?.statusText)
       }
-      throw new Error('Unknown Error');
+      throw new Error("Unknown Error")
     }
-  };
+  }
 
   getTrend = async () => {
     try {
       const { data } = await this.axiosInstance.get<GetTrendResponse>(
         AD_TREND_URL
-      );
-      return data;
+      )
+      return data
     } catch (error) {
-      const { response } = error as unknown as AxiosError;
+      const { response } = error as unknown as AxiosError
       if (response) {
-        throw new HTTPError(response?.status, response?.statusText);
+        throw new HTTPError(response?.status, response?.statusText)
       }
-      throw new Error('Unknown Error');
+      throw new Error("Unknown Error")
     }
-  };
+  }
 }
 
-export default AdServiceImpl;
+export default AdServiceImpl
 ```
 
 이전부터 항상 사용해오던 HTTPError class는 원하는 에러메시지를 커스텀할 수 있게 하는 정도로 사용했지만 에러가 다양해지고 복잡해지면 class에 내용만 추가하면 되니까 훨씬 유지 보수에 유용할 것이란 예상을 할 수 있다.
@@ -104,18 +104,18 @@ export default AdServiceImpl;
 ```typescript
 export default class HTTPError extends Error {
   constructor(private statusCode: number, public message: string) {
-    super(message);
+    super(message)
   }
 
   get errorMessage() {
     switch (this.statusCode) {
       case 404:
-        this.message = '잘못된 요청입니다. url을 확인해주세요';
-        break;
+        this.message = "잘못된 요청입니다. url을 확인해주세요"
+        break
       default:
-        throw new Error('Unknown Error');
+        throw new Error("Unknown Error")
     }
-    return this.message;
+    return this.message
   }
 }
 ```
@@ -132,44 +132,42 @@ export default class HTTPError extends Error {
 
 ```tsx
 //index.tsx
-const BASE_URL = process.env.REACT_APP_BASE_URL || '';
-const axiosInstance = createAxiosClient(BASE_URL);
-const adService = new AdService(axiosInstance);
+const BASE_URL = process.env.REACT_APP_BASE_URL || ""
+const axiosInstance = createAxiosClient(BASE_URL)
+const adService = new AdService(axiosInstance)
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
 root.render(
   <React.StrictMode>
     <AdServiceProvider adService={adService}>..</AdServiceProvider>
   </React.StrictMode>
-);
+)
 
 //AdServiceContext.tsx
-import { AdService } from 'models/interface';
-import { createContext, useMemo, useContext } from 'react';
+import { AdService } from "models/interface"
+import { createContext, useMemo, useContext } from "react"
 
-const AdServiceContext = createContext<AdService | null>(null);
-export const useAds = () => useContext(AdServiceContext);
+const AdServiceContext = createContext<AdService | null>(null)
+export const useAds = () => useContext(AdServiceContext)
 
 export const AdServiceProvider = ({
   children,
   adService,
 }: {
-  children: React.ReactNode;
-  adService: AdService; //interface로 바로 type정해줄 수 있어
+  children: React.ReactNode
+  adService: AdService //interface로 바로 type정해줄 수 있어
 }) => {
-  const { getAdList, getTrend } = adService;
+  const { getAdList, getTrend } = adService
   const value = useMemo(() => {
-    return { getAdList, getTrend };
-  }, [getAdList, getTrend]);
+    return { getAdList, getTrend }
+  }, [getAdList, getTrend])
   return (
     <AdServiceContext.Provider value={value}>
       {children}
     </AdServiceContext.Provider>
-  );
-};
+  )
+}
 ```
 
 ## 🛠React Query를 이용한 Refactoring
@@ -222,32 +220,32 @@ React Query는 서버에서 데이터를 받아오고, 받아온 데이터를 ca
 
 ```tsx
 const { isLoading, data: trendData } = useQuery(
-  ['trend'],
+  ["trend"],
   () => adService?.getTrend(),
   {
     staleTime: 1000 * 60 * 60,
     cacheTime: 1000 * 60 * 60,
   }
-);
-const { data: listData } = useQuery(['adList'], () => adService?.getAdList(), {
+)
+const { data: listData } = useQuery(["adList"], () => adService?.getAdList(), {
   staleTime: 1000 * 60 * 60,
   cacheTime: 1000 * 60 * 60,
-});
+})
 
 useEffect(() => {
   trendDispatch({
     type: DataActionEnum.SET_DATA,
     data: trendData?.report.daily || [],
-  });
-  trendDispatch({ type: DataActionEnum.SET_IS_LOADING, isLoading });
-}, [trendData, isLoading]);
+  })
+  trendDispatch({ type: DataActionEnum.SET_IS_LOADING, isLoading })
+}, [trendData, isLoading])
 
 useEffect(() => {
   listDispatch({
     type: DataActionEnum.SET_DATA,
     data: listData?.ads || [],
-  });
-}, [listData]);
+  })
+}, [listData])
 ```
 
 ## 😅Typescript Error
@@ -262,8 +260,8 @@ useEffect(() => {
 
 ```typescript
 export type ResultType = {
-  [index: string]: number;
-};
+  [index: string]: number
+}
 
 const calculateData = (data: TrendType[]) => {
   const result: ResultType = {
@@ -277,31 +275,31 @@ const calculateData = (data: TrendType[]) => {
     cpc: 0,
     cpa: 0,
     roas: 0,
-  };
+  }
 
-  data.forEach((item) => {
-    Object.keys(item).forEach((key) => {
+  data.forEach(item => {
+    Object.keys(item).forEach(key => {
       if (key in result) {
-        result[key] += Number(item[key]);
+        result[key] += Number(item[key])
       }
-    });
-  });
-  return result;
-};
+    })
+  })
+  return result
+}
 
-export default calculateData;
+export default calculateData
 ```
 
 만약 저번 과제에서 해결 못했던 Object의 key로 데이터의 id를 사용하고 데이터를 value로 한 자료구조의 type 경우는 다음과 같이 적용할 수 있다.
 
 ```typescript
 type Type = {
-  [index: string]: { data: string };
-};
+  [index: string]: { data: string }
+}
 
 const obj: Type = {
-  '123123': { data: 'hi' },
-};
+  "123123": { data: "hi" },
+}
 ```
 
 # 😥아쉬웠던 점

@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 3-1 과제회고'
+title: "원티드 프리온보딩 3-1 과제회고"
 date: 2022-11-11
 slug: wanted-pre-onboarding-3-1
 tags: [회고, 원티드프리온보딩]
@@ -64,15 +64,15 @@ series: 원티드프리온보딩
 useSearchParam은 useState처럼 배열의 첫 요소는 현재 url의 파람이 담겨있고, 두번째 요소는 param을 변경할 수 있는 setState와 같은 함수가 담겨있다. 값만 받아오면 되기 때문에 첫요소의 메소드인 get으로 해당 query string을 받아 하나의 상태로 관리했다.
 
 ```tsx
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom"
 
 const useQueryString = () => {
-  const [params] = useSearchParams();
-  const query = params.get('q') || '';
-  return query;
-};
+  const [params] = useSearchParams()
+  const query = params.get("q") || ""
+  return query
+}
 
-export { useQueryString };
+export { useQueryString }
 ```
 
 <br/>
@@ -102,40 +102,41 @@ session storage를 처음 써봤지만 local Stoarge와 동일한 method라 사�
 ```typescript
 export default class CacheService {
   static setData = (query: string, words: SearchType[]) => {
-    const stringifyWord = JSON.stringify(words);
-    sessionStorage.setItem(query, stringifyWord);
-  };
+    const stringifyWord = JSON.stringify(words)
+    sessionStorage.setItem(query, stringifyWord)
+  }
 
   static getData = (query: string) => {
-    const data = sessionStorage.getItem(query);
-    const parsedData: SearchType[] = JSON.parse(data || JSON.stringify([]));
-    return parsedData;
-  };
+    const data = sessionStorage.getItem(query)
+    const parsedData: SearchType[] = JSON.parse(data || JSON.stringify([]))
+    return parsedData
+  }
 }
 ```
 
 다른 팀의 코드에서 map을 이용해 로컬 캐싱을 구현한 부분을 보면서 이렇게 구현할 수도 있었겠구나 느끼기도 했다.
 
 ```typescript
-const myCache = new Map();
+const myCache = new Map()
 
 export const setMyCacheData = <T>(key: string, data: T) => {
-  const value = { data, expired: new Date().getTime() + 5000 };
-  myCache.set(key, value);
-};
+  const value = { data, expired: new Date().getTime() + 5000 }
+  myCache.set(key, value)
+}
 
 export const getMyCacheData = (key: string) => {
   if (myCache.has(key)) {
     if (myCache.get(key).expired > new Date().getTime()) {
-      return myCache.get(key).data;
+      return myCache.get(key).data
     } else {
-      myCache.delete(key);
+      myCache.delete(key)
     }
   }
 
-  return null;
-};
+  return null
+}
 ```
+
 <br/>
 # 🎨키워드 Bold 처리
 
@@ -183,6 +184,7 @@ const SearchItem = ({
 
 export default SearchItem;
 ```
+
 <br/>
 
 # ✨Debouncing과 Throttling
@@ -197,15 +199,15 @@ Debouncing은 자주 발생하는 이벤트를 원하는 시점의 이벤트를 
 useEffect(() => {
   if (query) {
     if (NO_SESSION_ITEM) {
-      dispatch({ type: 'SET_DATA', data: cachedItem });
+      dispatch({ type: "SET_DATA", data: cachedItem })
     } else {
       const debounce = setTimeout(() => {
-        getResponse();
-      }, DELAY_TIME);
-      return () => clearTimeout(debounce);
+        getResponse()
+      }, DELAY_TIME)
+      return () => clearTimeout(debounce)
     }
   }
-}, [query]);
+}, [query])
 ```
 
 setTimeout을 이용해 delay time 뒤에 전달해준 callback 함수를 실행하게 하는데, 이때 input의 입력으로 query가 바뀌면 이전 실행대기중이던 debounce 함수는 clearTimemout으로 인해 사라지게 되고 마지막으로 전달해준 값만 실행시키는 방식으로 debouncing을 구현했다.

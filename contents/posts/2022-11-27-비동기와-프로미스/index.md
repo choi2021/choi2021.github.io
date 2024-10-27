@@ -1,5 +1,5 @@
 ---
-title: '비동기와 프로미스'
+title: "비동기와 프로미스"
 date: 2022-11-27
 slug: javascript-async-promise
 tags: [javascript, 문법]
@@ -23,22 +23,22 @@ tags: [javascript, 문법]
 a,b,c 라는 변수를 간단하게 호출하고 있는 예시를 보자.
 
 ```javascript
-const a = 1;
-const b = 2;
-const c = 3;
+const a = 1
+const b = 2
+const c = 3
 
-console.log(a);
-console.log(b);
-console.log(c);
+console.log(a)
+console.log(b)
+console.log(c)
 
 //결과: 1,2,3
 
 //비동기
-console.log(a);
+console.log(a)
 setTimeout(() => {
-  console.log(b);
-}, 0);
-console.log(c);
+  console.log(b)
+}, 0)
+console.log(c)
 
 //결과: 1,3,2
 ```
@@ -66,15 +66,15 @@ console.log(b)를 console.log(c)보다 먼저 자바스크립트 엔진이 읽�
 앞선 비동기 예제를 다시 설명하면 다음과 같다.
 
 ```javascript
-const a = 1;
-const b = 2;
-const c = 3;
+const a = 1
+const b = 2
+const c = 3
 
-console.log(a);
+console.log(a)
 setTimeout(() => {
-  console.log(b);
-}, 0);
-console.log(c);
+  console.log(b)
+}, 0)
+console.log(c)
 
 //결과: 1,3,2
 ```
@@ -104,51 +104,51 @@ class UserStorage {
   loginUser(id, password, onSuccess, onError) {
     setTimeout(() => {
       if (
-        (id === 'seul' && password === '123') ||
-        (id === 'kim' && password === '456')
+        (id === "seul" && password === "123") ||
+        (id === "kim" && password === "456")
       ) {
-        onSuccess(id);
+        onSuccess(id)
       } else {
-        onError(new Error('error'));
+        onError(new Error("error"))
       }
-    }, 2000);
+    }, 2000)
   }
 
   getRoles(user, onSuccess, onError) {
     setTimeout(() => {
-      if (user === 'seul') {
-        onSuccess({ name: 'seul', role: 'admin' });
+      if (user === "seul") {
+        onSuccess({ name: "seul", role: "admin" })
       } else {
-        onError(new Error('error'));
+        onError(new Error("error"))
       }
-    }, 1000);
+    }, 1000)
   }
 }
 
-const userStorage = new UserStorage();
-const id = prompt('아이디를 입력해 주세요!');
-const password = prompt('비밀번호를 입력해 주세요!!');
+const userStorage = new UserStorage()
+const id = prompt("아이디를 입력해 주세요!")
+const password = prompt("비밀번호를 입력해 주세요!!")
 
 userStorage.loginUser(
   id,
   password,
-  (user) => {
+  user => {
     userStorage.getRoles(
       user,
-      (userWithRole) => {
+      userWithRole => {
         alert(
           `hello ${userWithRole.name}, you have a ${userWithRole.role} role`
-        );
+        )
       },
-      (error) => {
-        console.log('에러2');
+      error => {
+        console.log("에러2")
       }
-    );
+    )
   },
-  (error) => {
-    console.log('에러1');
+  error => {
+    console.log("에러1")
   }
-);
+)
 ```
 
 그러면 <u>callback함수의 한계를 어떻게 극복할 수 있을까?</u>
@@ -166,25 +166,25 @@ promise의 비동기 처리 상태는 pending (수행되지 않은 상태), fulf
 ```javascript
 function getData(state) {
   return new Promise(function (resolve, reject) {
-    if (state === '성공') {
-      resolve('성공');
+    if (state === "성공") {
+      resolve("성공")
     } else {
-      reject(new Error('Request is failed'));
+      reject(new Error("Request is failed"))
     }
-  });
+  })
 }
 
-getData('성공')
+getData("성공")
   .then(console.log) //성공
   .catch(function (err) {
-    console.log(err);
-  });
+    console.log(err)
+  })
 
-getData('실패')
+getData("실패")
   .then(console.log)
   .catch(function (err) {
-    console.log(err); // Error: Request is failed
-  });
+    console.log(err) // Error: Request is failed
+  })
 ```
 
 그러면 이번엔 앞서 보았던 callback hell 예제를 promise로 해결해보자
@@ -195,39 +195,39 @@ class UserStorage {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (
-          (id === 'seul' && password === '123') ||
-          (id === 'kim' && password === '456')
+          (id === "seul" && password === "123") ||
+          (id === "kim" && password === "456")
         ) {
-          resolve(id);
+          resolve(id)
         } else {
-          reject(new Error('에러1'));
+          reject(new Error("에러1"))
         }
-      }, 2000);
-    });
+      }, 2000)
+    })
   }
 
   getRoles(user) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (user === 'seul') {
-          resolve({ name: 'seul', role: 'admin' });
+        if (user === "seul") {
+          resolve({ name: "seul", role: "admin" })
         } else {
-          reject(new Error('에러2'));
+          reject(new Error("에러2"))
         }
-      }, 1000);
-    });
+      }, 1000)
+    })
   }
 }
 
-const userStorage = new UserStorage();
-const id = prompt('아이디를 입력해 주세요!');
-const password = prompt('비밀번호를 입력해 주세요!!');
+const userStorage = new UserStorage()
+const id = prompt("아이디를 입력해 주세요!")
+const password = prompt("비밀번호를 입력해 주세요!!")
 
 userStorage
   .loginUser(id, password)
   .then(userStorage.getRoles)
-  .then((user) => alert(`hello ${user.name}, you have a ${user.role} role`))
-  .catch(console.log);
+  .then(user => alert(`hello ${user.name}, you have a ${user.role} role`))
+  .catch(console.log)
 ```
 
 클래스 내부는 크게 달라진 것은 없지만, 사용할 때 복잡도가 크게 줄어 가독성이 향상된 것을 알 수 있다. 이렇게 프로미스를 통해 callback함수의 한계인 후속처리와 에러처리를 해결할 수 있다는 것을 알 수 있었다.
@@ -244,45 +244,45 @@ promise의 또다른 장점은 promise 자체적으로 제공하는 다양한 �
 
 ```javascript
 const requestData1 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(1), 3000));
+  new Promise(resolve => setTimeout(() => resolve(1), 3000))
 const requestData2 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(2), 2000));
+  new Promise(resolve => setTimeout(() => resolve(2), 2000))
 const requestData3 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(3), 1000));
+  new Promise(resolve => setTimeout(() => resolve(3), 1000))
 
-const res = [];
+const res = []
 requestData1()
-  .then((data) => {
+  .then(data => {
     //3초뒤 받아와
-    res.push(data);
-    return requestData2();
+    res.push(data)
+    return requestData2()
   })
-  .then((data) => {
+  .then(data => {
     //2초뒤 받아와
-    res.push(data);
-    return requestData3();
+    res.push(data)
+    return requestData3()
   })
-  .then((data) => {
+  .then(data => {
     //1초뒤 받아와
-    res.push(data);
-    console.log(data); //총 6초 뒤 호출
+    res.push(data)
+    console.log(data) //총 6초 뒤 호출
   })
-  .catch(console.log);
+  .catch(console.log)
 ```
 
 promise.all을 이용하면 가장 오래 걸리는 requestData1이 fulfilled 상태가 될 때, 총 3초 정도가 지나고 then으로 처리 결과를 전달되어 더 효율적으로 처리가 가능하다.
 
 ```javascript
 const requestData1 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(1), 3000));
+  new Promise(resolve => setTimeout(() => resolve(1), 3000))
 const requestData2 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(2), 2000));
+  new Promise(resolve => setTimeout(() => resolve(2), 2000))
 const requestData3 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(3), 1000));
+  new Promise(resolve => setTimeout(() => resolve(3), 1000))
 
 Promise.all([requestData1(), requestData2(), requestData3()])
   .then(console.log) //[1,2,3]
-  .catch(console.error);
+  .catch(console.error)
 ```
 
 #### 2. Promise.race
@@ -291,15 +291,15 @@ Promise.race는 말 그대로 경주하듯이, 전달 받은 promise 중 가장 
 
 ```javascript
 const requestData1 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(1), 3000));
+  new Promise(resolve => setTimeout(() => resolve(1), 3000))
 const requestData2 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(2), 2000));
+  new Promise(resolve => setTimeout(() => resolve(2), 2000))
 const requestData3 = () =>
-  new Promise((resolve) => setTimeout(() => resolve(3), 1000));
+  new Promise(resolve => setTimeout(() => resolve(3), 1000))
 
 Promise.race([requestData1(), requestData2(), requestData3()])
   .then(console.log) //3
-  .catch(console.error);
+  .catch(console.error)
 ```
 
 #### 3. Promise.allSettled
@@ -346,11 +346,11 @@ microtask queue는 task queue보다 우선순위가 높아 callstack이 비게 �
 ```javascript
 function handleClick() {
   Promise.resolve(0).then(() => {
-    handleClick(); //재귀로 계속해서 promise를 추가해
-  });
+    handleClick() //재귀로 계속해서 promise를 추가해
+  })
 }
 
-handleClick();
+handleClick()
 ```
 
 ## 마치며

@@ -1,5 +1,5 @@
 ---
-title: '스코프,실행컨텍스트,클로저'
+title: "스코프,실행컨텍스트,클로저"
 date: 2022-11-20
 slug: javascript-scope-execution-context-closure
 tags: [javascript, 문법]
@@ -14,12 +14,12 @@ tags: [javascript, 문법]
 스코프는 크게 전역 스코프과 지역 스코프로 나눌 수 있으며, 전역 스코프에 선언된 변수는 어디서든 접근이 가능하고, 앱이 종료될 때까지 GC가 제거하지 않는 특징을 가진다. 지역 스코프는 앞서 설명했던 블록 내부를 의미하며 지역 스코프에서 선언된 변수는 지역스코프 내부와, 하위 스코프에서만 참조가 가능하다. (안에서 밖은 가능, 밖에서 안은 불가능)
 
 ```javascript
-const text = 'global'; //전역 변수, 전역 스코프
+const text = "global" //전역 변수, 전역 스코프
 {
-  const text = 'inside block1'; //로컬 변수, 로컬 스코프
+  const text = "inside block1" //로컬 변수, 로컬 스코프
   {
-    const text = 'inside block2';
-    console.log(text); //inside block2
+    const text = "inside block2"
+    console.log(text) //inside block2
   }
 }
 ```
@@ -35,19 +35,19 @@ const text = 'global'; //전역 변수, 전역 스코프
 아래의 예제에서 inner내부의 x,y,z를 찾는 과정을 보면 먼저 x는 inner 내부에 존재하기 때문에 바로 찾아 탐색을 정지한다. y는 inner 내부에 없기 때문에 상위 스코프인 outer를 확인하지만 outer에도 없기 때문에 가장 상위인 전역 스코프에서 y를 찾고 탐색을 정지한다.
 
 ```javascript
-const x = 'global x';
-const y = 'global y';
+const x = "global x"
+const y = "global y"
 
 function outer() {
   function inner() {
-    const x = "inner's local x";
-    console.log(x);
-    console.log(y);
+    const x = "inner's local x"
+    console.log(x)
+    console.log(y)
   }
-  inner();
+  inner()
 }
 
-outer();
+outer()
 ```
 
 ## 📚 lexical scope
@@ -57,19 +57,19 @@ outer();
 자바스크립트는 lexical scope을 기반으로 작동하기 때문에 어디에 함수를 호출하느냐가 중요한 게 아니라 함수를 정의한 곳이 기준이 되어 스코프가 정해진다.
 
 ```javascript
-const x = 1;
+const x = 1
 
 function foo() {
-  const x = 10;
-  bar();
+  const x = 10
+  bar()
 }
 
 function bar() {
-  console.log(x);
+  console.log(x)
 }
 
-foo();
-bar();
+foo()
+bar()
 ```
 
 위 예시를 보면서 처음에 foo()에는 x=10이 나오지 않을까라는 생각을 했지만, foo와 bar 모두 동일하게 1로 콘솔에 찍혔다. 역시 그 이유는 함수가 호출되는 곳이 기준이 아니라 **함수가 정의되는 곳**이 기준으로 스코프가 결정되기 때문이다. bar는 foo내부에서 호출되었지만 전역에 선언된 함수이기 때문에 전역 스코프를 가진다. 그렇기 때문에 x=1이 탐색되어 호출된다.
@@ -89,25 +89,25 @@ bar();
 다음 예시 코드로 과정을 정리하면 다음과 같다.
 
 ```javascript
-var x = 'xxx';
+var x = "xxx"
 
 function foo() {
-  var y = 'yyy';
+  var y = "yyy"
 
   function bar() {
-    var z = 'zzz';
-    console.log(x + y + z);
+    var z = "zzz"
+    console.log(x + y + z)
   }
-  bar();
+  bar()
 }
-foo();
+foo()
 ```
 
 1. 전역 코드:
 
    1.1 평가: 전역 실행컨텍스트를 생성하고 스택에 넣는다. var x, function foo() 를 전역컨텍스트의 전역스코프에 동록하는데 이때, **전역 객체의 프로퍼티와 메소드**로 등록한다.
 
- 1.2 실행: x="xxx"값을 할당하고 함수를 호출하면서 foo() 함수 내부로 들어간다.
+   1.2 실행: x="xxx"값을 할당하고 함수를 호출하면서 foo() 함수 내부로 들어간다.
 
 2. foo 호출:
 
@@ -140,18 +140,18 @@ lexical 환경이 실행되는 과정을 더 세부적으로 나눠서 보면 �
 위의 같은 예시를 좀 더 디테일하게 lexical 환경까지 고려해서 정리하면 다음과 같다.
 
 ```javascript
-var x = 'xxx';
+var x = "xxx"
 
 function foo() {
-  var y = 'yyy';
+  var y = "yyy"
 
   function bar() {
-    var z = 'zzz';
-    console.log(x + y + z);
+    var z = "zzz"
+    console.log(x + y + z)
   }
-  bar();
+  bar()
 }
-foo();
+foo()
 ```
 
 ### 1. 전역코드 평가와 실행
@@ -183,15 +183,15 @@ foo();
 
 ### 4. bar 함수 종료
 
- 함수종료후 실행컨텍스트 스택에서 제거되어 실행 중인 실행 컨텍스트는 foo가 된다. 이때 중요한 것은 **실행컨텍스트 스택에서 bar가 사라진다고 해서 bar의 lexical 환경까지 제거되지는 않는다.** 제거되는 것은 아무도 참조하고 있지 않을 때 GC에 의해 제거되어진다.
+함수종료후 실행컨텍스트 스택에서 제거되어 실행 중인 실행 컨텍스트는 foo가 된다. 이때 중요한 것은 **실행컨텍스트 스택에서 bar가 사라진다고 해서 bar의 lexical 환경까지 제거되지는 않는다.** 제거되는 것은 아무도 참조하고 있지 않을 때 GC에 의해 제거되어진다.
 
 ### 5. foo 함수 종료
 
- 함수종료후 실행컨텍스트 스택에서 제거되어 실행 중인 실행 컨텍스트는 전역컨텍스트가 된다.
+함수종료후 실행컨텍스트 스택에서 제거되어 실행 중인 실행 컨텍스트는 전역컨텍스트가 된다.
 
 ### 6. 전역 코드 종료
 
- 실행할 코드가 더 이상 없으면 전역 코드도 종료되면서 실행컨택스트 스택에서 제거된다.
+실행할 코드가 더 이상 없으면 전역 코드도 종료되면서 실행컨택스트 스택에서 제거된다.
 
 ## 블록레벨 스코프
 
@@ -259,16 +259,16 @@ var ReactCurrentDispatcher = {
    * @type {ReactComponent}
    */
   current: null,
-};
+}
 
 function resolveDispatcher() {
-  var dispatcher = ReactCurrentDispatcher.current;
-  return dispatcher;
+  var dispatcher = ReactCurrentDispatcher.current
+  return dispatcher
 }
 
 function useState(initialState) {
-  var dispatcher = resolveDispatcher();
-  return dispatcher.useState(initialState);
+  var dispatcher = resolveDispatcher()
+  return dispatcher.useState(initialState)
 }
 ```
 
@@ -276,14 +276,14 @@ function useState(initialState) {
 
 ```javascript
 function useState(initialValue) {
-  var _val = initialValue;
+  var _val = initialValue
   function state() {
-    return _val;
+    return _val
   }
   function setState(newVal) {
-    _val = newVal;
+    _val = newVal
   }
-  return [state, setState];
+  return [state, setState]
 }
 ```
 

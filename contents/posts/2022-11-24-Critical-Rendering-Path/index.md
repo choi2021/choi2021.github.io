@@ -1,8 +1,8 @@
 ---
-title: '💻 Critical Rendering Path'
+title: "💻 Critical Rendering Path"
 date: 2022-11-24
 slug: critical-rendering-path
-tags: [web, javascript,event-loop,performance]
+tags: [web, javascript, event-loop, performance]
 ---
 
 우리가 당연하게 생각하고 있는 컴퓨터를 켜서,크롬을 누르면 브라우저 화면을 보여준다는 것은 사실 어마어마한 작업이 뒤에서 돌아가고 있다. 브라우저가 해당 url을 서버에 요청하고 필요한 정보를 서버가 응답으로 보내줬을 때, 그 결과 ( html, css, javascript )를 우리에게 그려주는 과정, **Critical Rendering Path**에 대해 알아보자.
@@ -18,6 +18,7 @@ Critical Rendering Path는 브라우저에서 <u>html, css, javascript를 해석
 세부과정은 다음과 같은 과정으로 나타낼 수 있다. 각각의 과정에 대해 알아보자.
 
 ![CRP](geekforgeeks.png)
+
 ### DOM 트리
 
 DOM은 Document Object Model로 HTML parser를 이용해 브라우저가 이해할 수 있는 <u>Tree</u> 구조로 변환해 만든 구조다. 내가 작성하는 html 태그들은 DOM 트리의 Node로 변환되게 된다. 브라우저는 tree구조를 통해 태그들의 부모관계를 이해할 수 있다.
@@ -62,6 +63,7 @@ img {
   float: right;
 }
 ```
+
 ![cssom.png](cssom.png)
 
 이렇게 만든 각각의 Tree들은 <u>어떻게 합칠까?</u>

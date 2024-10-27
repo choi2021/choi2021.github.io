@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 1주차 첫째주 과제 3일차-best case 프로젝트 회고'
+title: "원티드 프리온보딩 1주차 첫째주 과제 3일차-best case 프로젝트 회고"
 date: 2022-10-27
 slug: 원티드-프리온보딩-1주차-첫째주-과제-3일차-best-case-프로젝트-회고
 tags: [원티드프리온보딩]
@@ -91,13 +91,11 @@ contextAPI의 단점인 전체적인 리렌더링을 마주할 수 있는 좋은
 export const LoginProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     !!getLocalStorage({ name: TOKEN_NAME })
-  );
-  const value = useMemo(() => ({ isLoggedIn, setIsLoggedIn }), [isLoggedIn]);
+  )
+  const value = useMemo(() => ({ isLoggedIn, setIsLoggedIn }), [isLoggedIn])
 
-  return (
-    <LoginContext.Provider value={value}>{children}</LoginContext.Provider>
-  );
-};
+  return <LoginContext.Provider value={value}>{children}</LoginContext.Provider>
+}
 ```
 
 ## 🎈 아쉬웠던 점

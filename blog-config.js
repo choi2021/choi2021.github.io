@@ -5,7 +5,8 @@ module.exports = {
   siteUrl: "https://choi2021.github.io",
   links: {
     github: "https://github.com/choi2021",
-    linkedIn: "https://www.linkedin.com/in/%EC%98%81%EC%A4%80-%EC%B5%9C-3a316825a/",
+    linkedIn:
+      "https://www.linkedin.com/in/%EC%98%81%EC%A4%80-%EC%B5%9C-3a316825a/",
     // facebook: "https://www.facebook.com",
     // twitter: "https://twitter.com",
     // x: "https://x.com",

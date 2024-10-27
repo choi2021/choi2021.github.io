@@ -1,5 +1,5 @@
 ---
-title: '모으잡-SSR을 이용한 인증,인가 도입'
+title: "모으잡-SSR을 이용한 인증,인가 도입"
 date: 2022-12-17
 slug: 모으잡-SSR을-이용한-인증,인가-도입
 tags: [사이드프로젝트, 모으잡]
@@ -190,64 +190,61 @@ User가 있어야만 다음 컴포넌트들로 넘어가 동작하기 때문에 
 ```tsx
 //ProtectRoute.tsx
 
-import { useRouter } from 'next/router';
-import React, { ComponentType } from 'react';
-import { useAuthService } from '../context/AuthContext';
+import { useRouter } from "next/router"
+import React, { ComponentType } from "react"
+import { useAuthService } from "../context/AuthContext"
 export function withPublic<T>(Component: ComponentType<T>) {
   return function WithPublic(props: T) {
-    const auth = useAuthService();
-    const router = useRouter();
+    const auth = useAuthService()
+    const router = useRouter()
     if (auth.user) {
-      router.replace('/');
-      return <></>;
+      router.replace("/")
+      return <></>
     }
-    return <Component auth={auth} {...props} />;
-  };
+    return <Component auth={auth} {...props} />
+  }
 }
 
 export function withProtected<T>(Component: React.ComponentType<T>) {
   return function WithProtected(props: T) {
-    const auth = useAuthService();
-    const router = useRouter();
+    const auth = useAuthService()
+    const router = useRouter()
     if (!auth.user) {
-      router.replace('/login');
-      return <></>;
+      router.replace("/login")
+      return <></>
     }
-    return <Component auth={auth} {...props} />;
-  };
+    return <Component auth={auth} {...props} />
+  }
 }
 
 // pages/login.tsx
 function Login() {
-	// ...
+  // ...
 }
 
-export default withPublic(Login);
+export default withPublic(Login)
 
 // Pages/register.tsx
 function Register() {
   // ...
 }
 
-export default withPublic(Register);
-
+export default withPublic(Register)
 
 // pages/index.tsx
 function Home() {
-	 // ...
+  // ...
 }
 
-export default withProtected(Home);
+export default withProtected(Home)
 
 // pages/job/[id].tsx
 
 function Index() {
- 	// ...
+  // ...
 }
 
-export default withProtected(Index);
-
-
+export default withProtected(Index)
 ```
 
 Protected Route를 이용해 로그인을 한 후에 home에서 login으로 이동하거나 로그인을 하지 않고 login에서 home으로의 이동을 막을 수 있었다. 하지만 여전히 앞서 문제가 되었던 페이지 이동시간동안 **로딩을 보여줘야 하는 문제**가 있었다.
@@ -304,25 +301,25 @@ OAuth를 이용할 때도 고려해야할 점은, 다른 플랫폼이지만 같�
 Next-auth를 사용하기 위해서는 우선 `pages/api/auth/[...nextauth].ts`를 만들어야한다. 내가 사용한 `[...nextauth].ts`파일 내용은 아래와 같고, 코드의 이해를 돕기 위해서 공통 부분을 설명하고 각각의 provider들의 연결을 정리해보려 한다.
 
 ```typescript
-import GoogleProvider from 'next-auth/providers/google';
-import GithubProvider from 'next-auth/providers/github';
-import EmailProvider from 'next-auth/providers/email';
-import NextAuth from 'next-auth';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import prisma from '../../../prisma/prisma';
-import nodemailer from 'nodemailer';
-import { html, text } from '../../../src/utils/emailFormat';
+import GoogleProvider from "next-auth/providers/google"
+import GithubProvider from "next-auth/providers/github"
+import EmailProvider from "next-auth/providers/email"
+import NextAuth from "next-auth"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import prisma from "../../../prisma/prisma"
+import nodemailer from "nodemailer"
+import { html, text } from "../../../src/utils/emailFormat"
 
 export default NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID || '',
-      clientSecret: process.env.GOOGLE_SECRET || '',
+      clientId: process.env.GOOGLE_ID || "",
+      clientSecret: process.env.GOOGLE_SECRET || "",
       allowDangerousEmailAccountLinking: true,
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID || '',
-      clientSecret: process.env.GITHUB_SECRET || '',
+      clientId: process.env.GITHUB_ID || "",
+      clientSecret: process.env.GITHUB_SECRET || "",
       allowDangerousEmailAccountLinking: true,
     }),
     EmailProvider({
@@ -333,35 +330,35 @@ export default NextAuth({
         url,
         provider: { server, from },
       }) {
-        const { host } = new URL(url);
-        const transport = nodemailer.createTransport(server);
+        const { host } = new URL(url)
+        const transport = nodemailer.createTransport(server)
         await transport.sendMail({
           to: email,
           from,
           subject: `Sign in to ${host}`,
           text: text({ url, host }),
           html: html({ url, host, email }),
-        });
+        })
       },
     }),
   ],
 
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
   secret: process.env.JWT_SECRET,
   debug: true,
   callbacks: {
     async session({ session, token, user }) {
-      session.user.id = user.id;
-      return session;
+      session.user.id = user.id
+      return session
     },
   },
-});
+})
 ```
 
 ### 공통 부분
@@ -381,12 +378,12 @@ callbacks에서 추가할 부분은 타입도 추가해줘야하기 때문에 `n
 ```typescript
 // types/next-auth.d.ts
 
-import { DefaultUser } from 'next-auth';
-declare module 'next-auth' {
+import { DefaultUser } from "next-auth"
+declare module "next-auth" {
   interface Session {
     user: DefaultUser & {
-      id: string;
-    };
+      id: string
+    }
   }
 }
 ```
@@ -394,7 +391,6 @@ declare module 'next-auth' {
 ### Adapter
 
 사용자정보들을 저장할 DB를 연결하는 부분으로, next-auth는 다양한 DB를 지원한다. 그중에서 기존에 사용하던 firebase 대신에 prisma를 이용해 연결했다. Firebase를 사용하려했지만 현재 next-auth가 version 4로 업데이트 하면서 지원하지 않는 것을 확인했다.
-
 
 그래서 새로운 Database를 찾다가 `prisma`를 사용했다. `Prisma`는 ORM으로 SQL DB와 함께 사용되지만 현재 MongoDB까지 지원해줘, 데이터의 schema를 기입해서 안전하게 관리할 수 있고, 다양한 database를 지원하는 장점들로 선택했다.
 
@@ -456,7 +452,7 @@ Github은 Github 본인계정의 settings-왼쪽 메뉴 가장하단의 develope
 
 ```tsx
 function MyApp({ Component, pageProps }: AppProps) {
-  const dbService = new DBServiceImpl(firebaseApp);
+  const dbService = new DBServiceImpl(firebaseApp)
   return (
     <>
       <QueryClientProvider client={queryClient}>
@@ -467,7 +463,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </DBProvider>
       </QueryClientProvider>
     </>
-  );
+  )
 }
 ```
 
@@ -483,22 +479,22 @@ export default function User({
     <MainLayout>
       <JobSection session={session} />
     </MainLayout>
-  );
+  )
 }
 
 export const getServerSideProps = async (context: NextPageContext) => {
-  const session = await getSession(context);
+  const session = await getSession(context)
   if (!session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
       },
-    };
+    }
   }
   return {
     props: { session },
-  };
-};
+  }
+}
 ```
 
 ### Custom Login
@@ -511,31 +507,31 @@ const Login = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
-      <SEO title='로그인' />
+      <SEO title="로그인" />
       <AuthLayout providers={providers} />;
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
 
 export const getServerSideProps = async ({ req }: NextPageContext) => {
-  const session = await getSession({ req });
+  const session = await getSession({ req })
   if (session) {
     return {
       props: {},
       redirect: {
-        destination: '/',
+        destination: "/",
       },
-    };
+    }
   }
 
   return {
     props: {
       providers: await getProviders(),
     },
-  };
-};
+  }
+}
 ```
 
 ## 👓성능 비교

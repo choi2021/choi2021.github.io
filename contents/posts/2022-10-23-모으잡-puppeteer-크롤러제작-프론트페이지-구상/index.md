@@ -1,5 +1,5 @@
 ---
-title: '모으잡-puppeteer을 이용한 크롤러제작, 프론트페이지 구상'
+title: "모으잡-puppeteer을 이용한 크롤러제작, 프론트페이지 구상"
 date: 2022-10-23
 slug: 모으잡-puppeteer을 이용한 크롤러제작, 프론트페이지 구상
 tags: [사이드프로젝트, 모으잡]
@@ -7,15 +7,16 @@ series: 모으잡
 ---
 
 # Puppeteer
+
 Puppeteer는 Chrome브라우저에서 사용할 수 있는 devtools API를 제공하는 Node js 라이브러리이다. 이전에 사용했던 Selenium과 같이 브라우저를 접속해서 이벤트 발생 등 다양한 api를 지원한다. 차이점이라면 Puppeteer는 크롬위에서만 동작하기 때문에 다른 브라우저에서는 사용할 수 없다. 하지만 성능이 Selenium보다 좋고, 서비스가 크롬에서만 작동해도 상관이 없다 생각이 들어 우선 Puppeteer를 사용해보았다.
 
 어제까지 작업했을 때, 생긴 문제는 axios를 이용해 정적으로 페이지를 불러오면 내가 원하는 설명이 담긴 부분들이 들어오지 않는다는 점이었다. 이를 해결하기 위해서 puppeteer를 이용해 동적으로 페이지를 불러왔다.
 
 ```javascript
-const browser = await puppeteer.launch(); //puppeteer로 브라우저를 실행, 옵션으로 실제로 브라우저를 켤 수 있어
-const page = await browser.newPage(); //우리가 사용할 페이지
-await page.goto(url); //원하는 url로 연결
-const content = await page.content(); // url의 html을 받아와
+const browser = await puppeteer.launch() //puppeteer로 브라우저를 실행, 옵션으로 실제로 브라우저를 켤 수 있어
+const page = await browser.newPage() //우리가 사용할 페이지
+await page.goto(url) //원하는 url로 연결
+const content = await page.content() // url의 html을 받아와
 ```
 
 위 코드로 불러온 html에서 어제 공부했던 cheerio를 이용해 데이터를 추출하려 시도했다. 다행히 내 예상이 맞아, 어제와는 다르게 puppeteer를 이용해 데이터를 받아올 수 있었다. 받아온 데이터중에서 span안의 값들은 처음 scheme을 짤 때 생각했던, 배열형식으로 만들기 위해 split을 이용해 배열로 저장했다.
@@ -76,12 +77,12 @@ const content = await page.content(); // url의 html을 받아와
 async-await으로 감싸진 함수이기 때문에 반환시 promise로 받게 되기에 해당 미들웨어에서도 동일하게 async-await으로 받아서 원하는 데이터를 받아오고, postman으로 정상적으로 동작하는 걸 확인했다.
 
 ```javascript
-app.post('/jobs', async (req, res, next) => {
-  const url = req.body.url;
-  const job = await crawler.creatJob(url);
-  jobs = [job, ...jobs];
-  res.status(201).json(job);
-});
+app.post("/jobs", async (req, res, next) => {
+  const url = req.body.url
+  const job = await crawler.creatJob(url)
+  jobs = [job, ...jobs]
+  res.status(201).json(job)
+})
 ```
 
 ![결과확인](./결과확인.png)

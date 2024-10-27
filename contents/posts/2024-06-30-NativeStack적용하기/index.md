@@ -1,28 +1,29 @@
 ---
-title: '🖥️ Native Stack 적용하기'
+title: "🖥️ Native Stack 적용하기"
 date: 2024-07-06
 description: "react-navigation의 Stack Navigator에서 Native Stack Navigator로 화면전환 성능 개선하기"
 slug: Native Stack 적용하기
 tags: [회고, react-navigation, react-native, 성능, Native Stack]
 ---
 
-2분기 TechOKR 작업으로 선정된 **화면전환간 성능 개선** 작업을 담당하면서 **Native Stack Navigator**을 제품에 도입하게 되었다. 해당 작업을 진행하게된 배경, 적용과정에 대해 정리하면서 새롭게 알게된 내용, 시행착오를 기록해보려 한다. 
+2분기 TechOKR 작업으로 선정된 **화면전환간 성능 개선** 작업을 담당하면서 **Native Stack Navigator**을 제품에 도입하게 되었다. 해당 작업을 진행하게된 배경, 적용과정에 대해 정리하면서 새롭게 알게된 내용, 시행착오를 기록해보려 한다.
 
 ## 🚀 Native Stack Navigator 작업 배경
 
 ### Native Stack이란
+
 Native Stack Navigator는 [react navigation](https://github.com/react-navigation/react-navigation)에서 지원하는 Navigator 형태 중 하나로, stack navigator의 인터페이스와 유사하게 제공하면서, stack navigator와 다르게 iOS는 **UINavigationController**, Android는 **Fragment**로 Native 요소를 이용해 화면을 구현하게 된다.
 
 Native 요소를 이용해 화면을 구현하면서 Native가 가지고 있는 성능과 특징들을 이용할 수 있는 장점을 가지지만, stackNavigator와 다르게 커스텀이 어려운 단점을 가진다.
 
-
 ### 왜 Native Stack을 도입하게 되었나
-Native Stack은 이전 1분기에 [startup-time 개선 작업](https://choi2021.github.io/2024-03-30-App-StartUp-time-%EA%B0%9C%EC%84%A0/)을 진행하면서 고려했던 방법중에 있었던 작업으로, 
+
+Native Stack은 이전 1분기에 [startup-time 개선 작업](https://choi2021.github.io/2024-03-30-App-StartUp-time-%EA%B0%9C%EC%84%A0/)을 진행하면서 고려했던 방법중에 있었던 작업으로,
 당시에는 화면전환간 속도가 앱 시작 시간을 최적화하는데 큰 영향이 없을 것 같아 보류해 두었다.
 
 ![당시 기획해두었던 아이디어들](ideas.png)
 
-이후에 일감으로 발전시켰던 이유로 기존 제품에 stackNavigator를 이용하면서 화면 전환간 버벅임이 발생하는 경우가 간헐적으로 있었고, React Native 공식문서의 Navigation 예제가 NativeStack을 이용하는 방식으로 소개되는 것으로 수정되었고 (커뮤니티에서 성능을 위해 권장하는 방법), 
+이후에 일감으로 발전시켰던 이유로 기존 제품에 stackNavigator를 이용하면서 화면 전환간 버벅임이 발생하는 경우가 간헐적으로 있었고, React Native 공식문서의 Navigation 예제가 NativeStack을 이용하는 방식으로 소개되는 것으로 수정되었고 (커뮤니티에서 성능을 위해 권장하는 방법),
 화면전환 애니메이션을 Native 스레드에서 진행하게 되면 JS 스레드가 바쁘게 진행될 때에도 안정적으로 화면 전환 애니메이션을 보장할 수 있을 것을 기대하며 작업을 시작하게 되었다.
 
 [[react native 공식문서의 Navigating between screens](https://reactnative.dev/docs/0.73/navigation)]
@@ -36,18 +37,21 @@ Native Stack은 이전 1분기에 [startup-time 개선 작업](https://choi2021.
 ![expo-router 인트로 섹션](expo-router.png)
 
 ## 🛠 Native Stack Navigator 제품에 적용해보기
+
 기존 제품은 Stack Navigator를 사용하고 있었기 때문에 Native Stack Navigator로 마이그레이션하기 위해서는 Stack Navigator의 Navigation Option을 Native Stack Navigator에 맞게 변경하는 작업이 가장 중요하게 진행되었다.
 
-이러한 옵션중 가장 중요했던 부분은 **presentation** 옵션으로, presentation을 어떻게 정하느냐에 따라 화면전환 애니메이션, 화면 렌더링 스타일이 달라지게 된다. 
+이러한 옵션중 가장 중요했던 부분은 **presentation** 옵션으로, presentation을 어떻게 정하느냐에 따라 화면전환 애니메이션, 화면 렌더링 스타일이 달라지게 된다.
 
 ### Stack Navigator의 presentation 옵션
+
 stack navigator에서는 `card`, `modal`, `transparent modal` 3가지 옵션을 사용할 수 있다.
 
 - `card`: 기본 화면전환 방식으로, iOS와 Android에서 default OS animation으로 화면전환이 진행된다.
 - `modal`: 화면이 모달로 뜨는 방식으로, iOS와 android 모두 화면이 아래에서 위로 올라오는 방식으로 화면이 뜨게 된다.
-- `transparent modal`: 모달로 뜨는 화면이지만, 배경이 투명하게 되어있어 이전 화면이 보이게 된다. 
+- `transparent modal`: 모달로 뜨는 화면이지만, 배경이 투명하게 되어있어 이전 화면이 보이게 된다.
 
 [iOS Presentation별 화면전환 애니메이션]
+
 <table>
   <tr>
     <th align="center">Card</th>
@@ -63,6 +67,7 @@ stack navigator에서는 `card`, `modal`, `transparent modal` 3가지 옵션을 
 <br/>
 
 [Android Presentation별 화면전환 애니메이션]
+
 <table>
   <tr>
     <th align="center">Card</th>
@@ -83,16 +88,15 @@ Modal화면에 Card 화면이 다시 쌓일 수 있다.
 
 <img src="js-card-modal-push.gif" alt="modal" width="300"/>
 
-
-
 ### [Native Stack Navigator의 presentation 옵션](https://reactnavigation.org/docs/native-stack-navigator/#presentation)
+
 Native Stack Navigator에서는 `card`, `modal`, `transparent modal`, `contained modal`, `contained transparent modal`, `full screen modal`, `form sheet` 7가지로 구분되어 있다.
 
 iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 수 있게 지원하고 있고, android에서는 모두 modal 또는 transparentModal로 fallback되어 처리된다.
 
 - `card`: 기본 화면전환 방식으로, iOS는 오른쪽에서 왼쪽으로 화면이 전환되고, Android는 OS 버전에 따라 다르게 화면전환 애니메이션이 진행된다.
 - `modal`: iOS는 네이티브 모달처럼 화면이 입체적으로 올라오는 형태의 모달을 가지고 아래에서 위로 화면이 나타나게 되지만, Android는 card와 동일한 애니메이션으로 화면이 전환된다.
-([관련 이슈](https://github.com/software-mansion/react-native-screens/issues/1650))
+  ([관련 이슈](https://github.com/software-mansion/react-native-screens/issues/1650))
 - `transparent modal`: 이전화면이 보이는 백그라운드로 보이는 모달형태의 화면이다.
 - `contained modal`: iOS는 `UIModalPresentationCurrentContext` 모달 스타일을 이용해 부모 크기에 따라 차지하게 되며, Android는 modal과 동일하게 처리된다.
 - `contained transparent modal`: iOS는 `UIModalPresentationOverCurrentContext` 모달 스타일을 이용해 부모 크기에 따라 차지하게 되며, Android는 transparent modal과 동일하게 처리된다.
@@ -100,6 +104,7 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
 - `formSheet`: iOS는 `UIModalPresentationFormSheet` 모달 스타일을 이용하고 Android는 modal과 동일하게 처리된다.
 
 [iOS Presentation]
+
 <table width="100%">
   <tr>
     <th>card</th>
@@ -134,6 +139,7 @@ iOS에서 사용하는 모달 스타일을 조금 더 세부적으로 설정할 
 </table>
 
 [android Presentation (Android 14, API Level 34)]
+
 <table>
   <tr>
     <th>card</th>
@@ -180,53 +186,56 @@ stack Navigator와 다르게 Native 요소들을 이용해 화면을 구현하�
 ![React Navigation의 가이드](modal-best-practice.png)
 
 ### 제품 내 Navigator presentation 반영하기
+
 그러면 이제 Native Stack Navigator의 presentation 옵션을 제품에 적용해보자.
 
 #### Card
+
 Stack Navigator와 동일하게 iOS와 Android 모두 동일하게 `Card`에 default Animation을 적용하기로 했다.
 iOS는 완전히 동일하게 동작해서 큰 고민이 없었지만 Android는 별도의 애니메이션을 주어야할 지 고민이 되었다.
 그이유는 Android에서는 OS 버전에 따라 다른 화면전환 애니메이션이 진행되게 되고 기존과 다른 유저 경험에 대한 우려가 있었기 때문이다.
 
 [Stack Navigator에 정의된 Transition Preset, Android 버전별 애니메이션 옵션]
+
 ```tsx
 /**
  * Standard Android navigation transition when opening or closing an Activity on Android < 9 (Oreo).
  */
 export const FadeFromBottomAndroid: TransitionPreset = {
-  gestureDirection: 'vertical',
+  gestureDirection: "vertical",
   transitionSpec: {
     open: FadeInFromBottomAndroidSpec,
     close: FadeOutToBottomAndroidSpec,
   },
   cardStyleInterpolator: forFadeFromBottomAndroid,
   headerStyleInterpolator: forFade,
-};
+}
 
 /**
  * Standard Android navigation transition when opening or closing an Activity on Android 9 (Pie).
  */
 export const RevealFromBottomAndroid: TransitionPreset = {
-  gestureDirection: 'vertical',
+  gestureDirection: "vertical",
   transitionSpec: {
     open: RevealFromBottomAndroidSpec,
     close: RevealFromBottomAndroidSpec,
   },
   cardStyleInterpolator: forRevealFromBottomAndroid,
   headerStyleInterpolator: forFade,
-};
+}
 
 /**
  * Standard Android navigation transition when opening or closing an Activity on Android 10 (Q).
  */
 export const ScaleFromCenterAndroid: TransitionPreset = {
-  gestureDirection: 'horizontal',
+  gestureDirection: "horizontal",
   transitionSpec: {
     open: ScaleFromCenterAndroidSpec,
     close: ScaleFromCenterAndroidSpec,
   },
   cardStyleInterpolator: forScaleFromCenterAndroid,
   headerStyleInterpolator: forFade,
-};
+}
 ```
 
 아래 GIF에서 기존은 가운데에서 퍼져나가는 형식(ScaleFromCenterAndroid)으로 화면이 전환된다면, Native Stack에서는 오른쪽에서 왼쪽으로 화면이 전환되는 것을 확인할 수 있다.
@@ -246,6 +255,7 @@ export const ScaleFromCenterAndroid: TransitionPreset = {
 버전에 맞게 표준 애니메이션을 적용하는 default 옵션이 이후 유지보수 측면에서 좋을 것 같다는 좋은 조언을 해주셔서, `Card` 옵션을 그대로 적용하기로 했다.
 
 #### Modal
+
 작업 중 가장 이슈가 많았고, OS별로 기본적으로 제공하는 부분이 달라 고민이 많았던 작업 영역이었다.
 
 OS별로 모달 옵션들을 정리해보면 iOS에서는 `modal, contained modal, fullscreen modal, formsheet` 4가지가 있고, android는 `modal` 한가지 옵션만 제공하지만 이슈가 있어서 추가적으로 애니메이션 옵션을 적용해야하는 상황이었다.
@@ -259,9 +269,11 @@ OS별로 모달 옵션들을 정리해보면 iOS에서는 `modal, contained moda
 그러면 각 옵션들을 적용했을 때 발생했던 이슈들을 정리해보자.
 
 ##### Modal와 FormSheet
+
 iOS에서는 `modal`와 `formsheet` 옵션을 적용했을 때, 기존 제품내 모달과 다르게 화면 전체를 차지하는게 아니라 일정 영역만 차지하고 위로 떠있는 형태를 가지게 되고, android는 card와 동일하게 화면 전환이 이루어지는 이슈가 있어 사용하지 못했다.
 
 [제품내 모달과 Modal 옵션]
+
 <table>
   <tr>
     <th>기존 제품내 모달 화면</th>
@@ -275,8 +287,8 @@ iOS에서는 `modal`와 `formsheet` 옵션을 적용했을 때, 기존 제품내
   </tr>
 </table>
 
-
 [제품내 모달과 formsheet 옵션]
+
 <table>
   <tr>
     <th>기존 제품내 모달 화면</th>
@@ -290,8 +302,8 @@ iOS에서는 `modal`와 `formsheet` 옵션을 적용했을 때, 기존 제품내
   </tr>
 </table>
 
-
 ##### Contained Modal과 FullScreen Modal
+
 android는 card와 동일하게 화면 전환이 이루어지는 이슈가 동일하게 있지만, iOS에서는 `contained modal`과 `fullscreen modal` 옵션을 적용했을 때, 기존과 같이 화면이 전체를 차지하는 형태로 화면이 나타낼 수 있어 사용하려 했던 옵션이었다.
 
 하지만 각 옵션은 적용에 있어 문제점들이 각각 존재했다. contained Modal의 경우에는 Navigation History의 마지막에 와야하는 조건을 위해 별도의 Nested Navigator로 모달들을 관리하는 비용이 컸다는 점으로 인해 사용하지 못했다.
@@ -299,40 +311,41 @@ android는 card와 동일하게 화면 전환이 이루어지는 이슈가 동�
 fullscreen Modal 옵션은 card,modal간 화면 전환 이슈와 더불어, alert 모달을 상위에 띄워줄 수 없는 이슈가 있어 사용하지 못했다. 아래는 해당 상황을 위한 mimic 코드이다.
 
 [fullscreen modal에서 Modal로 구현한 alert가 뜨지 않는 이슈를 위한 mimic 코드]
+
 ```tsx
 // zustand로 구현한 전역 모달 노출 코드
-import {create} from 'zustand';
+import { create } from "zustand"
 
 export const useAlertModal = create(set => ({
-    visible: false,
-    show: () => set({visible: true}),
-    hide: () => set({visible: false}),
-}));
-
-
+  visible: false,
+  show: () => set({ visible: true }),
+  hide: () => set({ visible: false }),
+}))
 
 const App = () => {
-  const visible = useAlertModal(state => state.visible);
-  const close = useAlertModal(state => state.hide);
+  const visible = useAlertModal(state => state.visible)
+  const close = useAlertModal(state => state.hide)
   const onPressClose = () => {
-    close();
-  };
+    close()
+  }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       {visible && (
         <Modal
           visible={visible}
-          animationType={'fade'}
+          animationType={"fade"}
           transparent={true}
-          onRequestClose={onPressClose}>
+          onRequestClose={onPressClose}
+        >
           <View
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'white',
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "white",
               flex: 1,
-            }}>
+            }}
+          >
             <Text>Modal이에요</Text>
             <Button title="닫기" onPress={onPressClose} />
           </View>
@@ -342,26 +355,26 @@ const App = () => {
         <NativeStack />
       </NavigationContainer>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-const FullscreenModal = ({navigation}) => {
-    const handlePress = () => {
-        navigation.pop();
-    };
+const FullscreenModal = ({ navigation }) => {
+  const handlePress = () => {
+    navigation.pop()
+  }
 
-    const show = useAlertModal(state => state.show);
-    const showAlert = () => {
-        show();
-    };
+  const show = useAlertModal(state => state.show)
+  const showAlert = () => {
+    show()
+  }
 
-    return (
-        <SafeAreaView style={{flex: 1}}>
-            <Button title="뒤로가기" onPress={handlePress} />
-            <Button title="alert 띄우기" onPress={showAlert} />
-        </SafeAreaView>
-    );
-};
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Button title="뒤로가기" onPress={handlePress} />
+      <Button title="alert 띄우기" onPress={showAlert} />
+    </SafeAreaView>
+  )
+}
 ```
 
 <table>
@@ -376,13 +389,12 @@ const FullscreenModal = ({navigation}) => {
 이러한 이슈들로 인해 iOS와 Android 모두 `Card` 옵션에 `slide_from_bottom` 애니메이션을 적용한 형태로 적용하기로 했다.
 
 ##### slide_from_bottom 속도 이슈 해결하기
-이제 더이상 이슈가 없을 것이라 생각했지만 `Card` 옵션에 `slide_from_bottom` 옵션을 적용하는 방식에도 이슈가 있었다. 
+
+이제 더이상 이슈가 없을 것이라 생각했지만 `Card` 옵션에 `slide_from_bottom` 옵션을 적용하는 방식에도 이슈가 있었다.
 
 바로 모달이 뜨는 애니메이션 속도 이슈로 iOS에서는 duration을 옵션으로 정할 수 있게 제공하지만, android에서는 커스텀할 수 없어 기존과 체감이 될정도로 느리게 화면이 전환되는 이슈가 있었다.
 
 ![animationDuration 공식문서](react-navigation-animationDuration.png)
-
-
 
 <table>
   <tr>
@@ -541,21 +553,21 @@ export function NativeStackView({ state, navigation, descriptors }: Props) {
 ```tsx
 //[참조 코드](react-native-screens/src/components/Screen.tsx)
 // ...
-import ScreenNativeComponent from '../fabric/ScreenNativeComponent';
-import ModalScreenNativeComponent from '../fabric/ModalScreenNativeComponent';
+import ScreenNativeComponent from "../fabric/ScreenNativeComponent"
+import ModalScreenNativeComponent from "../fabric/ModalScreenNativeComponent"
 
 export const NativeScreen: React.ComponentType<ScreenProps> =
-    ScreenNativeComponent as React.ComponentType<ScreenProps>;
-const AnimatedNativeScreen = Animated.createAnimatedComponent(NativeScreen);
+  ScreenNativeComponent as React.ComponentType<ScreenProps>
+const AnimatedNativeScreen = Animated.createAnimatedComponent(NativeScreen)
 
 // ...
 
 const Screen: React.FC<ScreenProps> = props => {
-    // ...
-    return <AnimatedNativeScreen {...props} />;
-};
+  // ...
+  return <AnimatedNativeScreen {...props} />
+}
 
-export default Screen;
+export default Screen
 ```
 
 그리고 ScreenNativeComponent 코드를 보게 되면, `Screen` 컴포넌트를 만들어주는 코드를 찾을 수 있었다.
@@ -564,38 +576,38 @@ export default Screen;
 
 ```ts
 //[참조코드](react-native-screens/src/fabric/ScreenNativeComponent.ts)
-import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
+import codegenNativeComponent from "react-native/Libraries/Utilities/codegenNativeComponent"
 // ...
 
 type StackPresentation =
-  | 'push'
-  | 'modal'
-  | 'transparentModal'
-  | 'fullScreenModal'
-  | 'formSheet'
-  | 'containedModal'
-  | 'containedTransparentModal';
+  | "push"
+  | "modal"
+  | "transparentModal"
+  | "fullScreenModal"
+  | "formSheet"
+  | "containedModal"
+  | "containedTransparentModal"
 
 type StackAnimation =
-  | 'default'
-  | 'flip'
-  | 'simple_push'
-  | 'none'
-  | 'fade'
-  | 'slide_from_right'
-  | 'slide_from_left'
-  | 'slide_from_bottom'
-  | 'fade_from_bottom'
-  | 'ios';
+  | "default"
+  | "flip"
+  | "simple_push"
+  | "none"
+  | "fade"
+  | "slide_from_right"
+  | "slide_from_left"
+  | "slide_from_bottom"
+  | "fade_from_bottom"
+  | "ios"
 
 // ...
-export default codegenNativeComponent<NativeProps>('RNSScreen', {
+export default codegenNativeComponent<NativeProps>("RNSScreen", {
   interfaceOnly: true,
-});
+})
 ```
 
 드디어 rnscreens 내부의 ScreenStack 코드에서 애니메이션 설정 코드를 발견할 수 있었다.
-그중 내가 찾던 `slide_from_bottom`애니메이션은  `R.anim.rns_slide_in_from_bottom`, `R.anim.rns_no_animation_medium`으로 정의되어 있었다.
+그중 내가 찾던 `slide_from_bottom`애니메이션은 `R.anim.rns_slide_in_from_bottom`, `R.anim.rns_no_animation_medium`으로 정의되어 있었다.
 
 ```kotlin
 [참고 코드](react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStack.kt)
@@ -640,6 +652,7 @@ class ScreenStack(context: Context?) : ScreenContainer(context) {
     }
 }
 ```
+
 이제 진짜 마지막으로 해당 xml 파일을 찾아 duration부분을 수정하고 patch package를 진행해 애니메이션 속도를 변경할 수 있었다.
 기존 duration은 `config_mediumAnimTime`으로 설정되어 있었고, 해당 부분을 수정하면 커스텀하게 수정이 가능하게 되었다.
 
@@ -660,13 +673,13 @@ animation duration은 react-native-screens에서 20,250,350을 기본 값으로 
     android:fromYDelta="100%"
     android:toYDelta="0%"
     android:duration="@android:integer/config_mediumAnimTime" /> <!--250으로 변경 -->
-    
+
 <!--[참고 코드] (react-native-screens/android/src/main/res/base/anim/rns_no_animation_medium.xml)-->
 <?xml version="1.0" encoding="utf-8"?>
 <alpha xmlns:android="http://schemas.android.com/apk/res/android"
     android:fromAlpha="1.0"
     android:toAlpha="1.0"
-    android:duration="@android:integer/config_mediumAnimTime"/> <!--250으로 변경 -->  
+    android:duration="@android:integer/config_mediumAnimTime"/> <!--250으로 변경 -->
 ```
 
 <table>
@@ -680,11 +693,12 @@ animation duration은 react-native-screens에서 20,250,350을 기본 값으로 
   </tr>
 </table>
 
-시간상 하지 못했지만, 조금 더 모달 애니메이션을 개선하면 좋았을 것 같다는 아쉬운 생각이 들었다. 
+시간상 하지 못했지만, 조금 더 모달 애니메이션을 개선하면 좋았을 것 같다는 아쉬운 생각이 들었다.
 기존에는 끝에 점점 천천히 도착하는 듯한 효과가 있었지만 지금은 linear하게 한번에 뜨고 닫히는 것 같아 어색함이 남아있어보였다.
 이후에 더 `native스러운 느낌`을 줄 수 있게 후작업으로 개선 작업도 진행해보려 한다.
 
 #### TransparentModal
+
 기존 일부 화면에서 사용되고 있던 `transparent modal` 옵션을 `containedTransparentModal`을 이용해 최대한 사용하려 했지만, 다음 화면이 card인 경우에 애니메이션이 버벅이는 듯한 이슈가 발생하게 되었다.
 이를 해결하기 위해서 `transparent modal` 옵션 대신 기존 화면을 바텀시트 컴포넌트를 이용해 구현하는 방식으로 수정하게 되었다.
 
@@ -704,9 +718,10 @@ animation duration은 react-native-screens에서 20,250,350을 기본 값으로 
 </table>
 
 ### 기타 이슈: gesture handler로 사진 끌어당겨 닫기 이슈
+
 해당 이슈는 첫번째 배포 때 롤백하게 된 가장 컸던 이슈로 이미지 슬라이더를 보고 끌어당겨 해당 화면을 pop한 후에, 제품 내 메인 퍼널 중 하나인 요청서 작성화면에 진입한 경우에 질문이 10개만 렌더링되는 이슈가 발생했다.
 
-이미지를 끌어당겨 종류할 수 있게 하기 위해 PanResponder를 이용해 구현했는데, PanResponder로 끌어당겨 `navigation.pop`을 진행하게 하는 동작에서 문제가 발생하는 것으로 보였다. 
+이미지를 끌어당겨 종류할 수 있게 하기 위해 PanResponder를 이용해 구현했는데, PanResponder로 끌어당겨 `navigation.pop`을 진행하게 하는 동작에서 문제가 발생하는 것으로 보였다.
 
 해당 이슈를 해결하는 과정에서 FlatList로 구현된 요청서 작성화면의 요소가 Flatlist의 [initialNumToRender](https://reactnative.dev/docs/flatlist#initialnumtorender) prop의 default 값처럼 딱 10개만 항상 렌더링되는 것을 근거로 `FlatList` 내부 코드를 확인해보게 되었다.
 
@@ -714,6 +729,7 @@ Flatlist는 VirtualizedList를 상속받아 구현되어 있고, VirtualizedList
 이때 Batchinator는 InteractionManager의 runAfterInteractions 메소드를 이용해 다음 목록을 받아오게 구현되어 있었다.
 
 [ [Batchinator 코드](https://github.com/facebook/react-native/blob/main/packages/virtualized-lists/Interaction/Batchinator.js)]
+
 ```typescript
 class Batchinator {
   _callback: () => void;
@@ -780,15 +796,17 @@ module.exports = Batchinator;
 ```
 
 ## ⭐️ 적용 후 성능 분석
+
 이제 적용 후 성능 분석을 진행한 내용을 정리해보려 한다. 화면 전환간 성능을 개선한다는 목표를 가지고 작업을 진행했다 보니 지표적으로 명확하게 보여줄 방법이 크게 없어 어려움을 느꼈다.
 
 고민 끝에 정했던 방법은 총 3가지로, 먼저 간단하게 실제 제품 내 메인 퍼널들에 대한 **영상**을 찍어서 전/후 비교를 진행했고, 다음으로 직접적이지는 않지만 애니메이션 처리 과정에 필요한 **CPU 사용량과 memory 사용량**을 보기 위해 android에서 웹의 light house처럼 성능측정을 할 수 있는 [**flash light**](https://github.com/bamlab/flashlight)을 이용해 메인 퍼널들에 대한 지표를 측정해보았다.
 그리고 추가적으로 화면 stack이 최대 100개가 되었을 때도 정상적으로 애니메이션을 처리할 수 있을지 보기 위해 **stress 테스트**를 진행해보았다.
 
 ### 영상을 통한 전/후 비교
+
 영상을 통한 전/후 비교는 가장 직관적으로 보여줄 수 있는 방법이라고 생각했다. 영상을 찍어서 전/후 비교를 진행했고, 이를 통해 애니메이션의 자연스러움과 끊김이 있는지, 또한 화면 전환 속도가 빨라졌는지 확인할 수 있었다.
 
-아래는 메인 퍼널 중 하나인 고객홈 -> 메인 카테고리 까지 넘어가는 과정을 Android (Galaxy22)에서 찍은 영상이다. 
+아래는 메인 퍼널 중 하나인 고객홈 -> 메인 카테고리 까지 넘어가는 과정을 Android (Galaxy22)에서 찍은 영상이다.
 
 <table>
   <tr>
@@ -804,6 +822,7 @@ module.exports = Batchinator;
 영상을 비교해보았을 때 이전보다 조금 더 부드럽게 전환되고 화면전환 이벤트 처리가 빨라진 것을 느낄 수 있었다.
 
 ### FlashLight를 이용한 성능 측정
+
 영상을 찍는데에서 끝내지 않고 최대한 숫자로, 지표로 분석해보면 조금 더 좋지 않을까 생각해 flash light를 이용해 성능 측정을 진행해보았다.
 flash light와 maestro e2e 자동화 코드를 이용해 측정해보았고, 앱을 시작해서 위에서 영상으로 찍었던 메인 퍼널 시나리오에 대해 각각 30번 진행했을 때 성능 지표를 측정했다.
 
@@ -842,6 +861,7 @@ flash light와 maestro e2e 자동화 코드를 이용해 측정해보았고, 앱
 이러한 특징을 눈으로 더 명확하게 확인해보기 위해서 `Navigation stack이 100개가 되었을 때도 성능이 좋아지는지` 확인해보는 건 어떨까라는 호기심이 생겨 stress 테스트를 이어서 진행해보았다.
 
 ### Stress 테스트를 통한 성능 확인
+
 stress 테스트는 10개, 30개, 50개, 75개, 100개 까지 stack에 화면이 쌓였을 때 어떻게 화면전환이 되는지를 촬영해보았고, 영상 상단에 navigation stack의 길이를 표시해 현재 몇개 stack이 쌓였는지 확인할 수 있게 했다.
 아래 영상은 Android Galaxy22 기기에서 측정한 결과다.
 
@@ -872,8 +892,8 @@ Stack Navigator는 stack이 쌓일수록 화면전환 속도가 느려지는 것
 
 촬영과정에서 기기에서 느껴지는 발열도 Native Stack Navigator가 더 낮은 것을 느낄 수 있었고, 이는 CPU 사용량과 Memory 사용량이 줄어들어 성능이 향상되었다는 것을 체감할 수 있었다.
 
-
 ## 📚 배운점
+
 여태까지 진행했던 프로젝트 중에서 가장 이슈가 많았던 작업이었고, 다행히 잘 해결해서 현재 잘 제품에 반영되어 있어 뿌듯했다.
 
 단순 Javascript 런타임만 고민하는게 아니라 모바일 플랫폼에 특화된 성능 개선을 적용할 수 있어 좋았고, 잘 만들어진 오픈 소스 라이브러리들을 내부구조도 파헤치는 좋은 경험이 되어 이후에 React Navigation에도 기여하고 싶은 마음도 생겼다.
@@ -882,4 +902,3 @@ Stack Navigator는 stack이 쌓일수록 화면전환 속도가 느려지는 것
 하지만, 메모리나 CPU 사용량과 같이 이전에 관심을 두지 않았던 하드웨어 스펙에 대해서도 관심을 가지게 되었고, 이를 통해 성능을 개선하는데 도움이 되었다.
 
 물론 여전히 남겨진 일들이 있지만, 하나의 또 큰 일감을 잘 마무리하고 사용자 경험과 성능 모두 개선할 수 있었던 좋은 작업이었다고 생각되었다.
-

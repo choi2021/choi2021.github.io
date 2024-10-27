@@ -1,5 +1,5 @@
 ---
-title: 'BEM과 자바스크립트의 자료형'
+title: "BEM과 자바스크립트의 자료형"
 date: 2022-09-06
 slug: javascript-BEM-자료형
 tags: [css, javascript, 문법]
@@ -12,7 +12,6 @@ tags: [css, javascript, 문법]
 우선 가장 기본이 되는 HTML, CSS, Javascript에 대한 복습을 했다.
 
 ## HTML과 CSS
-
 
 ### BEM (Block-Element-Modifier)
 
@@ -81,12 +80,12 @@ modifier는 강아지 사진을 담고 있는 카드의 경우 `.card--dog`으�
 문자열을 입력할 때 `""`, `''`와 함께 back tick을 이용한 template literals 세가지 방식이 존재한다.
 
 ```javascript
-let string = 'hello world!';
-string = 'halo world!';
+let string = "hello world!"
+string = "halo world!"
 
-const word = 'world';
-string = 'hello ' + word + '!';
-string = `hello ${word}`;
+const word = "world"
+string = "hello " + word + "!"
+string = `hello ${word}`
 ```
 
 Back tick (``)은 큰따옴표 ("")와 작은 따옴표로 표현하기 힘든 표현들을 위한 문법으로 변수를 ${}에 넣어, 일일이 조합을 고민하지 않고 원하는 문자열을 만들 수 있는 편리함을 준다.

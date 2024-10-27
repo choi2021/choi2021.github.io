@@ -1,8 +1,8 @@
 ---
-title: '이벤트'
+title: "이벤트"
 date: 2022-12-15
 slug: javascript-event
-tags: ['javascript']
+tags: ["javascript"]
 ---
 
 # 🧨 이벤트
@@ -28,15 +28,15 @@ tags: ['javascript']
     <button>sensor</button>
 
     <script>
-      const btn = document.querySelector('button');
+      const btn = document.querySelector("button")
       // btn.addEventListener('mousemove', () => {
       //   console.log('move');
       //   console.log('data fetching'); // 센서 안에서 마우스가 움직일 때마다 호출
       // });
-      btn.addEventListener('mouseenter', () => {
-        console.log('enter');
-        console.log('data fetching'); // 센서로 마우스가 들어갈 때마다 호출
-      });
+      btn.addEventListener("mouseenter", () => {
+        console.log("enter")
+        console.log("data fetching") // 센서로 마우스가 들어갈 때마다 호출
+      })
     </script>
   </body>
 </html>
@@ -54,12 +54,13 @@ tags: ['javascript']
 <body>
   <input id="input" />
   <script>
-    document.querySelector('#input').addEventListener('input', function (e) {
-      console.log('여기에 ajax 요청', e.target.value);
-    });
+    document.querySelector("#input").addEventListener("input", function (e) {
+      console.log("여기에 ajax 요청", e.target.value)
+    })
   </script>
 </body>
 ```
+
 ![디바운싱전](디바운싱전.png)
 
 이것을 막기 위해서 디바운싱을 이용해 입력하는 중에 200ms동안 입력이 없다면 입력이 끝났다고 간주하고 api를 호출하게 한다면, api 호출 비용을 아낄 수 있다. 이벤트 핸들러는 입력이 될 때마다 timer에 함수가 있는지 체크하고, 있다면 초기화 시켜 새롭게 입력한다. 200ms 동안 입력이 없다면 timer의 callback 함수가 실행된다.
@@ -69,22 +70,22 @@ tags: ['javascript']
   <body>
     <input id="input" />
     <script>
-      let timer;
-      document.querySelector('#input').addEventListener('input', function (e) {
+      let timer
+      document.querySelector("#input").addEventListener("input", function (e) {
         if (timer) {
-          clearTimeout(timer);
+          clearTimeout(timer)
         }
 
         timer = setTimeout(function () {
-          console.log('api 요청', e.target.value);
-        }, 200);
-      });
+          console.log("api 요청", e.target.value)
+        }, 200)
+      })
     </script>
   </body>
 </html>
 ```
-![디바운싱후](디바운싱후.png)
 
+![디바운싱후](디바운싱후.png)
 
 ### Throttling
 
@@ -95,20 +96,19 @@ Throttling은 일정 시간 동안 발생할 수 있는 실행 횟수에 제한�
 <html lang="en">
   <body style="height: 150vh">
     <script>
-      let waiting = false;
-      document.querySelector('body').addEventListener('wheel', function (e) {
+      let waiting = false
+      document.querySelector("body").addEventListener("wheel", function (e) {
         if (!waiting) {
-          console.log('API 호출');
-          waiting = true;
+          console.log("API 호출")
+          waiting = true
           setTimeout(() => {
-            waiting = false;
-          }, 200);
+            waiting = false
+          }, 200)
         }
-      });
+      })
     </script>
   </body>
 </html>
-
 ```
 
 ## 📍 이벤트 핸들러 등록과 제거
@@ -133,7 +133,7 @@ Attribute의 경우 on접두사에 이벤트 타입을 붙여서 등록하는 �
 
     <script>
       function sayhi() {
-        console.log('hi');
+        console.log("hi")
       }
     </script>
   </body>
@@ -142,7 +142,7 @@ Attribute의 경우 on접두사에 이벤트 타입을 붙여서 등록하는 �
 
 ```javascript
 function onclick(event) {
-  sayhi(); // 할당된 함수
+  sayhi() // 할당된 함수
 }
 ```
 
@@ -163,14 +163,14 @@ DOM 노드에는 이벤트 핸들러 속성을 가지고 있다. 앞서 정리�
     <button>sensor</button>
 
     <script>
-      const btn = document.querySelector('button');
+      const btn = document.querySelector("button")
       btn.onclick = function () {
-        console.log('클릭'); // 없어져
-      };
+        console.log("클릭") // 없어져
+      }
       btn.onclick = function () {
-        console.log('클릭2'); // 재할당되어 실행
-      };
-      btn.onclick = null;
+        console.log("클릭2") // 재할당되어 실행
+      }
+      btn.onclick = null
     </script>
   </body>
 </html>
@@ -195,15 +195,15 @@ addEventListner 메소드는 첫 번째 인자로 이벤트 타입, 두 번째 �
     <button>sensor</button>
 
     <script>
-      const btn = document.querySelector('button');
+      const btn = document.querySelector("button")
       const click = () => {
-        console.log('클릭');
-      };
-      btn.addEventListener('click', click);
-      btn.addEventListener('click', () => {
-        console.log('클릭2');
-      });
-      btn.removeEventListner('click', click);
+        console.log("클릭")
+      }
+      btn.addEventListener("click", click)
+      btn.addEventListener("click", () => {
+        console.log("클릭2")
+      })
+      btn.removeEventListner("click", click)
     </script>
   </body>
 </html>
@@ -225,19 +225,19 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
   <body>
     <p>버블링과 캡처링<button>버튼</button></p>
     <script>
-      document.body.addEventListener('click', () => {
-        console.log('body');
-      });
-      document.querySelector('p').addEventListener(
-        'click',
+      document.body.addEventListener("click", () => {
+        console.log("body")
+      })
+      document.querySelector("p").addEventListener(
+        "click",
         () => {
-          console.log('pagragraph');
+          console.log("pagragraph")
         },
         true
-      );
-      document.querySelector('button').addEventListener('click', () => {
-        console.log('button');
-      });
+      )
+      document.querySelector("button").addEventListener("click", () => {
+        console.log("button")
+      })
     </script>
   </body>
 </html>
@@ -281,19 +281,19 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
     </nav>
     <div>선택된 아이템: <em class="msg">apple</em></div>
     <script>
-      const $fruits = document.getElementById('fruits');
-      const $msg = document.querySelector('.msg');
+      const $fruits = document.getElementById("fruits")
+      const $msg = document.querySelector(".msg")
 
       function activate({ target }) {
-        [...$fruits.children].forEach(($fruit) => {
-          $fruit.classList.toggle('active', $fruit === target);
-          $msg.textContent = target.id;
-        });
+        ;[...$fruits.children].forEach($fruit => {
+          $fruit.classList.toggle("active", $fruit === target)
+          $msg.textContent = target.id
+        })
       }
 
-      document.getElementById('apple').onclick = activate;
-      document.getElementById('banana').onclick = activate;
-      document.getElementById('orange').onclick = activate;
+      document.getElementById("apple").onclick = activate
+      document.getElementById("banana").onclick = activate
+      document.getElementById("orange").onclick = activate
     </script>
   </body>
 </html>
@@ -331,18 +331,18 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
     </nav>
     <div>선택된 아이템: <em class="msg">apple</em></div>
     <script>
-      const $fruits = document.getElementById('fruits');
-      const $msg = document.querySelector('.msg');
+      const $fruits = document.getElementById("fruits")
+      const $msg = document.querySelector(".msg")
 
       function activate({ target }) {
-        if (!target.matches('#fruits > li')) return;
+        if (!target.matches("#fruits > li")) return
 
-        [...$fruits.children].forEach(($fruit) => {
-          $fruit.classList.toggle('active', $fruit === target);
-          $msg.textContent = target.id;
-        });
+        ;[...$fruits.children].forEach($fruit => {
+          $fruit.classList.toggle("active", $fruit === target)
+          $msg.textContent = target.id
+        })
       }
-      $fruits.onclick = activate;
+      $fruits.onclick = activate
     </script>
   </body>
 </html>
@@ -362,15 +362,15 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
     <input type="checkbox" />
     <form><button>제출</button></form>
     <script>
-      document.querySelector('a').onclick = (e) => {
-        e.preventDefault();
-      };
-      document.querySelector('input[type=checkbox]').onclick = (e) => {
-        e.preventDefault();
-      };
-      document.querySelector('form').onsubmit = (e) => {
-        e.preventDefault();
-      };
+      document.querySelector("a").onclick = e => {
+        e.preventDefault()
+      }
+      document.querySelector("input[type=checkbox]").onclick = e => {
+        e.preventDefault()
+      }
+      document.querySelector("form").onsubmit = e => {
+        e.preventDefault()
+      }
     </script>
   </body>
 </html>
@@ -390,15 +390,15 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
       <button class="btn3">btn3</button>
     </div>
     <script>
-      document.querySelector('.container').onclick = ({ target }) => {
-        if (!target.matches('.container>button')) return;
-        target.style.color = 'red';
-      };
+      document.querySelector(".container").onclick = ({ target }) => {
+        if (!target.matches(".container>button")) return
+        target.style.color = "red"
+      }
 
-      document.querySelector('.btn2').onclick = (e) => {
-        e.stopPropagation();
-        e.target.style.color = 'blue';
-      };
+      document.querySelector(".btn2").onclick = e => {
+        e.stopPropagation()
+        e.target.style.color = "blue"
+      }
     </script>
   </body>
 </html>
@@ -416,15 +416,15 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
   <body>
     <button>click me</button>
     <script>
-      const btn = document.querySelector('button');
-      const handleClick = (e) => {
-        console.log(e.currentTarget); // <button>click me</button>
-        console.log(this); // <button>click me</button>
-        console.log(this === e.currentTarget); // true
-      };
-      btn.onclick = handleClick;
+      const btn = document.querySelector("button")
+      const handleClick = e => {
+        console.log(e.currentTarget) // <button>click me</button>
+        console.log(this) // <button>click me</button>
+        console.log(this === e.currentTarget) // true
+      }
+      btn.onclick = handleClick
 
-      btn.addEventListener('click', handleClick);
+      btn.addEventListener("click", handleClick)
     </script>
   </body>
 </html>
@@ -438,14 +438,14 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
   <body>
     <button>click me</button>
     <script>
-      const btn = document.querySelector('button');
-      const handleClick = (e) => {
-        console.log(e.currentTarget); // <button>click me</button>
-        console.log(this); // Window
-        console.log(this === e.currentTarget); // false
-      };
-      btn.onclick = handleClick;
-      btn.addEventListener('click', handleClick);
+      const btn = document.querySelector("button")
+      const handleClick = e => {
+        console.log(e.currentTarget) // <button>click me</button>
+        console.log(this) // Window
+        console.log(this === e.currentTarget) // false
+      }
+      btn.onclick = handleClick
+      btn.addEventListener("click", handleClick)
     </script>
   </body>
 </html>
@@ -461,17 +461,17 @@ DOM 요소에 이벤트가 발생하면 DOM 트리를 따라 연쇄적인 반응
     <script>
       class App {
         constructor() {
-          this.$btn = document.querySelector('.btn');
-          this.count = 0;
+          this.$btn = document.querySelector(".btn")
+          this.count = 0
           // this.$btn.onclick = this.increase.bind(this);
-          this.$btn.onclick = this.increase;
+          this.$btn.onclick = this.increase
         }
         increase() {
-          console.log(this); // <button class="btn">0</button>
-          this.$btn.textContent = ++this.count; // Uncaught TypeError: Cannot set properties of undefined (setting 'textContent')
+          console.log(this) // <button class="btn">0</button>
+          this.$btn.textContent = ++this.count // Uncaught TypeError: Cannot set properties of undefined (setting 'textContent')
         }
       }
-      new App();
+      new App()
     </script>
   </body>
 </html>
@@ -491,16 +491,16 @@ this를 인스턴스로 바인딩 시켜주기 위해서는 함수에 직접 bin
     <script>
       class App {
         constructor() {
-          this.$btn = document.querySelector('.btn');
-          this.count = 0;
-          this.$btn.onclick = this.increase.bind(this);
+          this.$btn = document.querySelector(".btn")
+          this.count = 0
+          this.$btn.onclick = this.increase.bind(this)
         }
         increase() {
-          console.log(this); // App
-          this.$btn.textContent = ++this.count;
+          console.log(this) // App
+          this.$btn.textContent = ++this.count
         }
       }
-      new App();
+      new App()
     </script>
   </body>
 </html>
@@ -516,13 +516,13 @@ this를 인스턴스로 바인딩 시켜주기 위해서는 함수에 직접 bin
     <script>
       class App {
         constructor() {
-          this.$btn = document.querySelector('.btn');
-          this.count = 0;
-          this.$btn.onclick = this.increase;
+          this.$btn = document.querySelector(".btn")
+          this.count = 0
+          this.$btn.onclick = this.increase
         }
-        increase = () => (this.$btn.textContent = ++this.count);
+        increase = () => (this.$btn.textContent = ++this.count)
       }
-      new App();
+      new App()
     </script>
   </body>
 </html>

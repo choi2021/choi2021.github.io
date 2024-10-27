@@ -1,5 +1,5 @@
 ---
-title: 'Array'
+title: "Array"
 date: 2022-09-19
 slug: javascript-array
 tags: [javascript, 문법]
@@ -22,12 +22,12 @@ tags: [javascript, 문법]
 다음과 같이 정리된 배열을 이용해보면 다음과 같이 만들 수 있다.
 
 ```javascript
-let array = new Array(3); //(3) [비어 있음 × 3]
-array = new Array(1, 2, 3); //[1, 2, 3]
-array = Array.of(1, 2, 3); //[1, 2, 3]
-array = [1, 2, 3]; //[1,2,3,]
-arr2 = [1, 4, 'A'];
-array = array.from(arr2); //[1,4,'A']
+let array = new Array(3) //(3) [비어 있음 × 3]
+array = new Array(1, 2, 3) //[1, 2, 3]
+array = Array.of(1, 2, 3) //[1, 2, 3]
+array = [1, 2, 3] //[1,2,3,]
+arr2 = [1, 4, "A"]
+array = array.from(arr2) //[1,4,'A']
 ```
 
 ### 2. Array의 요소 추가, 삭제
@@ -49,15 +49,15 @@ add와 delete는 배열의 index를 이용해서 요소를 추가 삭제하는 �
 **unshift**와**shift** 는 배열의 처음에 요소를 추가하고 삭제하는 방법이다. **unshift**는 push와 같이 요소를 추가하고 난 다음의 배열의 길이를 반환하고, **shift** 는 제거한 요소를 반환한다. **unshift**와 **shift**는 **push**와 **pop**과는 다르게 배열의 맨앞의 요소를 제거하고 추가하기 때문에 전체적인 배열요소들의 이동이 있다. 그렇기 때문에 **unshift**와 **shift**의 시간 복잡도 O(n)로 더 오래걸린다.
 
 ```javascript
-const alphabets = ['a', 'b', 'c'];
-console.log(alphabets.push('d')); //4
-console.log(alphabets); //['a','b','c','d']
-console.log(alphabets.pop()); //'d'
+const alphabets = ["a", "b", "c"]
+console.log(alphabets.push("d")) //4
+console.log(alphabets) //['a','b','c','d']
+console.log(alphabets.pop()) //'d'
 
-const alphabets = ['a', 'b', 'c'];
-console.log(alphabets.unshift('d')); //4
-console.log(alphabets); //['d','a','b','c']
-console.log(alphabets.shift()); //'d'
+const alphabets = ["a", "b", "c"]
+console.log(alphabets.unshift("d")) //4
+console.log(alphabets) //['d','a','b','c']
+console.log(alphabets.shift()) //'d'
 ```
 
 ### 3. Array의 다양한 속성과 함수
@@ -94,22 +94,22 @@ console.log(alphabets.shift()); //'d'
 5. arr.slice(start,end): start 인덱스부터 end-1 인덱스까지 배열을 자른 새로운 배열을 반환한다.
 
 ```javascript
-const alphabets = ['a', 'b', 'c'];
-alphabets.splice(1, 1);
-console.log(alphabets); //["a","c"]
-alphabets.splice(1, 0, 'd');
-console.log(alphabets); //["a",'d','c']
+const alphabets = ["a", "b", "c"]
+alphabets.splice(1, 1)
+console.log(alphabets) //["a","c"]
+alphabets.splice(1, 0, "d")
+console.log(alphabets) //["a",'d','c']
 
-const alphabets1 = ['a', 'b', 'c'];
-const alphabets2 = ['d', 'e', 'f'];
-const alphabets3 = alphabets1.concat(alphabets2);
-console.log(alphabets3); // ['a', 'b', 'c', 'd', 'e', 'f']
+const alphabets1 = ["a", "b", "c"]
+const alphabets2 = ["d", "e", "f"]
+const alphabets3 = alphabets1.concat(alphabets2)
+console.log(alphabets3) // ['a', 'b', 'c', 'd', 'e', 'f']
 
-let arr = [[1, 2, 3], 4, 5];
-const flatArr = arr.flat(1);
-console.log(flatArr); //[1,2,3,4]
-const text = arr.join(' '); //"1,2,3 4"
-console.log(arr.slice(1, 3)); //[4,5]
+let arr = [[1, 2, 3], 4, 5]
+const flatArr = arr.flat(1)
+console.log(flatArr) //[1,2,3,4]
+const text = arr.join(" ") //"1,2,3 4"
+console.log(arr.slice(1, 3)) //[4,5]
 ```
 
 ### 4. 배열과 Shallow Copy
@@ -123,18 +123,18 @@ console.log(arr.slice(1, 3)); //[4,5]
 이점이 중요한 이유는 원본 객체 내부의 값의 변화가 생기면 **shallow copy**로 만든 객체에도 영향을 주기 때문이다.
 
 ```javascript
-const person1 = { firstName: 'Youngjun', lastName: 'Choi' };
-const person2 = { firstName: 'Youngjun', lastName: 'Park' };
-const contact1 = [person1, person2];
-const contact2 = [...contact1];
+const person1 = { firstName: "Youngjun", lastName: "Choi" }
+const person2 = { firstName: "Youngjun", lastName: "Park" }
+const contact1 = [person1, person2]
+const contact2 = [...contact1]
 
-contact1.pop();
-console.log(contact1); //[person1]
-console.log(contact2); //[person1,person2]
+contact1.pop()
+console.log(contact1) //[person1]
+console.log(contact2) //[person1,person2]
 
-person1.lastName = 'Son';
-console.log(contact1); //[{firstName:"Youngjun", lastName:"Son"}]
-console.log(contact2); //[{firstName:"Youngjun", lastName:"Son"},person2]
+person1.lastName = "Son"
+console.log(contact1) //[{firstName:"Youngjun", lastName:"Son"}]
+console.log(contact2) //[{firstName:"Youngjun", lastName:"Son"},person2]
 ```
 
 위 코드를 보면 contact2는 contact1을 복사해서 만든 배열이다. contact1의 값의 변화가 있더라도 contact2는 서로 다른 배열이기 때문에 영향을 받지않는다. 하지만 person1의 속성이 바뀌면 person1을 가지고 있는 contact1과 contact2 모두 변화가 생기는 것을 볼 수 있다. 그렇기 때문에 배열이나 오브젝트 내부의 값을 바꿀 때 사이드 이펙트가 생길 수도 있다는 것을 알고 있어야 한다.

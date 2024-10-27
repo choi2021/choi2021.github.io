@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 2-1 과제회고'
+title: "원티드 프리온보딩 2-1 과제회고"
 date: 2022-11-04
 slug: wanted-pre-onboarding-2-1
 tags: [회고, 원티드프리온보딩]
@@ -112,42 +112,42 @@ useReducer와 contextAPI를 이용해서 보다 깔끔하게 상태관리를 할
 
 ```tsx
 enum ActionEnum {
-  SET_IS_LOADING = 'SET_IS_LOADING',
-  SET_DATA = 'SET_DATA',
-  SET_ERROR = 'SET_ERROR',
+  SET_IS_LOADING = "SET_IS_LOADING",
+  SET_DATA = "SET_DATA",
+  SET_ERROR = "SET_ERROR",
 }
 
 const App = () => {
-  const dispatch = useCarsDispatch();
+  const dispatch = useCarsDispatch()
   const getList = useCallback(async () => {
-    dispatch({ type: ActionType.SET_IS_LOADING, isLoading: true });
+    dispatch({ type: ActionType.SET_IS_LOADING, isLoading: true })
     try {
-      const response = await carsAPI.getCars();
+      const response = await carsAPI.getCars()
       if (response) {
-        dispatch({ type: ActionType.SET_DATA, data: response?.payload });
+        dispatch({ type: ActionType.SET_DATA, data: response?.payload })
       }
     } catch (e) {
       if (e instanceof HTTPError) {
-        dispatch({ type: ActionType.SET_ERROR, error: e.errorMessage });
+        dispatch({ type: ActionType.SET_ERROR, error: e.errorMessage })
       }
-      console.error(e);
+      console.error(e)
     } finally {
-      dispatch({ type: ActionType.SET_IS_LOADING, isLoading: false });
+      dispatch({ type: ActionType.SET_IS_LOADING, isLoading: false })
     }
-  }, [dispatch]);
+  }, [dispatch])
   useEffect(() => {
-    getList();
-  }, [getList]);
+    getList()
+  }, [getList])
 
   return (
     <>
       <Header />
       <Outlet />
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
 ```
 
 ### contextAPI를 이용한 Filtering
@@ -156,29 +156,29 @@ export default App;
 
 ```tsx
 //categoryContext.tsx
-import { createContext, useState, useMemo } from 'react';
-import { CategoryType } from 'types/CarsInterface';
+import { createContext, useState, useMemo } from "react"
+import { CategoryType } from "types/CarsInterface"
 
 const initialState = {
-  category: '전체',
+  category: "전체",
   setCategory: (category: CategoryType) => {},
-};
+}
 
-export const CategoryContext = createContext(initialState);
+export const CategoryContext = createContext(initialState)
 
 export const CategoryProvider = ({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) => {
-  const [category, setCategory] = useState<CategoryType>('전체');
-  const value = useMemo(() => ({ category, setCategory }), [category]);
+  const [category, setCategory] = useState<CategoryType>("전체")
+  const value = useMemo(() => ({ category, setCategory }), [category])
   return (
     <CategoryContext.Provider value={value}>
       {children}
     </CategoryContext.Provider>
-  );
-};
+  )
+}
 ```
 
 각각의 context API의 provider는 필요한 곳에서 감싸 주려했다. 차량 목록이 있다면 useParam으로 해당 차량 정보도 얻을 수 있기 때문에 따로 api를 호출하지 않고 한번만 호출하게 하기 위해 Router.jsx에서 carsProvider를 감싸주었다. categoryProvider는 category를 update하고 category를 이용해 filtering된 결과를 받아오기 위해 categories와 carsList가 있는 home.tsx에서 감싸주었다.
@@ -190,8 +190,8 @@ const Router = () => {
     <CarsProvider>
       <RouterProvider router={router} />
     </CarsProvider>
-  );
-};
+  )
+}
 
 //
 
@@ -203,10 +203,10 @@ const Home = () => {
         <CarList />
       </S.Section>
     </CategoryProvider>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
 ```
 
 ## Custom Hook
@@ -219,45 +219,45 @@ export default Home;
 //useCars.tsx
 
 export const useCarsState = () => {
-  const state = useContext(CarsStateContext);
-  if (!state) throw new Error("Can't find State Provider");
-  return state;
-};
+  const state = useContext(CarsStateContext)
+  if (!state) throw new Error("Can't find State Provider")
+  return state
+}
 
 export const useCarsDispatch = () => {
-  const dispatch = useContext(CarsDispatchContext);
-  if (!dispatch) throw new Error("Can't find Dispatch Provider");
-  return dispatch;
-};
+  const dispatch = useContext(CarsDispatchContext)
+  if (!dispatch) throw new Error("Can't find Dispatch Provider")
+  return dispatch
+}
 
 export const useCarsValue = () => {
-  const state = useCarsState();
-  const { category } = useContext(CategoryContext);
+  const state = useCarsState()
+  const { category } = useContext(CategoryContext)
 
-  if (!state) throw new Error("Can't find StateProvider");
-  if (!category) throw new Error("Can't find CategoryProvider");
-  if (category === '전체') return state.data;
+  if (!state) throw new Error("Can't find StateProvider")
+  if (!category) throw new Error("Can't find CategoryProvider")
+  if (category === "전체") return state.data
 
   const filterd = state?.data.filter(
-    (car) => SegmentEnum[car.attribute.segment] === category
-  );
-  return filterd;
-};
+    car => SegmentEnum[car.attribute.segment] === category
+  )
+  return filterd
+}
 
 //carsList.tsx
-import S from './styles';
-import CarItem from '../carItem/CarItem';
-import { useCarsState, useCarsValue } from '../../hooks/useCars';
+import S from "./styles"
+import CarItem from "../carItem/CarItem"
+import { useCarsState, useCarsValue } from "../../hooks/useCars"
 
 const CarList = () => {
-  const { isLoading, error } = useCarsState();
-  const data = useCarsValue();
+  const { isLoading, error } = useCarsState()
+  const data = useCarsValue()
   if (isLoading) {
     return (
       <S.Layout>
         <h3>불러오는 중</h3>
       </S.Layout>
-    );
+    )
   }
 
   if (error) {
@@ -265,7 +265,7 @@ const CarList = () => {
       <S.Layout>
         <h3>{error}</h3>
       </S.Layout>
-    );
+    )
   }
 
   if (data.length === 0) {
@@ -273,18 +273,18 @@ const CarList = () => {
       <S.Layout>
         <h3>차량이 없습니다.</h3>
       </S.Layout>
-    );
+    )
   }
   return (
     <ul>
-      {data.map((car) => (
+      {data.map(car => (
         <CarItem key={car.id} {...car} />
       ))}
     </ul>
-  );
-};
+  )
+}
 
-export default CarList;
+export default CarList
 ```
 
 ## Typescript
@@ -297,29 +297,27 @@ enum은 비슷한 역할을 하는 변수들을 묶음으로 최대한 string이
 
 ```typescript
 enum SegmentEnum {
-  C = '소형',
-  D = '중형',
-  E = '대형',
-  SUV = 'SUV',
+  C = "소형",
+  D = "중형",
+  E = "대형",
+  SUV = "SUV",
 }
 
 type AttributeType = {
-  segment: keyof typeof SegmentEnum;
-};
+  segment: keyof typeof SegmentEnum
+}
 ```
 
 segment의 type을 전달할 때 segmentEnum중의 하나라고 알려줄 때 **keyof typeof**를 이용할 수 있었고 이렇게 전달해준 enum의 value값을 찾을 때는 custom Hook에서 key값을 전달해서 찾을 수 있었다.
 
 ```tsx
-
 export const useCarsValue = () => {
-    //	...
+  //	...
   const filterd = state?.data.filter(
-    (car) => SegmentEnum[car.attribute.segment] === category
-  );
-  return filterd;
-};
-
+    car => SegmentEnum[car.attribute.segment] === category
+  )
+  return filterd
+}
 ```
 
 ### null/undefined error
@@ -331,28 +329,26 @@ null/undefined Error는 아마 가장 자주 마주하는 에러가 아닐까 �
 에러를 막기위해서는 항상 undefined이나 null일 경우에 처리할 수 있는 로직을 처리하면 간단하게 해결이 가능하다.
 
 ```tsx
-
 const Detail = () => {
-  const { id } = useParams();
-  const car = data.find((item) => item.id === +id);
+  const { id } = useParams()
+  const car = data.find(item => item.id === +id)
 
-    //	...
+  //	...
 
   if (!car) {
     return (
       <S.Layout>
         <h3>url을 확인해주세요</h3>
       </S.Layout>
-    );
+    )
   }
 
-  const { amount, attribute, startDate, insurance, additionalProducts } = car;
+  const { amount, attribute, startDate, insurance, additionalProducts } = car
 
- // ..
-};
+  // ..
+}
 
-export default Detail;
-
+export default Detail
 ```
 
 ## CRA에서의 SEO 문제 해결
@@ -381,10 +377,10 @@ react-helmet은 react 라이브러리로 index.html의 head 내용을 동적으�
 <br/>
 
 ```jsx
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async"
 
 const Meta = ({ attribute, amount, id }: MetaProps) => {
-  const { brand, name, imageUrl } = attribute;
+  const { brand, name, imageUrl } = attribute
   return (
     <Helmet>
       <title>{`${brand} ${name}`}</title>
@@ -398,8 +394,8 @@ const Meta = ({ attribute, amount, id }: MetaProps) => {
       <meta property="og:image:width" content={IMAGE_SIZE.width.toString()} />
       <meta property="og:image:height" content={IMAGE_SIZE.height.toString()} />
     </Helmet>
-  );
-};
+  )
+}
 ```
 
 하지만 공유를 할때는 여전히 초기 index.html의 head내용만 보이는 문제점이 존재했다. 이러한 문제점은 head내용이 javascript를 이용해 동적으로 바뀌지만 공유를 했을 때는 하나의 index.html의 내용이 그대로 반영되어 생긴 문제로 생각됐다.
@@ -411,10 +407,10 @@ react-snap은 react library로 react-router로 만든 동적라우팅 페이지�
 <img width="500" src="https://user-images.githubusercontent.com/104304569/199749072-fc686c18-6bec-4dfc-81ce-2666386d4d2c.png"/>
 
 ```tsx
-import { hydrate, render } from 'react-dom';
+import { hydrate, render } from "react-dom"
 
-const container = document.getElementById('root') as HTMLElement;
-const root = ReactDOM.createRoot(container);
+const container = document.getElementById("root") as HTMLElement
+const root = ReactDOM.createRoot(container)
 
 if (container.hasChildNodes()) {
   ReactDOM.hydrateRoot(
@@ -425,7 +421,7 @@ if (container.hasChildNodes()) {
         <Router />
       </ThemeProvider>
     </React.StrictMode>
-  );
+  )
 } else {
   root.render(
     <React.StrictMode>
@@ -434,7 +430,7 @@ if (container.hasChildNodes()) {
         <Router />
       </ThemeProvider>
     </React.StrictMode>
-  );
+  )
 }
 ```
 
@@ -451,16 +447,16 @@ if (container.hasChildNodes()) {
 원래는 하나의 api만 사용할 때는 class로 사용하면 오히려 더 복잡하게 만든다고 생각해서 사용하지 않았지만 class로 분리하면 좀 더 정리가 될 수 있고 확장성이 높다는 장점이 있고, 전달시 instance를 만들어서 사용하는 점을 배울 수도 있었다.
 
 ```ts
-import axios, { AxiosError, AxiosInstance } from 'axios';
-import { CarType, FuelEnum, SegmentEnum } from 'types/CarsInterface';
-import createAxiosInstance from './axiosUtils';
-import HTTPError from '../network/httpError';
+import axios, { AxiosError, AxiosInstance } from "axios"
+import { CarType, FuelEnum, SegmentEnum } from "types/CarsInterface"
+import createAxiosInstance from "./axiosUtils"
+import HTTPError from "../network/httpError"
 
-const BASE_URL = 'https://preonboarding.platdev.net/api/cars';
+const BASE_URL = "https://preonboarding.platdev.net/api/cars"
 
 type GetCarsResponse = {
-  payload: CarType[];
-};
+  payload: CarType[]
+}
 
 class CarsAPI {
   constructor(private axiosInstance: AxiosInstance) {}
@@ -472,23 +468,23 @@ class CarsAPI {
           fuelType,
           segment,
         },
-      });
-      return data;
+      })
+      return data
     } catch (error) {
-      const { response } = error as unknown as AxiosError;
+      const { response } = error as unknown as AxiosError
       if (response) {
-        throw new HTTPError(response?.status, response?.statusText);
+        throw new HTTPError(response?.status, response?.statusText)
       }
-      throw new Error('Unknown Error');
+      throw new Error("Unknown Error")
     }
   }
 }
 
-const carsAPIinstance = createAxiosInstance(BASE_URL);
+const carsAPIinstance = createAxiosInstance(BASE_URL)
 
-const carsAPI = new CarsAPI(carsAPIinstance);
+const carsAPI = new CarsAPI(carsAPIinstance)
 
-export default carsAPI;
+export default carsAPI
 ```
 
 ### 에러핸들링
@@ -498,18 +494,18 @@ export default carsAPI;
 ```ts
 export default class HTTPError extends Error {
   constructor(private statusCode: number, public message: string) {
-    super(message);
+    super(message)
   }
 
   get errorMessage() {
     switch (this.statusCode) {
       case 404:
-        this.message = '잘못된 요청입니다. url을 확인해주세요';
-        break;
+        this.message = "잘못된 요청입니다. url을 확인해주세요"
+        break
       default:
-        throw new Error('Unknown Error');
+        throw new Error("Unknown Error")
     }
-    return this.message;
+    return this.message
   }
 }
 ```

@@ -1,5 +1,5 @@
 ---
-title: '📚 useFunnel 분석하고 따라 만들어 보기'
+title: "📚 useFunnel 분석하고 따라 만들어 보기"
 date: 2024-09-17
 description: "토스의 slash 구 useFunnel 라이브러리를 분석해봅니다."
 slug: useFunnel-analysis
@@ -17,7 +17,6 @@ tags: [slash, FE Accelerator, useFunnel]
 
 토스의 프론트엔드 accelerator 멘토링 과정의 2주차 주제였던 `퍼널간 상태 관리하기`라는 주제로 과제를 개선하게 되었고, 더이상 미루지말자라는 마음으로 useFunnel 라이브러리를 분석하고 적용해보는 과정을 진행했다.
 
-
 ![이제는 useFunnel을 분석하고 적용해보자](infinite_challenge.png)
 
 useFunnel 라이브러리는 당시 Next JS에 의존도를 가지고 있었지만 현재는 타입적으로 강화되었고, Next JS 뿐 아니라 React Router와 같은 다양한 Routing 라이브러리들을 지원할 수 있게 [개선된 버전](https://use-funnel.slash.page/ko)도 만들어졌다.
@@ -28,6 +27,7 @@ useFunnel 라이브러리는 당시 Next JS에 의존도를 가지고 있었지�
 ## useFunnel이 풀고 싶은 문제
 
 ### Funnel이란?
+
 Funnel이란 용어는 현재 재직중인 회사에서도 많이 사용하는 용어로, 원래는 마케팅에서 많이 사용하는 용어로 알려져있다.
 
 Funnel의 의미는 깔때기로 번역되며 초기 단계에 많은 사용자가 들어오다가, 중간 단계에서는 일부 사용자가 빠져나가고, 마지막 단계에서는 일부 사용자만 남게되는 형태를 의미한다.
@@ -37,6 +37,7 @@ Funnel의 의미는 깔때기로 번역되며 초기 단계에 많은 사용자�
 그러면 이러한 Funnel 형태로 구성되는 디자인을 알아보자.
 
 ### 디자인 요구사항 탐방
+
 발표 자료는 휴대폰 가입에 대한 예제로, 각 스텝별로 가입방식, 주민번호, 집주소를 입력한 후에 제출하는 방식을 취하고 있다.
 
 ![디자인 요구사항](design.png)
@@ -55,67 +56,69 @@ useFunnel을 사용하기 전에는 전역상태를 사용하여 데이터를 �
 
 ```tsx
 export default function PhoneNumberPage() {
-    const setForm=useFormStore(state=>state.setForm)
-    const router=useRouter();
+  const setForm = useFormStore(state => state.setForm)
+  const router = useRouter()
 
-    const handleClick=()=>{
-        setForm({phoneNumber:'010-1234-5678'})
-        router.push('/form/citizenNumber')
-    }
+  const handleClick = () => {
+    setForm({ phoneNumber: "010-1234-5678" })
+    router.push("/form/citizenNumber")
+  }
 
-    return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                <h1>휴대전화 입력</h1>
-                <button className={styles.primary} onClick={handleClick}>주민번호 입력 스텝으로 이동</button>
-            </main>
-        </div>
-    );
+  return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <h1>휴대전화 입력</h1>
+        <button className={styles.primary} onClick={handleClick}>
+          주민번호 입력 스텝으로 이동
+        </button>
+      </main>
+    </div>
+  )
 }
-
-
 
 export default function CitizenNumberPage() {
-    const setForm=useFormStore(state=>state.setForm)
-    const phoneNumber=useFormStore(state=>state.form.phoneNumber)
-    const router=useRouter();
+  const setForm = useFormStore(state => state.setForm)
+  const phoneNumber = useFormStore(state => state.form.phoneNumber)
+  const router = useRouter()
 
-    const handleClick=()=>{
-        setForm({citizenNumber:'123456789'})
-        router.push('/form/address')
-    }
-    return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                <h1>주민번호 입력</h1>
-                <p>{`입력된 휴대번호: ${phoneNumber}`}</p>
-                <button className={styles.primary} onClick={handleClick}>주소입력 스텝으로 이동</button>
-            </main>
-        </div>
-    );
+  const handleClick = () => {
+    setForm({ citizenNumber: "123456789" })
+    router.push("/form/address")
+  }
+  return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <h1>주민번호 입력</h1>
+        <p>{`입력된 휴대번호: ${phoneNumber}`}</p>
+        <button className={styles.primary} onClick={handleClick}>
+          주소입력 스텝으로 이동
+        </button>
+      </main>
+    </div>
+  )
 }
-
 
 // 전역 스토어
 
 const initialForm: Form = {
-    phoneNumber: '',
-    address: '',
-    citizenNumber: '',
+  phoneNumber: "",
+  address: "",
+  citizenNumber: "",
 }
 
-export const useFormStore = create<StoreType>((set) => ({
-    form: initialForm,
-    setForm: (form:Partial<Form>) => set(state=>{
-        return{
-            ...state,
-            form:{
-                ...state.form,
-                ...form
-            }
-        }
+export const useFormStore = create<StoreType>(set => ({
+  form: initialForm,
+  setForm: (form: Partial<Form>) =>
+    set(state => {
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          ...form,
+        },
+      }
     }),
-    resetForm: () => set({ form: initialForm }),
+  resetForm: () => set({ form: initialForm }),
 }))
 ```
 
@@ -141,87 +144,98 @@ export const useFormStore = create<StoreType>((set) => ({
 ![적용 후 프로젝트 구조 ](적용후_프로젝트구조.png)
 
 ```tsx
-
-export type Form= {
-    phoneNumber: string,
-    address: string,
-    citizenNumber: string,
+export type Form = {
+  phoneNumber: string
+  address: string
+  citizenNumber: string
 }
 
 const initialForm: Form = {
-    phoneNumber: '',
-    address: '',
-    citizenNumber: '',
+  phoneNumber: "",
+  address: "",
+  citizenNumber: "",
 }
 
-export default function FormPage(){
-    const [form, setForm] = useState<Form>(initialForm);
-    const [step, setStep] = useState<'주민번호'|'주소'|'핸드폰번호'|'제출완료'>('핸드폰번호');
+export default function FormPage() {
+  const [form, setForm] = useState<Form>(initialForm)
+  const [step, setStep] = useState<
+    "주민번호" | "주소" | "핸드폰번호" | "제출완료"
+  >("핸드폰번호")
 
-    return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                {step==='핸드폰번호' && (
-                    <PhoneNumberStep onNext={(phoneNumber:Form['phoneNumber'])=>{
-                        setForm(prev=>({...prev, phoneNumber}));
-                        setStep('주민번호');
-                    }}/>
-                )}
-                {step==='주민번호' && (
-                    <CitizenNumberStep phoneNumber={form.phoneNumber} onNext={(citizenNumber:Form['citizenNumber'])=>{
-                        setForm(prev=>({...prev, citizenNumber}));
-                        setStep('주소');
-                    }}/>
-                )}
-                {step==='주소' && (
-                    <AddressStep phoneNumber={form.phoneNumber} citizenNumber={form.citizenNumber} onNext={async(address:Form['address'])=>{
-                        try{
-                            // 제출 로직
-                            await new Promise((resolve)=>{
-                                setTimeout(resolve, 1000);
-                            })
-                            setForm(prev=>({...prev, address}));
-                            setStep('제출완료');
-                        }catch (error:unknown){
-                            alert(`제출 실패: ${error}`);
-                            return;
-                        }
-                    }}/>
-                )}
+  return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        {step === "핸드폰번호" && (
+          <PhoneNumberStep
+            onNext={(phoneNumber: Form["phoneNumber"]) => {
+              setForm(prev => ({ ...prev, phoneNumber }))
+              setStep("주민번호")
+            }}
+          />
+        )}
+        {step === "주민번호" && (
+          <CitizenNumberStep
+            phoneNumber={form.phoneNumber}
+            onNext={(citizenNumber: Form["citizenNumber"]) => {
+              setForm(prev => ({ ...prev, citizenNumber }))
+              setStep("주소")
+            }}
+          />
+        )}
+        {step === "주소" && (
+          <AddressStep
+            phoneNumber={form.phoneNumber}
+            citizenNumber={form.citizenNumber}
+            onNext={async (address: Form["address"]) => {
+              try {
+                // 제출 로직
+                await new Promise(resolve => {
+                  setTimeout(resolve, 1000)
+                })
+                setForm(prev => ({ ...prev, address }))
+                setStep("제출완료")
+              } catch (error: unknown) {
+                alert(`제출 실패: ${error}`)
+                return
+              }
+            }}
+          />
+        )}
 
-                {step==='제출완료' && (
-                    <CompleteStep form={form}/>
-                )}
-            </main>
-        </div>
-    );
-};
+        {step === "제출완료" && <CompleteStep form={form} />}
+      </main>
+    </div>
+  )
+}
 
 // 주민번호 스텝 컴포넌트
-'use client'
+;("use client")
 
-import styles from "@/app/page.module.css";
-import {Form} from "@/app/registerForm/page";
+import styles from "@/app/page.module.css"
+import { Form } from "@/app/registerForm/page"
 
-
-type CitizenNumberPageProps={
-    phoneNumber:Form['phoneNumber']
-    onNext:(citizenNumber:Form['citizenNumber'])=>void;
+type CitizenNumberPageProps = {
+  phoneNumber: Form["phoneNumber"]
+  onNext: (citizenNumber: Form["citizenNumber"]) => void
 }
 
-export function CitizenNumberStep({phoneNumber,onNext}:CitizenNumberPageProps) {
-    const handleClick=()=>{
-        onNext('123456789')
-    }
-    return (
-        <>
-            <h1>주민번호 입력</h1>
-            <p>{`입력된 휴대번호: ${phoneNumber}`}</p>
-            <button className={styles.primary} onClick={handleClick}>주소입력 스텝으로 이동</button>
-        </>
-    );
+export function CitizenNumberStep({
+  phoneNumber,
+  onNext,
+}: CitizenNumberPageProps) {
+  const handleClick = () => {
+    onNext("123456789")
+  }
+  return (
+    <>
+      <h1>주민번호 입력</h1>
+      <p>{`입력된 휴대번호: ${phoneNumber}`}</p>
+      <button className={styles.primary} onClick={handleClick}>
+        주소입력 스텝으로 이동
+      </button>
+    </>
+  )
 }
-
 ```
 
 위 리팩토링한 예제 코드를 통해 보면 발표처럼 여러 페이지가 아니라 하나의 페이지로, 전역상태로 폼 데이터를 관리하는 것이 아니라 지역상태로 관리하고, 각 스텝별로 조건부 렌더링을 통해 UI를 관리하는 것을 확인할 수 있다.
@@ -235,65 +249,78 @@ export function CitizenNumberStep({phoneNumber,onNext}:CitizenNumberPageProps) {
 그러면 이제 useFunnel 라이브러리를 따라 만들어가보자. 발표에서 순차적으로 추상화 과정이 잘 설명되어있어서 그대로 순차적으로 만들어가보려 한다.
 
 ### 1. 조건부 렌더링 추상화
+
 먼저 조건부 렌더링 부분을 Step이라는 컴포넌트로 추상화할 수 있다. 조건이 맞을 때에만 보여줄 수 있게 하는 컴포넌트로 발표에서는 if라는 property로,
 예제에서는 show라는 property로 적용해보았다.
 
 ![조건부 렌더링 추상화](조건부렌더링_추상화.png)
 
 ```tsx
-export default function FormPage(){
-    const [form, setForm] = useState<Form>(initialForm);
-    const [step, setStep] = useState<'주민번호'|'주소'|'핸드폰번호'|'제출완료'>('핸드폰번호');
+export default function FormPage() {
+  const [form, setForm] = useState<Form>(initialForm)
+  const [step, setStep] = useState<
+    "주민번호" | "주소" | "핸드폰번호" | "제출완료"
+  >("핸드폰번호")
 
-    return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                <Step show={step==='핸드폰번호'}>
-                    <PhoneNumberStep onNext={(phoneNumber:Form['phoneNumber'])=>{
-                        setForm(prev=>({...prev, phoneNumber}));
-                        setStep('주민번호');
-                    }}/>
-                </Step>
-                <Step show={step==='주민번호'}>
-                    <CitizenNumberStep phoneNumber={form.phoneNumber} onNext={(citizenNumber:Form['citizenNumber'])=>{
-                        setForm(prev=>({...prev, citizenNumber}));
-                        setStep('주소');
-                    }}/>
-                </Step>
-                <Step show={step==='주소'}>
-                    <AddressStep phoneNumber={form.phoneNumber} citizenNumber={form.citizenNumber} onNext={async(address:Form['address'])=>{
-                        try{
-                            // 제출 로직
-                            await new Promise((resolve)=>{
-                                setTimeout(resolve, 1000);
-                            })
-                            setForm(prev=>({...prev, address}));
-                            setStep('제출완료');
-                        }catch (error:unknown){
-                            alert(`제출 실패: ${error}`);
-                            return;
-                        }
-                    }}/>
-                </Step>
+  return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <Step show={step === "핸드폰번호"}>
+          <PhoneNumberStep
+            onNext={(phoneNumber: Form["phoneNumber"]) => {
+              setForm(prev => ({ ...prev, phoneNumber }))
+              setStep("주민번호")
+            }}
+          />
+        </Step>
+        <Step show={step === "주민번호"}>
+          <CitizenNumberStep
+            phoneNumber={form.phoneNumber}
+            onNext={(citizenNumber: Form["citizenNumber"]) => {
+              setForm(prev => ({ ...prev, citizenNumber }))
+              setStep("주소")
+            }}
+          />
+        </Step>
+        <Step show={step === "주소"}>
+          <AddressStep
+            phoneNumber={form.phoneNumber}
+            citizenNumber={form.citizenNumber}
+            onNext={async (address: Form["address"]) => {
+              try {
+                // 제출 로직
+                await new Promise(resolve => {
+                  setTimeout(resolve, 1000)
+                })
+                setForm(prev => ({ ...prev, address }))
+                setStep("제출완료")
+              } catch (error: unknown) {
+                alert(`제출 실패: ${error}`)
+                return
+              }
+            }}
+          />
+        </Step>
 
-                <Step show={step==='제출완료'}>
-                    <CompleteStep form={form}/>
-                </Step>
-            </main>
-        </div>
-    );
-};
+        <Step show={step === "제출완료"}>
+          <CompleteStep form={form} />
+        </Step>
+      </main>
+    </div>
+  )
+}
 
 // Step 컴포넌트
 export function Step({ show, children }: PropsWithChildren<{ show: boolean }>) {
-    if (!show) {
-        return null;
-    }
-    return <>{children}</>;
+  if (!show) {
+    return null
+  }
+  return <>{children}</>
 }
 ```
 
 ### 2. 반복되는 조건문과 Step 상태 추상화
+
 step에 조건문을 반복하지 않고, 단순히 어떤 스텝인지만 넘겨주면, 현재 step과 비교하여 조건부 렌더링을 할 수 있게 추상화해보자.
 
 ![반복되는 조건문과 Step 상태 추상화한 인터페이스](step_추상화.png)
@@ -305,77 +332,91 @@ step에 조건문을 반복하지 않고, 단순히 어떤 스텝인지만 넘�
 예제 코드에 적용해보자.
 
 ```tsx
-export default function FormPage(){
-    const [form, setForm] = useState<Form>(initialForm);
-    const [Funnel,setStep]=useFunnel();
+export default function FormPage() {
+  const [form, setForm] = useState<Form>(initialForm)
+  const [Funnel, setStep] = useFunnel()
 
-    return (
-        <Funnel>
-            <Funnel.Step name={'핸드폰번호'}>
-                <PhoneNumberStep onNext={(phoneNumber:Form['phoneNumber'])=>{
-                    setForm(prev=>({...prev, phoneNumber}));
-                    setStep('주민번호');
-                }}/>
-            </Funnel.Step>
-            <Funnel.Step name={'주민번호'}>
-                <CitizenNumberStep phoneNumber={form.phoneNumber} onNext={(citizenNumber:Form['citizenNumber'])=>{
-                    setForm(prev=>({...prev, citizenNumber}));
-                    setStep('주소');
-                }}/>
-            </Funnel.Step>
-            <Funnel.Step name={'주소'}>
-                <AddressStep phoneNumber={form.phoneNumber} citizenNumber={form.citizenNumber} onNext={async(address:Form['address'])=>{
-                    try{
-                        // 제출 로직
-                        await new Promise((resolve)=>{
-                            setTimeout(resolve, 1000);
-                        })
-                        setForm(prev=>({...prev, address}));
-                        setStep('제출완료');
-                    }catch (error:unknown){
-                        alert(`제출 실패: ${error}`);
-                        return;
-                    }
-                }}/>
-            </Funnel.Step>
-            <Funnel.Step name={'제출완료'}>
-                <CompleteStep form={form}/>
-            </Funnel.Step>
-        </Funnel>
-    );
-};
-
-
-// useFunnel 훅 
-type StepProps={
-    children:React.ReactNode;
+  return (
+    <Funnel>
+      <Funnel.Step name={"핸드폰번호"}>
+        <PhoneNumberStep
+          onNext={(phoneNumber: Form["phoneNumber"]) => {
+            setForm(prev => ({ ...prev, phoneNumber }))
+            setStep("주민번호")
+          }}
+        />
+      </Funnel.Step>
+      <Funnel.Step name={"주민번호"}>
+        <CitizenNumberStep
+          phoneNumber={form.phoneNumber}
+          onNext={(citizenNumber: Form["citizenNumber"]) => {
+            setForm(prev => ({ ...prev, citizenNumber }))
+            setStep("주소")
+          }}
+        />
+      </Funnel.Step>
+      <Funnel.Step name={"주소"}>
+        <AddressStep
+          phoneNumber={form.phoneNumber}
+          citizenNumber={form.citizenNumber}
+          onNext={async (address: Form["address"]) => {
+            try {
+              // 제출 로직
+              await new Promise(resolve => {
+                setTimeout(resolve, 1000)
+              })
+              setForm(prev => ({ ...prev, address }))
+              setStep("제출완료")
+            } catch (error: unknown) {
+              alert(`제출 실패: ${error}`)
+              return
+            }
+          }}
+        />
+      </Funnel.Step>
+      <Funnel.Step name={"제출완료"}>
+        <CompleteStep form={form} />
+      </Funnel.Step>
+    </Funnel>
+  )
 }
 
-function Step({children}:StepProps) {
-    return <>{children}</>;
+// useFunnel 훅
+type StepProps = {
+  children: React.ReactNode
 }
 
-
-type FunnelProps={
-    children:React.ReactNode;
-    step:'주민번호'|'주소'|'핸드폰번호'|'제출완료';
+function Step({ children }: StepProps) {
+  return <>{children}</>
 }
 
+type FunnelProps = {
+  children: React.ReactNode
+  step: "주민번호" | "주소" | "핸드폰번호" | "제출완료"
+}
 
-export function useFunnel(){
-    const [step, setStep] = useState<'주민번호'|'주소'|'핸드폰번호'|'제출완료'>('핸드폰번호');
-    const FunnelComponent=({children}:FunnelProps)=> {
-        const validSteps=Children.toArray(children).filter(isValidElement)
-        const targetStep=validSteps.find((children:React.ReactElement<{name:'주민번호'|'주소'|'핸드폰번호'|'제출완료'}>)=>children.props.name===step)
+export function useFunnel() {
+  const [step, setStep] = useState<
+    "주민번호" | "주소" | "핸드폰번호" | "제출완료"
+  >("핸드폰번호")
+  const FunnelComponent = ({ children }: FunnelProps) => {
+    const validSteps = Children.toArray(children).filter(isValidElement)
+    const targetStep = validSteps.find(
+      (
+        children: React.ReactElement<{
+          name: "주민번호" | "주소" | "핸드폰번호" | "제출완료"
+        }>
+      ) => children.props.name === step
+    )
 
-        if(targetStep==undefined){
-            throw new Error(`${step} 스텝 컴포넌트를 찾지 못했습니다.`)
-        }
-
-        return targetStep;
+    if (targetStep == undefined) {
+      throw new Error(`${step} 스텝 컴포넌트를 찾지 못했습니다.`)
     }
 
-    return [Object.assign(FunnelComponent,{Step}),setStep] as const;
+    return targetStep
+  }
+
+  return [Object.assign(FunnelComponent, { Step }), setStep] as const
 }
 ```
 
@@ -483,8 +524,8 @@ export function useFunnel<Steps extends StepsType>(steps: Steps) {
 - StepsType
 
 ```tsx
-type NonEmptyArray<T> = readonly [T, ...T[]];
-type StepsType = NonEmptyArray<string>;
+type NonEmptyArray<T> = readonly [T, ...T[]]
+type StepsType = NonEmptyArray<string>
 ```
 
 StepsType은 빈배열이 아님을 타입적으로 보장하고, 전달하는 스텝 배열에 따라 `리터럴`로 타입을 좁혀주기 위해, **readonly**로 되어 있다.
@@ -494,12 +535,12 @@ Generic으로 받은 Steps 타입은 StepProps와 FunnelProps에서 사용되어
 
 ```tsx
 type StepProps<Steps extends StepsType> = {
-    name: Steps[number];
-    children: ReactNode;
-};
+  name: Steps[number]
+  children: ReactNode
+}
 
 function Step<Steps extends StepsType>({ children }: StepProps<Steps>) {
-    return <>{children}</>;
+  return <>{children}</>
 }
 ```
 
@@ -508,31 +549,32 @@ StepProps는 Step 컴포넌트에서 사용할 타입을 정의한 것으로, na
 - FunnelProps
 
 ```tsx
-
 type FunnelProps<Steps extends StepsType> = {
-    children: Array<ReactElement<StepProps<Steps>>>;
-    steps: Steps;
-    step: Steps[number];
-};
+  children: Array<ReactElement<StepProps<Steps>>>
+  steps: Steps
+  step: Steps[number]
+}
 
-function Funnel<Steps extends StepsType>({children, step, steps}: FunnelProps<Steps>) {
-    const validSteps = Children.toArray(children)
-        .filter(isValidElement)
-        .filter((child) => {
-            return steps.includes(
-                (child.props as Partial<StepProps<Steps>>).name ?? ""
-            );
-        }) as Array<ReactElement<StepProps<Steps>>>;
+function Funnel<Steps extends StepsType>({
+  children,
+  step,
+  steps,
+}: FunnelProps<Steps>) {
+  const validSteps = Children.toArray(children)
+    .filter(isValidElement)
+    .filter(child => {
+      return steps.includes(
+        (child.props as Partial<StepProps<Steps>>).name ?? ""
+      )
+    }) as Array<ReactElement<StepProps<Steps>>>
 
-    const targetStep = validSteps.find(
-        (children) => children.props.name === step
-    );
+  const targetStep = validSteps.find(children => children.props.name === step)
 
-    if (targetStep == undefined) {
-        throw new Error(`${step} 스텝 컴포넌트를 찾지 못했습니다.`);
-    }
+  if (targetStep == undefined) {
+    throw new Error(`${step} 스텝 컴포넌트를 찾지 못했습니다.`)
+  }
 
-    return targetStep;
+  return targetStep
 }
 ```
 
@@ -542,37 +584,36 @@ FunnelProps는 Funnel 컴포넌트의 Prop을 지정한 부분이고 Funnel 내�
 - FunnelComponent
 
 ```tsx
-
 type RouteFunnelProps<Steps extends StepsType> = Omit<
-    FunnelProps<Steps>,
-    "steps" | "step"
->;
+  FunnelProps<Steps>,
+  "steps" | "step"
+>
 
 type FunnelComponent<Steps extends StepsType> = ((
-    props: RouteFunnelProps<Steps>
+  props: RouteFunnelProps<Steps>
 ) => ReactElement) & {
-    Step: (props: StepProps<Steps>) => ReactElement;
-};
+  Step: (props: StepProps<Steps>) => ReactElement
+}
 
 export function useFunnel<Steps extends StepsType>(steps: Steps) {
-    const [step, setStep] = useState<Steps[number]>(steps[0]);
-    const FunnelComponent: FunnelComponent<Steps> = useMemo(
-        () =>
-            Object.assign(
-                function RouteFunnel(props: RouteFunnelProps<Steps>) {
-                    return (
-                        <Funnel<Steps> steps={steps} step={step}>
-                            {props.children}
-                        </Funnel>
-                    );
-                },
-                { Step }
-            ),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    );
+  const [step, setStep] = useState<Steps[number]>(steps[0])
+  const FunnelComponent: FunnelComponent<Steps> = useMemo(
+    () =>
+      Object.assign(
+        function RouteFunnel(props: RouteFunnelProps<Steps>) {
+          return (
+            <Funnel<Steps> steps={steps} step={step}>
+              {props.children}
+            </Funnel>
+          )
+        },
+        { Step }
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
-    return [FunnelComponent, setStep] as const;
+  return [FunnelComponent, setStep] as const
 }
 ```
 
@@ -601,7 +642,8 @@ FunnelComponent 타입 Step 컴포넌트의 타입을 지정해줌으로서 **St
 </table>
 
 ### 4. 히스토리 관리
-하나의 페이지로 관리하게 되면서 가독성은 올라가게 되었지만 뒤로가기를 했을 때 스텝별 히스토리가 유지되지 못하게 되었다. 
+
+하나의 페이지로 관리하게 되면서 가독성은 올라가게 되었지만 뒤로가기를 했을 때 스텝별 히스토리가 유지되지 못하게 되었다.
 
 해당 문제를 해결하기 위해 발표 내용을 참고해보면 step을 상태가 아니라 **QueryParam**으로 관리하는 방식으로 해결했다.
 ![히스토리 관리](history.png)
@@ -609,86 +651,85 @@ FunnelComponent 타입 Step 컴포넌트의 타입을 지정해줌으로서 **St
 위 방법과 같이 예제코드에 적용해보자.
 
 ```tsx
-
 // QS
 function createQueryString(params: Record<string, any>) {
-    const queryString = createSearchParamString(params);
+  const queryString = createSearchParamString(params)
 
-    if (queryString === "") {
-        return "";
-    }
+  if (queryString === "") {
+    return ""
+  }
 
-    return `?${queryString}`;
+  return `?${queryString}`
 }
 
 function createSearchParamString(params: Record<string, any>) {
-    return new URLSearchParams(
-        Object.entries(params)
-            .filter(([, value]) => value != null)
-            .map(([key, value]) => {
-                if (Array.isArray(value)) {
-                    return value.map((x) => [key, x]);
-                }
-                return [[key, value]];
-            })
-            .flat()
-    )
-        .toString()
-        .replace(/\+/g, "%20");
+  return new URLSearchParams(
+    Object.entries(params)
+      .filter(([, value]) => value != null)
+      .map(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.map(x => [key, x])
+        }
+        return [[key, value]]
+      })
+      .flat()
+  )
+    .toString()
+    .replace(/\+/g, "%20")
 }
 
 export const QS = {
-    create: createQueryString,
-};
+  create: createQueryString,
+}
 
 // useFunnel 훅
 interface SetStepOptions {
-    stepChangeType?: "push" | "replace";
+  stepChangeType?: "push" | "replace"
 }
 
-const STEP_QUERY_KEY = "funnel-step";
+const STEP_QUERY_KEY = "funnel-step"
 
 export function useFunnel<Steps extends StepsType>(
-    steps: Steps,
-    initialStep: Steps[number]
+  steps: Steps,
+  initialStep: Steps[number]
 ) {
-    const router = useRouter();
-    const setStep = useCallback(
-        (step: Steps[number], setStepOptions?: SetStepOptions) => {
-            const url = `${QS.create({
-                [STEP_QUERY_KEY]: step,
-            })}`;
+  const router = useRouter()
+  const setStep = useCallback(
+    (step: Steps[number], setStepOptions?: SetStepOptions) => {
+      const url = `${QS.create({
+        [STEP_QUERY_KEY]: step,
+      })}`
 
-            switch (setStepOptions?.stepChangeType) {
-                case "replace":
-                    router.replace(url);
-                    return;
-                case "push":
-                default:
-                    router.push(url);
-                    return;
-            }
+      switch (setStepOptions?.stepChangeType) {
+        case "replace":
+          router.replace(url)
+          return
+        case "push":
+        default:
+          router.push(url)
+          return
+      }
+    },
+    [router]
+  )
+
+  const FunnelComponent: FunnelComponent<Steps> = useMemo(
+    () =>
+      Object.assign(
+        function RouteFunnel(props: RouteFunnelProps<Steps>) {
+          const step = useQueryParam(STEP_QUERY_KEY) ?? initialStep
+          return (
+            <Funnel<Steps> steps={steps} step={step}>
+              {props.children}
+            </Funnel>
+          )
         },
-        [router]
-    );
+        { Step }
+      ),
+    []
+  )
 
-    const FunnelComponent: FunnelComponent<Steps> = useMemo(
-        () =>
-            Object.assign(
-                function RouteFunnel(props: RouteFunnelProps<Steps>) {
-                    const step = useQueryParam(STEP_QUERY_KEY) ?? initialStep;
-                    return (
-                        <Funnel<Steps> steps={steps} step={step}>
-                            {props.children}
-                        </Funnel>
-                    );
-                },
-                {Step}
-            ),
-        []
-    );
-
-    return [FunnelComponent, setStep] as const;
+  return [FunnelComponent, setStep] as const
 }
 ```
 
@@ -710,17 +751,17 @@ QueryParam으로 Step을 관리하게 되면서 더이상 step 지역상태는 �
 </table>
 
 ### 5. 폼 데이터 관리
+
 발표는 히스토리 관리까지를 라이브러리 작업에 대한 소개로 마무리했지만, 오픈 소스 코드를 보면 폼 데이터 관리에 대한 부분도 있어서 추가해보았다.
 
 코드 중에는 데이터 스토리지를 이용해 이전 작성한 값들을 저장하고 불러오는 로직도 있었지만, 현재 예제에서는 생략하였다.
 
 ```tsx
-
 export type Form = {
-  phoneNumber?: string;
-  address?: string;
-  citizenNumber?: string;
-};
+  phoneNumber?: string
+  address?: string
+  citizenNumber?: string
+}
 
 export default function FormPage() {
   const [Funnel, state, setState] = useFunnel([
@@ -728,7 +769,7 @@ export default function FormPage() {
     "주민번호",
     "주소",
     "제출완료",
-  ] as const).WithState<Form>({});
+  ] as const).WithState<Form>({})
 
   return (
     <div className={styles.page}>
@@ -737,11 +778,11 @@ export default function FormPage() {
           <Funnel.Step name={"핸드폰번호"}>
             <PhoneNumberStep
               onNext={(phoneNumber: Form["phoneNumber"]) => {
-                setState((prev) => ({
+                setState(prev => ({
                   ...prev,
                   step: "주민번호",
                   phoneNumber,
-                }));
+                }))
               }}
             />
           </Funnel.Step>
@@ -749,11 +790,11 @@ export default function FormPage() {
             <CitizenNumberStep
               phoneNumber={state.phoneNumber}
               onNext={(citizenNumber: Form["citizenNumber"]) => {
-                setState((prev) => ({
+                setState(prev => ({
                   ...prev,
                   step: "주소",
                   citizenNumber,
-                }));
+                }))
               }}
             />
           </Funnel.Step>
@@ -764,17 +805,17 @@ export default function FormPage() {
               onNext={async (address: Form["address"]) => {
                 try {
                   // 제출 로직
-                  await new Promise((resolve) => {
-                    setTimeout(resolve, 1000);
-                  });
-                  setState((prev) => ({
+                  await new Promise(resolve => {
+                    setTimeout(resolve, 1000)
+                  })
+                  setState(prev => ({
                     ...prev,
                     step: "제출완료",
                     address,
-                  }));
+                  }))
                 } catch (error: unknown) {
-                  alert(`제출 실패: ${error}`);
-                  return;
+                  alert(`제출 실패: ${error}`)
+                  return
                 }
               }}
             />
@@ -785,121 +826,119 @@ export default function FormPage() {
         </Funnel>
       </main>
     </div>
-  );
+  )
 }
-
 
 // useFunnel 훅
 
 export function useFunnel<Steps extends StepsType>(
-    steps: Steps,
-    initialStep?: Steps[number]
+  steps: Steps,
+  initialStep?: Steps[number]
 ) {
-    const router = useRouter();
-    const _initialStep = initialStep ?? steps[0];
-    const setStep = useCallback(
-        (step: Steps[number], setStepOptions?: SetStepOptions) => {
-            const url = `${QS.create({
-                [STEP_QUERY_KEY]: step,
-            })}`;
+  const router = useRouter()
+  const _initialStep = initialStep ?? steps[0]
+  const setStep = useCallback(
+    (step: Steps[number], setStepOptions?: SetStepOptions) => {
+      const url = `${QS.create({
+        [STEP_QUERY_KEY]: step,
+      })}`
 
-            switch (setStepOptions?.stepChangeType) {
-                case "replace":
-                    router.replace(url);
-                    return;
-                case "push":
-                default:
-                    router.push(url);
-                    return;
-            }
+      switch (setStepOptions?.stepChangeType) {
+        case "replace":
+          router.replace(url)
+          return
+        case "push":
+        default:
+          router.push(url)
+          return
+      }
+    },
+    [router]
+  )
+
+  const FunnelComponent: FunnelComponent<Steps> = useMemo(
+    () =>
+      Object.assign(
+        function RouteFunnel(props: RouteFunnelProps<Steps>) {
+          const step = useQueryParam(STEP_QUERY_KEY) ?? _initialStep
+          return (
+            <Funnel<Steps> steps={steps} step={step}>
+              {props.children}
+            </Funnel>
+          )
         },
-        [router]
-    );
+        { Step }
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
-    const FunnelComponent: FunnelComponent<Steps> = useMemo(
-        () =>
-            Object.assign(
-                function RouteFunnel(props: RouteFunnelProps<Steps>) {
-                    const step = useQueryParam(STEP_QUERY_KEY) ?? _initialStep;
-                    return (
-                        <Funnel<Steps> steps={steps} step={step}>
-                            {props.children}
-                        </Funnel>
-                    );
-                },
-                { Step }
-            ),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    );
+  type S = Record<string, unknown>
+  type Step = Steps[number]
+  type NextState = S & { step?: Step }
 
-    type S = Record<string, unknown>;
-    type Step = Steps[number];
-    type NextState = S & { step?: Step };
+  const nextPendingStepRef = useRef<Step | null>(null)
+  const nextStateRef = useRef<Partial<S> | null>(null)
 
-    const nextPendingStepRef = useRef<Step | null>(null);
-    const nextStateRef = useRef<Partial<S> | null>(null);
+  const WithState = <State extends S>(initialState: State) => {
+    const [state, _setState] = useState<S>(initialState)
+    const setState = useCallback(
+      (
+        next: Partial<NextState> | ((next: Partial<NextState>) => NextState)
+      ) => {
+        let nextStepValue: Partial<NextState>
+        if (typeof next === "function") {
+          nextStepValue = next(state)
+        } else {
+          nextStepValue = next
+        }
 
-    const WithState = <State extends S>(initialState: State) => {
-        const [state, _setState] = useState<S>(initialState);
-        const setState = useCallback(
-            (
-                next: Partial<NextState> | ((next: Partial<NextState>) => NextState)
-            ) => {
-                let nextStepValue: Partial<NextState>;
-                if (typeof next === "function") {
-                    nextStepValue = next(state);
-                } else {
-                    nextStepValue = next;
-                }
+        console.log(nextStepValue)
 
-                console.log(nextStepValue);
+        if (nextStepValue.step != null) {
+          nextPendingStepRef.current = nextStepValue.step
+        }
+        nextStateRef.current = nextStepValue
 
-                if (nextStepValue.step != null) {
-                    nextPendingStepRef.current = nextStepValue.step;
-                }
-                nextStateRef.current = nextStepValue;
+        _setState(next)
+      },
+      [_setState, state]
+    )
 
-                _setState(next);
-            },
-            [_setState, state]
-        );
+    useEffect(() => {
+      if (nextPendingStepRef.current == null) {
+        return
+      }
+      if (deepEqual(nextStateRef.current, state)) {
+        setStep(nextPendingStepRef.current)
+        nextPendingStepRef.current = null
+      }
+    }, [state])
 
-        useEffect(() => {
-            if (nextPendingStepRef.current == null) {
-                return;
-            }
-            if (deepEqual(nextStateRef.current, state)) {
-                setStep(nextPendingStepRef.current);
-                nextPendingStepRef.current = null;
-            }
-        }, [state]);
+    return [FunnelComponent, state, setState] as const
+  }
 
-        return [FunnelComponent, state, setState] as const;
-    };
-
-    return Object.assign([FunnelComponent, setStep] as const, {
-        WithState,
-    }) as readonly [
-        FunnelComponent<Steps>,
-        (step: Steps[number], options?: SetStepOptions) => void
-    ] & {
-        WithState: <StateExcludeStep extends Record<string, unknown>>(
-            initialState: StateExcludeStep
-        ) => [
-            FunnelComponent<Steps>,
-            StateExcludeStep,
-            (
-                next:
-                    | Partial<StateExcludeStep & { step: Steps[number] }>
-                    | ((
-                    next: Partial<StateExcludeStep & { step: Steps[number] }>
-                ) => StateExcludeStep & { step: Steps[number] })
-            ) => void
-        ];
-    };
+  return Object.assign([FunnelComponent, setStep] as const, {
+    WithState,
+  }) as readonly [
+    FunnelComponent<Steps>,
+    (step: Steps[number], options?: SetStepOptions) => void
+  ] & {
+    WithState: <StateExcludeStep extends Record<string, unknown>>(
+      initialState: StateExcludeStep
+    ) => [
+      FunnelComponent<Steps>,
+      StateExcludeStep,
+      (
+        next:
+          | Partial<StateExcludeStep & { step: Steps[number] }>
+          | ((
+              next: Partial<StateExcludeStep & { step: Steps[number] }>
+            ) => StateExcludeStep & { step: Steps[number] })
+      ) => void
+    ]
+  }
 }
-
 ```
 
 setState로 폼 데이터를 업데이트시킨 후에 다음 step으로 이동시키기 위해 nextPendingStepRef와 nextStateRef와 useEffect를 사용한 것으로 보인다.
@@ -908,11 +947,6 @@ setState로 폼 데이터를 업데이트시킨 후에 다음 step으로 이동�
 이렇게 step과 폼 데이터를 함께 관리하게 되면서, 보다 응집도를 높인 훅을 완성할 수 있었다.
 
 ## 마치며
+
 useFunnel이란 훅을 너무 좋은 방법이다 생각하다 드디어 직접 분석해보았다.
 요구사항들과 해결방법을 코드와 함께 히스토리를 분석해보는 과정에서 더 깊이 있게 공부할 수 있게 되었고, 앞으로도 틈틈히 오픈소스를 분석해보며 더 많은 것을 배워나가야겠다.
-
-
-
-
-
-

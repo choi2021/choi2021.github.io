@@ -1,5 +1,5 @@
 ---
-title: '호이스팅'
+title: "호이스팅"
 date: 2022-12-05
 slug: javascript-hoisting
 tags: [javascript, 문법]
@@ -27,10 +27,10 @@ tags: [javascript, 문법]
 정리하면 둘 다 선언 단계에서 변수를 등록하기 때문에 호이스팅이 일어나지만, var는 const/let과 다르게 초기화단계도 함께 진행하기 때문에 변수 선언문 전에 참조가 가능하다는 특징을 가진다.
 
 ```javascript
-console.log(first); //undefined
-console.log(second); //ReferenceError: Cannot access 'second' before initialization
-var first = 80;
-const second = 90;
+console.log(first) //undefined
+console.log(second) //ReferenceError: Cannot access 'second' before initialization
+var first = 80
+const second = 90
 ```
 
 ### 함수 선언의 호이스팅
@@ -40,21 +40,21 @@ const second = 90;
 함수 표현식은 변수에 함수를 할당하는 것이므로 "변수 선언과 동일하게" 진행된다. var 함수 표현식은 var 변수 선언과 동일하게 undefined로 초기화 단계가 선언단계와 함께 진행되고, const와 let 함수 표현식은 함수 선언문을 자바스크립트 엔진이 읽을 때까지 값을 불러올 수 없다.
 
 ```javascript
-console.log(multiply(1, 2)); // 2
-console.log(sum); // undefined
-console.log(sub); // ReferenceError: Cannot access 'sub' before initialization
-var sum = (a, b) => a + b;
-const sub = (a, b) => a - b;
+console.log(multiply(1, 2)) // 2
+console.log(sum) // undefined
+console.log(sub) // ReferenceError: Cannot access 'sub' before initialization
+var sum = (a, b) => a + b
+const sub = (a, b) => a - b
 function multiply(a, b) {
-  return a * b;
+  return a * b
 }
 ```
 
 이때 var 함수 표현식은 var 변수 선언과 동일해, 함수 객체가 할당되긴 전이기 때문에, 함수로 실행하면 typeError가 발생한다.
 
 ```javascript
-console.log(sum(1, 2)); // TypeError: sum is not a function
-var sum = (a, b) => a + b;
+console.log(sum(1, 2)) // TypeError: sum is not a function
+var sum = (a, b) => a + b
 ```
 
 이제 실행 컨텍스트를 이용해 자세한 내부 동작을 정리해보자

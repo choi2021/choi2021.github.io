@@ -1,5 +1,5 @@
 ---
-title: '모으잡-express cors 에러, 에러핸들링'
+title: "모으잡-express cors 에러, 에러핸들링"
 slug: 모으잡-express cors 에러, 에러핸들링
 tags: [사이드프로젝트, 모으잡]
 series: 모으잡
@@ -42,18 +42,18 @@ origin에 추가한 주소를 통해서 어떤 url의 요청에 추가된 헤더
 동기적 코드는 순서대로 반드시 실행이 마치고 다음으로 넘어가기 때문에 에러 발생시 어플리케이션이 아예 죽어버릴 수 있다. 이를 해결할 수 있는 방법은 try-catch문으로 에러를 잡아서 에러처리를 해준다.
 
 ```javascript
-app.get('/sync', (req, res, next) => {
+app.get("/sync", (req, res, next) => {
   try {
-    const data = fs.readFileSync('text.txt'); //동기적으로 파일을 읽어
+    const data = fs.readFileSync("text.txt") //동기적으로 파일을 읽어
   } catch (e) {
-    res.status(404);
+    res.status(404)
   }
-});
+})
 
 app.use((error, req, res, next) => {
-  console.error(error);
-  res.status(500).json({ message: 'Server error' });
-});
+  console.error(error)
+  res.status(500).json({ message: "Server error" })
+})
 ```
 
 ### 2. 비동기적 코드
@@ -65,18 +65,18 @@ app.use((error, req, res, next) => {
 콜백함수로 에러를 처리하는 경우에 에러를 처리해주지 않으면 에러가 났지만 콜백으로 넘어가 클라이언트 페이지는 계속해서 기다리고 있고, 마지막 에러처리 미들웨어까지 전달되지 않으므로, 콜백함수 내에서 처리를 해줘야한다.
 
 ```javascript
-app.get('/async', (req, res, next) => {
-  fs.readFile('/text.txt', (err, data) => {
+app.get("/async", (req, res, next) => {
+  fs.readFile("/text.txt", (err, data) => {
     if (err) {
-      res.status(404).send('File not found');
+      res.status(404).send("File not found")
     }
-  });
-});
+  })
+})
 
 app.use((error, req, res, next) => {
-  console.error(error);
-  res.status(500).json({ message: 'Server error' });
-});
+  console.error(error)
+  res.status(500).json({ message: "Server error" })
+})
 ```
 
 ### Promise
@@ -101,18 +101,18 @@ app.use((error, req, res, next) => {
 async-await은 내부에서 동기적으로 코드를 사용할 수 있어서 try-catch문을 사용할 수 있고, 함수 자체는 promise로 반환되기 때문에 동일하게 에러처리를 해주지 않으면 에러가 전달되어지지 않는다. 그렇기 때문에 동기적인 코드때 처럼 꼭 try-catch문으로 에러처리를 해주어야한다.
 
 ```javascript
-app.get('/file3', async (req, res) => {
+app.get("/file3", async (req, res) => {
   try {
-    const data = await fsAsync.readFile('/text.txt');
+    const data = await fsAsync.readFile("/text.txt")
   } catch (e) {
-    res.status(404).send('File not found');
+    res.status(404).send("File not found")
   }
-});
+})
 
 app.use((error, req, res, next) => {
-  console.error(error);
-  res.status(500).json({ message: 'Server error' }); //여기서 에러처리
-});
+  console.error(error)
+  res.status(500).json({ message: "Server error" }) //여기서 에러처리
+})
 ```
 
 비동기는 에러가 자동으로 넘어가지지 않는 점 때문에 해당 로직을 항상 처리를 해줘야한다.

@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 1주차 첫째주 과제-best case찾기와 보충공부:context API'
+title: "원티드 프리온보딩 1주차 첫째주 과제-best case찾기와 보충공부:context API"
 date: 2022-10-25
 slug: 원티드-프리온보딩-1주차-첫째주-과제-best-case찾기와-보충공부-context-API
 tags: [원티드프리온보딩]
@@ -56,26 +56,26 @@ fetch는 성공했다면 JWT가 담긴 객체를 반환하고 실패했다면 �
 ```javascript
 export class HttpClient {
   constructor(baseURL) {
-    this.baseURL = baseURL;
+    this.baseURL = baseURL
   }
 
   async fetch(url, options) {
     const res = await fetch(`${this.baseURL}${url}`, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
-    });
+    })
     try {
       if (!res.ok) {
-        console.error(`${res.status}에러가 발생했습니다`);
-        throw new HTTPError(res.status, res.statusText);
+        console.error(`${res.status}에러가 발생했습니다`)
+        throw new HTTPError(res.status, res.statusText)
       } else {
-        return await res.json();
+        return await res.json()
       }
     } catch (e) {
-      return e.codeToErrorMessage;
+      return e.codeToErrorMessage
     }
   }
 }
@@ -86,26 +86,26 @@ HTTPClient class를 이용함으로써 authService와 todoService는 훨씬 간�
 ```javascript
 export class AuthService {
   constructor(httpClient) {
-    this.httpClient = httpClient;
+    this.httpClient = httpClient
   }
   async postSignUp(email, password) {
-    return this.httpClient.fetch('/auth/signup', {
-      method: 'POST',
+    return this.httpClient.fetch("/auth/signup", {
+      method: "POST",
       body: JSON.stringify({
         email,
         password,
       }),
-    });
+    })
   }
 
   async postSignIn(email, password) {
-    return this.httpClient.fetch('/auth/signin', {
-      method: 'POST',
+    return this.httpClient.fetch("/auth/signin", {
+      method: "POST",
       body: JSON.stringify({
         email,
         password,
       }),
-    });
+    })
   }
 }
 ```
@@ -116,41 +116,41 @@ export class AuthService {
 
 ```javascript
 const handleLoginSubmit = useCallback(
-  async (info) => {
-    const { email, password } = info;
-    const response = await authService.postSignIn(email, password);
-    if ('access_token' in response) {
-      navigate('/todo');
-      localStorage.setItem('access_token', response.access_token);
+  async info => {
+    const { email, password } = info
+    const response = await authService.postSignIn(email, password)
+    if ("access_token" in response) {
+      navigate("/todo")
+      localStorage.setItem("access_token", response.access_token)
     } else {
-      setLoginMessage((prev) => {
+      setLoginMessage(prev => {
         return {
           ...prev,
           ...response,
-        };
-      });
+        }
+      })
     }
   },
   [navigate]
-);
+)
 
-const handleRegisterSubmit = useCallback(async (info) => {
-  const { email, password } = info;
-  const response = await authService.postSignUp(email, password);
-  let message = response;
-  if ('access_token' in response) {
+const handleRegisterSubmit = useCallback(async info => {
+  const { email, password } = info
+  const response = await authService.postSignUp(email, password)
+  let message = response
+  if ("access_token" in response) {
     message = {
       message: `회원가입에 성공했습니다`,
       success: true,
-    };
+    }
   }
-  setRegisterMessage((prev) => {
+  setRegisterMessage(prev => {
     return {
       ...prev,
       ...message,
-    };
-  });
-}, []);
+    }
+  })
+}, [])
 ```
 
 ### 투두 페이지
@@ -162,50 +162,50 @@ todo도 동일하게 함수상태로 api호출을 하는 게 아니라 todoServi
 ```javascript
 export class TodoService {
   constructor(httpClient) {
-    this.httpClient = httpClient;
+    this.httpClient = httpClient
   }
   async create(todo) {
-    return this.httpClient.fetch('/todos', {
-      method: 'POST',
+    return this.httpClient.fetch("/todos", {
+      method: "POST",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify({
         todo,
       }),
-    });
+    })
   }
 
   async get() {
-    return this.httpClient.fetch('/todos', {
-      method: 'GET',
+    return this.httpClient.fetch("/todos", {
+      method: "GET",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
-    });
+    })
   }
 
   async update(obj) {
-    const { todo, isCompleted } = obj;
+    const { todo, isCompleted } = obj
     return this.httpClient.fetch(`/todos/${obj.id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify({
         todo,
         isCompleted,
       }),
-    });
+    })
   }
 
   async delete(id) {
     return this.httpClient.fetch(`/todos/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
-    });
+    })
   }
 }
 ```

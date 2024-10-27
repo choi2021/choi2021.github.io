@@ -1,5 +1,5 @@
 ---
-title: '모으잡-firebase를 이용한 회원가입 로직 구현'
+title: "모으잡-firebase를 이용한 회원가입 로직 구현"
 date: 2022-11-25
 slug: 모으잡-firebase를-이용한-회원가입-로그인-로직
 tags: [사이드프로젝트, 모으잡]
@@ -31,18 +31,18 @@ series: 모으잡
 
 ```tsx
 const config: ConfigType = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY || '',
-  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || '',
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID || '',
-  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET || '',
-  appId: process.env.NEXT_PUBLIC_APP_ID || '',
-  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID || '',
-};
+  apiKey: process.env.NEXT_PUBLIC_API_KEY || "",
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "",
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET || "",
+  appId: process.env.NEXT_PUBLIC_APP_ID || "",
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID || "",
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const app = initializeApp(config);
-  const authService = new AuthServiceImpl(app);
-  const { push } = useRouter();
+  const app = initializeApp(config)
+  const authService = new AuthServiceImpl(app)
+  const { push } = useRouter()
 
   return (
     <>
@@ -50,9 +50,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </AuthProvider>
     </>
-  );
+  )
 }
-export default MyApp;
+export default MyApp
 ```
 
 회원가입/로그인 로직을 담는 모듈인 Authservice는 아래와 같이 interface와 interface를 실행하는 AuthserviceImpl class를 만들었다.
@@ -231,19 +231,19 @@ firebase의 OAuth 서비스를 이용하기 위해서 해당 플랫폼의 provid
 ```typescript
 //AuthService.ts
 export class AuthServiceImpl implements AuthService {
-  googleProvider: GoogleAuthProvider;
-  githubProvider: GithubAuthProvider;
-  auth: Auth;
+  googleProvider: GoogleAuthProvider
+  githubProvider: GithubAuthProvider
+  auth: Auth
 
   constructor(private app: FirebaseApp) {
-    this.googleProvider = new GoogleAuthProvider();
-    this.githubProvider = new GithubAuthProvider();
-    this.auth = getAuth(this.app);
+    this.googleProvider = new GoogleAuthProvider()
+    this.githubProvider = new GithubAuthProvider()
+    this.auth = getAuth(this.app)
   }
 
   OAuthSignIn(platform: OAuthType): Promise<UserCredential> {
-    const provider = this[`${platform}Provider`];
-    return signInWithPopup(this.auth, provider);
+    const provider = this[`${platform}Provider`]
+    return signInWithPopup(this.auth, provider)
   }
 }
 
@@ -254,26 +254,26 @@ export const OAuthLogin = async (
   authService: AuthService,
   router: NextRouter
 ) => {
-  const { push } = router;
+  const { push } = router
   try {
-    const userData = await authService.OAuthSignIn(name);
-    const token = await userData.user.getIdToken();
-    localStorage.setItem(AccessToken, token);
-    push('/');
+    const userData = await authService.OAuthSignIn(name)
+    const token = await userData.user.getIdToken()
+    localStorage.setItem(AccessToken, token)
+    push("/")
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
 export default function PlatformBtns() {
-  const authService = useAuthService();
-  const router = useRouter();
+  const authService = useAuthService()
+  const router = useRouter()
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { name } = e.currentTarget;
+    const { name } = e.currentTarget
     if (name === PLATFORM.GOOGLE || name === PLATFORM.GITHUB) {
-      OAuthLogin(name, authService, router);
+      OAuthLogin(name, authService, router)
     }
-  };
+  }
   return (
     <Wrapper>
       <button name={PLATFORM.GOOGLE} onClick={handleClick}>
@@ -283,7 +283,7 @@ export default function PlatformBtns() {
         ...
       </button>
     </Wrapper>
-  );
+  )
 }
 ```
 
@@ -293,27 +293,27 @@ Navbar의 로그아웃 버튼을 추가해 간단하게 처리할 수 있었다.
 
 ```tsx
 export default function Navbar() {
-  const { push } = useRouter();
-  const authService = useAuthService();
+  const { push } = useRouter()
+  const authService = useAuthService()
   const onSignOut = () => {
     authService
       .signOut()
       .then(() => {
-        localStorage.removeItem(AccessToken);
-        push('/login');
+        localStorage.removeItem(AccessToken)
+        push("/login")
       })
-      .catch((error) => console.log(error));
-  };
+      .catch(error => console.log(error))
+  }
   return (
     <Wrapper>
       <Layout>
-        <Link href='/'>모으잡</Link>
+        <Link href="/">모으잡</Link>
         <Btns>
           <button onClick={onSignOut}>로그아웃</button>
         </Btns>
       </Layout>
     </Wrapper>
-  );
+  )
 }
 ```
 

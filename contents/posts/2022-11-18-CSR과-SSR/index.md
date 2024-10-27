@@ -1,8 +1,8 @@
 ---
-title: 'CSR과 SSR 그리고 Universal Rendering'
+title: "CSR과 SSR 그리고 Universal Rendering"
 slug: CSR와-SSR-그리고-Universal-Rendering
 date: 2022-11-18
-tags: [NextJS, React,web,CSR,SSR,UniversalRendering]
+tags: [NextJS, React, web, CSR, SSR, UniversalRendering]
 ---
 
 # 👓 Next JS
@@ -30,7 +30,6 @@ CSR을 이용하게 되면 서버는 하나의 html을 응답으로 주면 되�
 
 SEO는 구글이나 네이버의 검색에서 검색을 했을 때, 노출되는 것을 의미한다. 우리는 googling이란 단어가 생길 정도로 많은 정보를 검색 사이트를 통해서 얻는다. 그렇기 때문에 서비스를 검색엔진에게 잘 보여주고 사용자에게 자주 보여 줄 수 있는 것 자체가 너무나 중요하다. 검색엔진의 봇이 우리 서비스를 잘 크롤링할 수 있게 만드는 과정을 SEO라고 하고, 여기서 CSR이 큰 단점을 가진다.
 ![seo](seo.png)
-
 
 앞선 과제에서 CSR에서 react-helmet과 react-snap을 이용해서 CSR에서 route에 맞는 html을 만들어 head부분에 넣을 부분들을 넣어주었지만 이렇게 해야 했던 근본적인 문제는 CSR이 하려 했던 효율적인 전략, **단 하나의 HTML을 이용해 Javascript로 동적으로 페이지를 만들려 하기** 때문이다. 단 하나의 HTML은 비어있어 우리가 동적으로 Javascript로 DOM요소를 넣어주기 때문에 검색엔진이 크롤링할 때는 아무것도 볼 수 없는 상태가 된다. 아무 정보를 주지 않으면 당연히 검색엔진은 아무것도 가져가지 못한다...
 
@@ -61,6 +60,7 @@ CSR은 FCP (First Contentful Paint) 와 TTI (Time To Interactive) 요소에서 �
 universal rendering에서도 이와 동일하게 서버에서는 해당 페이지 내용을 html 페이지를 문자열로 전달해주고, client에서는 전달받은 html 문자열을 이용해 페이지를 만들고, 적절한 함수와 이벤트를 붙여준다. 이렇게 두가지 일이 분리되어 있기 때문에 javascript번들 크기가 클 경우에는 화면은 SSR처럼 먼저보이지만 TTI는 늦어지는 단점을 가질 수 있다.
 
 ![universal](universal.webp)
+
 # 마치며
 
 역시 완벽한 기술은 없다. 항상 상황에 맞는 알맞은 기술이 존재할 뿐이다는 걸 느낀다. 그리고 개발자는 그 상황에 맞는 기술을 사용할 줄 아는 게 중요하다고 생각된다. 서버와 클라이언트를 이 과정을 이해하는 중요성을 너무 느낀 시간이었다. 이제 직접 과제에 NEXT js를 써보려 한다.

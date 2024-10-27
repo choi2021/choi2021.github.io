@@ -1,5 +1,5 @@
 ---
-title: 'Iteration'
+title: "Iteration"
 date: 2022-09-22
 slug: javascript-iteration
 tags: [javascript, 문법]
@@ -30,15 +30,15 @@ Iteration procol을 따르는 iterator의 예로 배열이 있고, iterator를 �
 ```javascript
 const iterableObj = {
   [Symbol.iterator]() {
-    let num = 0;
-    const end = 5;
+    let num = 0
+    const end = 5
     return {
       next() {
-        return { value: num++, done: num > end };
+        return { value: num++, done: num > end }
       },
-    };
+    }
   },
-};
+}
 
 /*
 0
@@ -71,9 +71,9 @@ while(true){
 for... of를 사용하면 보다 간단하게 사용할 수 있다. for... of 구문은 iteration이 가능한 경우에만 사용할 수 있기에 일반적인 객체는 for...of 구문은 사용하지 못하고 key값을 이용하는 for...in을 이용할 수 있다.
 
 ```javascript
-const arr = [1, 2, 3];
+const arr = [1, 2, 3]
 for (const item of arr) {
-  console.log(item);
+  console.log(item)
 }
 /*
 1
@@ -82,13 +82,13 @@ for (const item of arr) {
 */
 
 const obj = {
-  1: '1',
-  2: '2',
-  3: '3',
-};
+  1: "1",
+  2: "2",
+  3: "3",
+}
 
 for (const key in obj) {
-  console.log(key);
+  console.log(key)
 }
 
 /*
@@ -105,15 +105,15 @@ Generator는 iteration protocl을 따르는 iterator를 간단하게 만들 수 
 ```javascript
 function* iteratorGenerator(start, end) {
   for (let i = start; i < end; i++) {
-    yield i;
+    yield i
   }
 }
 
-const generator = iteratorGenerator(0, 5);
-let result = generator.next();
+const generator = iteratorGenerator(0, 5)
+let result = generator.next()
 while (!result.done) {
-  console.log(result.value);
-  result = generator.next();
+  console.log(result.value)
+  result = generator.next()
 }
 
 /*

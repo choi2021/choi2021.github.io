@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 사전과제 7편 '
+title: "원티드 프리온보딩 사전과제 7편 "
 date: 2022-10-11
 slug: 원티드-프리온보딩-과제-7
 tags: [원티드프리온보딩]
@@ -12,7 +12,7 @@ series: 원티드프리온보딩
 
 #### 1.1 auth 페이지
 
- auth 페이지에서는 회원가입 form과 로그인 form이 같이 존재하고 상태가 변하면 authForm 내부 모두가 다시 실행되기 때문에, 모든 input들이 re-rendering되는 모습을 보였다. 이를 해결하기 위해서 input을 컴포넌트로 만들어서 각 컴포넌트에 주입되는 함수나 props가 바뀌는 게 아니면 업데이트 되지 않게 해주었다.
+auth 페이지에서는 회원가입 form과 로그인 form이 같이 존재하고 상태가 변하면 authForm 내부 모두가 다시 실행되기 때문에, 모든 input들이 re-rendering되는 모습을 보였다. 이를 해결하기 위해서 input을 컴포넌트로 만들어서 각 컴포넌트에 주입되는 함수나 props가 바뀌는 게 아니면 업데이트 되지 않게 해주었다.
 
 ```jsx
 //이전 코드
@@ -138,31 +138,30 @@ export default memo(AuthInput);
 ​ todo를 생성하는 input의 경우 Todo 전체 파일에 있게 되면 계속해서 업데이트되기 때문에 따로 컴포넌트화 시켜 memo로 저장한 후에 prop으로 전달해주는 함수들을 useCallback으로 메모리에 저장해 불필요한 re-rendering을 막았다.
 
 ```jsx
-import React, { memo, useRef } from 'react';
-import S from './styles';
+import React, { memo, useRef } from "react"
+import S from "./styles"
 
 function TodoForm({ onSubmit, isBlank }) {
-  const inputRef = useRef();
-  const handleSubmit = (e) => {
-    onSubmit(e, inputRef);
-  };
+  const inputRef = useRef()
+  const handleSubmit = e => {
+    onSubmit(e, inputRef)
+  }
   return (
     <S.TodoForm onSubmit={handleSubmit}>
       <input
         ref={inputRef}
-        type='text'
-        id='todoInput'
+        type="text"
+        id="todoInput"
         placeholder={
-          isBlank ? '내용이 비어있습니다.😅' : '오늘의 투두를 작성해주세요😀'
+          isBlank ? "내용이 비어있습니다.😅" : "오늘의 투두를 작성해주세요😀"
         }
       />
       <button>Add</button>
     </S.TodoForm>
-  );
+  )
 }
 
-export default memo(TodoForm);
-
+export default memo(TodoForm)
 ```
 
 ![todo페이지개선](todo페이지개선.gif)

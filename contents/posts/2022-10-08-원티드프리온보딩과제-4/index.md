@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 사전과제 4편'
+title: "원티드 프리온보딩 사전과제 4편"
 date: 2022-10-08
 slug: 원티드-프리온보딩-과제-4
 tags: [원티드프리온보딩]
@@ -154,46 +154,46 @@ login.jsx내부의 함수들에도 코드중복이 많이 존재했다. handleLo
 
 ```jsx
 //이전 코드
-const handleLoginChange = (e) => {
-    const { name, value } = e.currentTarget;
-    setLoginInfo((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-        isEmailValid: name == 'email' ? value.includes('@') : prev.isEmailValid,
-        isPasswordValid:
-          name == 'password' ? value.length >= 8 : prev.isPasswordValid,
-      };
-    });
-  };
+const handleLoginChange = e => {
+  const { name, value } = e.currentTarget
+  setLoginInfo(prev => {
+    return {
+      ...prev,
+      [name]: value,
+      isEmailValid: name == "email" ? value.includes("@") : prev.isEmailValid,
+      isPasswordValid:
+        name == "password" ? value.length >= 8 : prev.isPasswordValid,
+    }
+  })
+}
 
-  const handleRegisterChange = (e) => {
-    const { name, value } = e.target;
-    setRegisterInfo((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-        isEmailValid: name == 'email' ? value.includes('@') : prev.isEmailValid,
-        isPasswordValid:
-          name == 'password' ? value.length >= 8 : prev.isPasswordValid,
-      };
-    });
-  };
+const handleRegisterChange = e => {
+  const { name, value } = e.target
+  setRegisterInfo(prev => {
+    return {
+      ...prev,
+      [name]: value,
+      isEmailValid: name == "email" ? value.includes("@") : prev.isEmailValid,
+      isPasswordValid:
+        name == "password" ? value.length >= 8 : prev.isPasswordValid,
+    }
+  })
+}
 
 //수정 후 코드
 
-  const handleChange = (e,  setInfo) => {
-    const { name, value } = e.currentTarget;
-    setInfo((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-        isEmailValid: name == 'email' ? value.includes('@') : prev.isEmailValid,
-        isPasswordValid:
-          name == 'password' ? value.length >= 8 : prev.isPasswordValid,
-      };
-    });
-  };
+const handleChange = (e, setInfo) => {
+  const { name, value } = e.currentTarget
+  setInfo(prev => {
+    return {
+      ...prev,
+      [name]: value,
+      isEmailValid: name == "email" ? value.includes("@") : prev.isEmailValid,
+      isPasswordValid:
+        name == "password" ? value.length >= 8 : prev.isPasswordValid,
+    }
+  })
+}
 ```
 
 #### 2.2 상태와 상태관리 함수
@@ -202,51 +202,51 @@ const handleLoginChange = (e) => {
 
 ```jsx
 //이전코드
-  const [loginInfo, setLoginInfo] = useState({
-    email: '',
-    password: '',
-    isEmailValid: false,
-    isPasswordValid: false,
-  });
+const [loginInfo, setLoginInfo] = useState({
+  email: "",
+  password: "",
+  isEmailValid: false,
+  isPasswordValid: false,
+})
 
-  const [registerInfo, setRegisterInfo] = useState({
-    email: '',
-    password: '',
-    isEmailValid: false,
-    isPasswordValid: false,
-  });
+const [registerInfo, setRegisterInfo] = useState({
+  email: "",
+  password: "",
+  isEmailValid: false,
+  isPasswordValid: false,
+})
 
-  const [message, setMessage] = useState({
-    loginMessage: '',
-    registerMessage: '',
-    loginSuccess: false,
-    registerSuccess: false,
-  });
+const [message, setMessage] = useState({
+  loginMessage: "",
+  registerMessage: "",
+  loginSuccess: false,
+  registerSuccess: false,
+})
 
 //수정 후 코드
- const [loginInfo, setLoginInfo] = useState({
-    email: '',
-    password: '',
-    isEmailValid: false,
-    isPasswordValid: false,
-  });
+const [loginInfo, setLoginInfo] = useState({
+  email: "",
+  password: "",
+  isEmailValid: false,
+  isPasswordValid: false,
+})
 
-  const [registerInfo, setRegisterInfo] = useState({
-    email: '',
-    password: '',
-    isEmailValid: false,
-    isPasswordValid: false,
-  });
+const [registerInfo, setRegisterInfo] = useState({
+  email: "",
+  password: "",
+  isEmailValid: false,
+  isPasswordValid: false,
+})
 
-  const [registerMessage, setRegisterMessage] = useState({
-    registerMessage: '',
-    registerSuccess: false,
-  });
+const [registerMessage, setRegisterMessage] = useState({
+  registerMessage: "",
+  registerSuccess: false,
+})
 
-  const [loginMessage, setLoginMessage] = useState({
-    loginMessage: '',
-    loginSuccess: false,
-  });
+const [loginMessage, setLoginMessage] = useState({
+  loginMessage: "",
+  loginSuccess: false,
+})
 ```
 
 #### 2.3 handleSubmit
@@ -259,105 +259,105 @@ const handleLoginChange = (e) => {
 
 ```jsx
 //수정 전 코드
-const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    const { email, password } = loginInfo;
-    postSignIn({
-      email,
-      password,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        let loginMessage = '';
-        if (data.statusCode >= 400) {
-          loginMessage = data.message;
-          setMessage((prev) => {
-            return {
-              ...prev,
-              loginMessage,
-              loginSuccess: false,
-            };
-          });
-          return;
-        }
-        navigate('/todo');
-        localStorage.setItem('access_token', data.access_token);
-        setMessage((prev) => {
+const handleLoginSubmit = e => {
+  e.preventDefault()
+  const { email, password } = loginInfo
+  postSignIn({
+    email,
+    password,
+  })
+    .then(response => response.json())
+    .then(data => {
+      let loginMessage = ""
+      if (data.statusCode >= 400) {
+        loginMessage = data.message
+        setMessage(prev => {
           return {
             ...prev,
-            loginMessage: '로그인에 성공했습니다',
-            loginSuccess: true,
-          };
-        });
-      });
-  };
+            loginMessage,
+            loginSuccess: false,
+          }
+        })
+        return
+      }
+      navigate("/todo")
+      localStorage.setItem("access_token", data.access_token)
+      setMessage(prev => {
+        return {
+          ...prev,
+          loginMessage: "로그인에 성공했습니다",
+          loginSuccess: true,
+        }
+      })
+    })
+}
 
-  const handleRegisterSubmit = (e) => {
-    e.preventDefault();
-    const { email, password } = registerInfo;
-    postSignUp({
-      email,
-      password,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.statusCode >= 400) {
-          setMessage((prev) => {
-            return {
-              ...prev,
-              registerMessage: data.message,
-              registerSuccess: false,
-            };
-          });
-          return;
-        }
-        setMessage((prev) => {
+const handleRegisterSubmit = e => {
+  e.preventDefault()
+  const { email, password } = registerInfo
+  postSignUp({
+    email,
+    password,
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.statusCode >= 400) {
+        setMessage(prev => {
           return {
             ...prev,
-            registerMessage: '회원가입에 성공했습니다',
-            registerSuccess: true,
-          };
-        });
-      });
-  };
+            registerMessage: data.message,
+            registerSuccess: false,
+          }
+        })
+        return
+      }
+      setMessage(prev => {
+        return {
+          ...prev,
+          registerMessage: "회원가입에 성공했습니다",
+          registerSuccess: true,
+        }
+      })
+    })
+}
 
 //수정 후 코드
 
-  const exceptionTest = (data, setMessage, process) => {
-    if (data.statusCode >= 400) {
-      setMessage((prev) => {
-        return {
-          ...prev,
-          message: data.message,
-          success: false,
-        };
-      });
-      return;
-    }
-    if (process == 'login') {
-      navigate('/todo');
-      localStorage.setItem('access_token', data.access_token);
-    }
-    setMessage((prev) => {
+const exceptionTest = (data, setMessage, process) => {
+  if (data.statusCode >= 400) {
+    setMessage(prev => {
       return {
         ...prev,
-        message: `${'login' ? '로그인' : '회원가입'}에 성공했습니다`,
-        success: true,
-      };
-    });
-  };
-
-  const handleSubmit = (info, process, setMessage) => {
-    const { email, password } = info;
-    const obj = { email, password };
-    if (process == 'login') {
-      postSignIn(obj).then((data) => {
-        exceptionTest(data, setMessage, process);
-      });
-    } else {
-      postSignUp(obj).then((data) => {
-        exceptionTest(data, setMessage, process);
-      });
+        message: data.message,
+        success: false,
+      }
+    })
+    return
+  }
+  if (process == "login") {
+    navigate("/todo")
+    localStorage.setItem("access_token", data.access_token)
+  }
+  setMessage(prev => {
+    return {
+      ...prev,
+      message: `${"login" ? "로그인" : "회원가입"}에 성공했습니다`,
+      success: true,
     }
-  };
+  })
+}
+
+const handleSubmit = (info, process, setMessage) => {
+  const { email, password } = info
+  const obj = { email, password }
+  if (process == "login") {
+    postSignIn(obj).then(data => {
+      exceptionTest(data, setMessage, process)
+    })
+  } else {
+    postSignUp(obj).then(data => {
+      exceptionTest(data, setMessage, process)
+    })
+  }
+}
 ```

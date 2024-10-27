@@ -1,10 +1,9 @@
 ---
-title: '원티드 프리온보딩 사전과제 8편'
+title: "원티드 프리온보딩 사전과제 8편"
 date: 2022-10-12
 slug: 원티드-프리온보딩-과제-8
 tags: [원티드프리온보딩]
 series: 원티드프리온보딩
-
 ---
 
 ## 최적화를 위한 todo Btn 컴포넌트 분리
@@ -129,41 +128,41 @@ export default memo(TodoItem);
 ```javascript
 const exceptionTest = useCallback(
   (data, setMessage, process) => {
-    let result = { message: '', success: false };
+    let result = { message: "", success: false }
     if (data.statusCode >= 400) {
       if (data.statusCode === 401) {
         result = {
-          message: '이메일 혹은 비밀번호를 확인해주세요.',
+          message: "이메일 혹은 비밀번호를 확인해주세요.",
           success: false,
-        };
+        }
       } else {
         result = {
           message: data.message,
           success: false,
-        };
+        }
       }
     } else {
-      if (process === 'login') {
-        navigate('/todo');
-        localStorage.setItem('access_token', data.access_token);
+      if (process === "login") {
+        navigate("/todo")
+        localStorage.setItem("access_token", data.access_token)
       }
       result = {
         message: `${
-          process === 'login' ? '로그인' : '회원가입'
+          process === "login" ? "로그인" : "회원가입"
         }에 성공했습니다`,
         success: true,
-      };
+      }
     }
 
-    setMessage((prev) => {
+    setMessage(prev => {
       return {
         ...prev,
         ...result,
-      };
-    });
+      }
+    })
   },
   [navigate]
-);
+)
 ```
 
 #### 해결방법
@@ -222,59 +221,59 @@ Error객체를 상속할 때는 반드시 message를 전달해주어야하기에
 
 class HTTPError extends Error {
   constructor(statusCode, message) {
-    super(message);
-    this.name = `HTTPError`;
-    this.statusCode = statusCode;
+    super(message)
+    this.name = `HTTPError`
+    this.statusCode = statusCode
   }
 
   get codeToErrorMessage() {
-    let result = { message: '', success: false };
+    let result = { message: "", success: false }
     switch (this.statusCode) {
       case 400:
         result = {
-          message: '동일한 이메일이 이미 존재합니다.',
+          message: "동일한 이메일이 이미 존재합니다.",
           success: false,
-        };
-        break;
+        }
+        break
       case 401:
         result = {
-          message: '이메일 혹은 비밀번호를 확인해주세요.',
+          message: "이메일 혹은 비밀번호를 확인해주세요.",
           success: false,
-        };
-        break;
+        }
+        break
       case 404:
         result = {
-          message: '해당 사용자가 존재하지 않습니다.',
+          message: "해당 사용자가 존재하지 않습니다.",
           success: false,
-        };
-        break;
+        }
+        break
       default:
-        throw new Error('Unknown Error');
+        throw new Error("Unknown Error")
     }
-    return result;
+    return result
   }
 }
 
 export async function postSignUp(email, password) {
   try {
     const res = await fetch(`${BASE_URL}/auth/signup`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
         password,
       }),
-    });
+    })
     if (!res.ok) {
-      console.log(`${res.status}에러가 발생했습니다`);
-      throw new HTTPError(res.status, res.statusText);
+      console.log(`${res.status}에러가 발생했습니다`)
+      throw new HTTPError(res.status, res.statusText)
     } else {
-      return await res.json();
+      return await res.json()
     }
   } catch (e) {
-    return e.codeToErrorMessage;
+    return e.codeToErrorMessage
   }
 }
 ```
@@ -287,44 +286,44 @@ export async function postSignUp(email, password) {
 //auth.jsx
 
 const handleLoginSubmit = useCallback(
-    (info) => {
-      const { email, password } = info;
-      postSignIn(email, password) //
-        .then((data) => {
-          if ('access_token' in data) {
-            navigate('/todo');
-            localStorage.setItem('access_token', data.access_token);
-          } else {
-            setLoginMessage((prev) => {
-              return {
-                ...prev,
-                ...data,
-              };
-            });
-          }
-        });
-    },
-    [navigate]
-  );
-
-const handleRegisterSubmit = useCallback((info) => {
-    const { email, password } = info;
-    postSignUp(email, password) //
-      .then((data) => {
-        if ('access_token' in data) {
-          data = {
-            message: `회원가입에 성공했습니다`,
-            success: true,
-          };
+  info => {
+    const { email, password } = info
+    postSignIn(email, password) //
+      .then(data => {
+        if ("access_token" in data) {
+          navigate("/todo")
+          localStorage.setItem("access_token", data.access_token)
+        } else {
+          setLoginMessage(prev => {
+            return {
+              ...prev,
+              ...data,
+            }
+          })
         }
-        setRegisterMessage((prev) => {
-          return {
-            ...prev,
-            ...data,
-          };
-        });
-      });
-  }, []);
+      })
+  },
+  [navigate]
+)
+
+const handleRegisterSubmit = useCallback(info => {
+  const { email, password } = info
+  postSignUp(email, password) //
+    .then(data => {
+      if ("access_token" in data) {
+        data = {
+          message: `회원가입에 성공했습니다`,
+          success: true,
+        }
+      }
+      setRegisterMessage(prev => {
+        return {
+          ...prev,
+          ...data,
+        }
+      })
+    })
+}, [])
 ```
 
 이렇게 에러와 성공, 로그인과 회원가입을 로직을 분리하니까 더 보기 좋고 이해가 편해졌다.

@@ -1,5 +1,5 @@
 ---
-title: '자바스크립트의 두가지 복사 방법'
+title: "자바스크립트의 두가지 복사 방법"
 date: 2022-09-07
 slug: javascript-복사-방법
 tags: [javascript, 문법]
@@ -14,7 +14,7 @@ tags: [javascript, 문법]
 객체는 key와 value로 이루어진 자료형으로 자바스크립트에서 primitive 자료형을 제외한 함수, 배열과 같은 모든 자료형이 객체로 이루어져있다고 할 수 있다.
 
 ```javascript
-const obj = { name: 'Youngjun Choi' };
+const obj = { name: "Youngjun Choi" }
 ```
 
 객체는 어떠한 데이터와 관련된 상태(property)와 행동(method) 으로 구성되어있다. 객체는 원시형 데이터들에 비해 크기가 크기 때문에 메모리 cell에 직접 저장되어있는 것이 아니라 Heap에 저장되어있고 객체를 저장한 변수에는 저장되어있는 주소가 저장되어 있다. 그렇기에 앞서 공부했던 자료형들과 다르게 작동한다.
@@ -26,9 +26,9 @@ const obj = { name: 'Youngjun Choi' };
 #### Copy by value
 
 ```javascript
-let a = 'a';
-let b = a; //b=1
-b = 'b'; //b=3,a=1
+let a = "a"
+let b = a //b=1
+b = "b" //b=3,a=1
 ```
 
 a의 값을 b가 복사한 후에 b의 값을 변경했을 때, a는 영향을 받지 않는다.
@@ -38,9 +38,9 @@ a의 값을 b가 복사한 후에 b의 값을 변경했을 때, a는 영향을 �
 #### Copy by Reference
 
 ```javascript
-let a = { firstName: 'Youngjun', lastName: 'Choi' }; //a는 오브젝트의 주소값을 저장
-let b = a; //b에 오브젝트의 주소값을 복사
-b.lastName = 'Park'; //b={firstName:"Youngjun",lastName:"Park"}, a={firstName:"Youngjun",lastName:"Park"}
+let a = { firstName: "Youngjun", lastName: "Choi" } //a는 오브젝트의 주소값을 저장
+let b = a //b에 오브젝트의 주소값을 복사
+b.lastName = "Park" //b={firstName:"Youngjun",lastName:"Park"}, a={firstName:"Youngjun",lastName:"Park"}
 ```
 
 위와 달리 object의 주소값을 저장하던 a의 값을 복사한 후에 b의 값을 변경했을 때, 다른 결과를 나타낸다.

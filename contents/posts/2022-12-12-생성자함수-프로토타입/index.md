@@ -1,5 +1,5 @@
 ---
-title: '생성자 함수, 프로토타입'
+title: "생성자 함수, 프로토타입"
 date: 2022-12-12
 slug: javascript-constructor-prototype
 tags: [javascript, 객체지향]
@@ -21,7 +21,7 @@ this를 공부하고 나서 생성자 함수, 프로토타입, 클래스에 대�
 const position = {
   x: 1,
   y: 2,
-};
+}
 ```
 
 ### 2) 생성자 함수
@@ -33,34 +33,34 @@ const position = {
 Object 생성자 함수와 new 키워드를 이용하면 빈 객체를 생성한다. 이후에 객체를 만들고 내부에 속성과 메소드를 추가할 수 있다.
 
 ```javascript
-const person = new Object();
+const person = new Object()
 
-person.name = `lee`;
+person.name = `lee`
 person.sayHello = function () {
-  console.log(this.name);
-};
+  console.log(this.name)
+}
 ```
 
 Object 생성자 함수 외에 빌트인 객체들도 new와 함께 생성할 수 있다.
 
 ```javascript
-const strObj = new String('youngjun');
-console.log(strObj);
+const strObj = new String("youngjun")
+console.log(strObj)
 
-const numObj = new Number(123);
-console.log(numObj);
+const numObj = new Number(123)
+console.log(numObj)
 
-const boolObj = new Boolean(true);
-console.log(boolObj);
+const boolObj = new Boolean(true)
+console.log(boolObj)
 
-const func = new Function('x', 'return x*x');
-console.log(func);
+const func = new Function("x", "return x*x")
+console.log(func)
 
-const arr = new Array(1, 2, 3);
-console.log(arr);
+const arr = new Array(1, 2, 3)
+console.log(arr)
 
-const regExp = new RegExp(/ab+c/i);
-console.log(regExp);
+const regExp = new RegExp(/ab+c/i)
+console.log(regExp)
 ```
 
 #### 2-2) 사용자 정의 생성자 함수
@@ -69,13 +69,13 @@ console.log(regExp);
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
+    console.log(this.name)
+  }
 }
-const person = new Person('youngjun');
-console.log(person);
+const person = new Person("youngjun")
+console.log(person)
 ```
 
 ### 3) Object.create()
@@ -83,11 +83,11 @@ console.log(person);
 프로토타입의 상속을 이용해 객체를 만드는 방법으로 자체적으로는 빈 객체를 만들지만, prototype으로 전달 받은 속성과 메소드를 사용할 수 있다.
 
 ```javascript
-const obj1 = { a: 1, b: 2 };
-const obj2 = Object.create(obj1);
+const obj1 = { a: 1, b: 2 }
+const obj2 = Object.create(obj1)
 
-console.log(obj2); // {}
-console.log(obj2.a); // 1
+console.log(obj2) // {}
+console.log(obj2.a) // 1
 ```
 
 ## 😁 생성자 함수의 필요성과 동작방식
@@ -100,31 +100,31 @@ console.log(obj2.a); // 1
 
 ```javascript
 const person1 = {
-  name: 'youngjun',
+  name: "youngjun",
   sayHello() {
-    console.log(this.name);
+    console.log(this.name)
   },
-};
+}
 
 const person2 = {
-  name: 'minjae',
+  name: "minjae",
   sayHello() {
-    console.log(this.name);
+    console.log(this.name)
   },
-};
+}
 ```
 
 이렇게 여러 개의 유사한 객체가 필요할 때, **템플릿을 만들고 필요한 부분만 주입받아서 사용하면 편하지 않을까**라는 생각이 든다. 이럴 때 사용할 수 있는 것이 바로 생성자 함수다.
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
+    console.log(this.name)
+  }
 }
-const person = new Person('youngjun');
-console.log(person);
+const person = new Person("youngjun")
+console.log(person)
 ```
 
 ### 동작방식
@@ -133,13 +133,13 @@ console.log(person);
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
+    console.log(this.name)
+  }
 }
-const person = new Person('youngjun');
-console.log(person);
+const person = new Person("youngjun")
+console.log(person)
 ```
 
 #### 1) 인스턴스 생성
@@ -149,13 +149,13 @@ console.log(person);
 ```javascript
 function Person(name) {
   // 1) 인스턴스 생성, this와 바인딩
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
+    console.log(this.name)
+  }
 }
-const person = new Person('youngjun');
-console.log(person);
+const person = new Person("youngjun")
+console.log(person)
 ```
 
 #### 2) 인스턴스 초기화
@@ -166,13 +166,13 @@ this에 바인딩 되어있기 때문에 이후에 this를 이용해 초기화 �
 function Person(name) {
   // 1) 인스턴스 생성, this와 바인딩
   // 2) 인스턴스 초기화
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
+    console.log(this.name)
+  }
 }
-const person = new Person('youngjun');
-console.log(person);
+const person = new Person("youngjun")
+console.log(person)
 ```
 
 #### 3) 인스턴스 반환
@@ -183,34 +183,34 @@ console.log(person);
 function Person(name) {
   // 1) 인스턴스 생성, this와 바인딩
   // 2) 인스턴스 초기화
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
+    console.log(this.name)
+  }
   // 3) 인스턴스 반환
 }
 
 // 명시적으로 다른 객체 반환
 function Person(name) {
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
-  return {};
+    console.log(this.name)
+  }
+  return {}
 }
-const person = new Person('youngjun');
-console.log(person); // {}
+const person = new Person("youngjun")
+console.log(person) // {}
 
 //명시적으로 원시값 반환
 function Person(name) {
-  this.name = name;
+  this.name = name
   this.sayHello = function () {
-    console.log(this.name);
-  };
-  return 'hi';
+    console.log(this.name)
+  }
+  return "hi"
 }
-const person = new Person('youngjun');
-console.log(person); // Person { name: 'youngjun', sayHello: [Function (anonymous)] }
+const person = new Person("youngjun")
+console.log(person) // Person { name: 'youngjun', sayHello: [Function (anonymous)] }
 ```
 
 ## ⛏ 내부 메소드
@@ -223,8 +223,8 @@ console.log(person); // Person { name: 'youngjun', sayHello: [Function (anonymou
 
 ```javascript
 function bar() {}
-bar.a = 1;
-console.log(bar.a); // 1
+bar.a = 1
+console.log(bar.a) // 1
 ```
 
 하지만 함수 객체는 일반 객체와 다르게 호출할 수 있고 생성자 함수로도 작동할 수 있다. 그이유는 함수 객체에는 일반 객체의 내부 메소드뿐만 아니라 **[[call]]과 [[construct]]**가 있기 때문이다. 이때 중요한 부분은 모든 함수는 [[call]]을 가지고 있어 호출이 가능하지만, `모든 함수가 [[construct]]를 가지는 것은 아니다`라는 것이다. 이렇게 [[construct]]를 가지는 함수를 constructor라고 부르고 [[construct]]를 가지지 않는 함수는 non-constructor라고 부르며 다음과 같이 정리된다.
@@ -238,31 +238,31 @@ console.log(bar.a); // 1
 ```javascript
 // 일반함수를 생성자함수로
 function add(x, y) {
-  return x + y;
+  return x + y
 }
 
-let inst = new add();
-console.log(inst); //add{}
+let inst = new add()
+console.log(inst) //add{}
 
 function createUser(name, role) {
-  return { name, role };
+  return { name, role }
 }
 
-inst = new createUser('lee', 'admin');
-console.log(inst); // { name: 'lee', role: 'admin' }
+inst = new createUser("lee", "admin")
+console.log(inst) // { name: 'lee', role: 'admin' }
 
 //생성자함수를 일반함수로
 function Circle(radius) {
-  this.radius = radius;
+  this.radius = radius
   this.getDiameter = function () {
-    return 2 * this.radius;
-  };
+    return 2 * this.radius
+  }
 }
 
-const circle = Circle(5);
-console.log(circle); // undefined
-console.log(radius); // 5
-console.log(getDiameter()); //10
+const circle = Circle(5)
+console.log(circle) // undefined
+console.log(radius) // 5
+console.log(getDiameter()) //10
 ```
 
 위 코드에서 일반함수를 생성자함수로 사용할 수 있는 것을 볼 수 있고, 생성자 함수를 일반 함수로 사용하는 경우에서는 this가 window가 되어 전역객체의 속성과 메소드로 등록된 것을 볼 수 있다.
@@ -276,16 +276,16 @@ new.target은 new연산자와 함께 호출되면 함수 자신을 가리키고,
 ```javascript
 function Circle(radius) {
   if (!new.target) {
-    return new Circle(radius);
+    return new Circle(radius)
   }
-  this.radius = radius;
+  this.radius = radius
   this.getDiameter = function () {
-    return 2 * this.radius;
-  };
+    return 2 * this.radius
+  }
 }
 
-const circle = Circle(5);
-console.log(circle.getDiameter());
+const circle = Circle(5)
+console.log(circle.getDiameter())
 ```
 
 위 코드에서 new 키워드 없이 호출되었지만 new.target을 이용해 생성자함수로 다시 호출시켜 객체를 만든 것을 볼 수 있다.
@@ -310,8 +310,8 @@ console.log(circle.getDiameter());
 
 ```javascript
 function Foo() {}
-console.log(Foo.prototype); // {}
-console.log(Foo.prototype.constructor); // [Function: Foo]
+console.log(Foo.prototype) // {}
+console.log(Foo.prototype.constructor) // [Function: Foo]
 ```
 
 ### 인스턴스 생성
@@ -319,15 +319,16 @@ console.log(Foo.prototype.constructor); // [Function: Foo]
 생성자함수에 new 키워드를 이용해 인스턴스를 만들면 인스턴스는 프로토타입의 메소드를 상속 받아 사용할 수 있다. 생성자함수와 다르게 `[[prototype]]`에 직접 접근할 수는 없지만 `__proto__`를 이용해서 간접적으로 접근할 수 있다.
 
 ![instance](instance.jpeg)
+
 ```javascript
 function Foo() {}
-Foo.prototype.val = 'hi';
-console.log(Foo.prototype); // { val: 'hi' }
-console.log(Foo.prototype.constructor); // [Function: Foo]
+Foo.prototype.val = "hi"
+console.log(Foo.prototype) // { val: 'hi' }
+console.log(Foo.prototype.constructor) // [Function: Foo]
 
-const obj1 = new Foo();
-console.log(obj1); // Foo {}
-console.log(obj1.val); // hi
+const obj1 = new Foo()
+console.log(obj1) // Foo {}
+console.log(obj1.val) // hi
 ```
 
 obj1의 생성자 함수에서 val 속성을 정의한 적이 없지만 프로토타입에 정의한 것을 상속받아 obj1에서도 사용이 가능한 것을 알 수 있다.
@@ -341,26 +342,26 @@ obj1의 생성자 함수에서 val 속성을 정의한 적이 없지만 프로�
 하지만 `__proto__` 속성이 존재하지 않는 경우도 있기 때문에 프로토타입을 접근할 때 `Object.getPrototypeof`를, 프로토타입을 교체할 때는 `Object.setPrototypeOf`를 사용하는 것이 좋다.
 
 ```javascript
-const obj = Object.create(null); // 상속을 이용해 만든 객체
-console.log(obj.__proto__); // undefined
+const obj = Object.create(null) // 상속을 이용해 만든 객체
+console.log(obj.__proto__) // undefined
 
-console.log(Object.getPrototypeOf(obj)); //null
+console.log(Object.getPrototypeOf(obj)) //null
 
-const child = {};
-const parent = { x: 1 };
+const child = {}
+const parent = { x: 1 }
 
-Object.setPrototypeOf(child, parent);
-console.log(obj2.x); // 1
+Object.setPrototypeOf(child, parent)
+console.log(obj2.x) // 1
 ```
 
 `prototype`은 **함수**가 가지는 속성으로 생성자 함수가 만들 인스턴스의 프로토타입을 가진다. 그렇기 때문에 생성자 함수가 되지 못하는, [[construct]]가 없는 화살표함수나 메소드 축약표현은 `prototype`속성을 가지지 않고, 프로토타입을 생성하지 않는 것을 알 수 있다.
 
 ```javascript
-const Person = (name) => {
-  this.name = name;
-};
+const Person = name => {
+  this.name = name
+}
 
-console.log(Person.hasOwnProperty('prototype')); //false
+console.log(Person.hasOwnProperty("prototype")) //false
 ```
 
 둘을 정리하면 `__proto__`는 **모든 객체**가 가지고 있지만 `prototype`은 **생성자 함수만** 가지고 있는 차이를 가진다.
@@ -372,9 +373,9 @@ console.log(Person.hasOwnProperty('prototype')); //false
 ### 사용자 정의 생성자 함수
 
 ```javascript
-console.log(Foo.prototype); // {}
+console.log(Foo.prototype) // {}
 function Foo(name) {
-  this.name = name;
+  this.name = name
 }
 ```
 
@@ -393,8 +394,8 @@ function Foo(name) {
 객체 리터럴은 **Object.Prototype**을 프로토타입으로 갖는다.
 
 ```javascript
-const obj = {};
-console.log(obj.constructor === Object);
+const obj = {}
+console.log(obj.constructor === Object)
 ```
 
 ### 2) Object 생성자 함수
@@ -402,8 +403,8 @@ console.log(obj.constructor === Object);
 Object 생성자함수도 객체 리터럴과 동일하게 **Object.Prototype**을 프로토 타입으로 갖는다.
 
 ```javascript
-const Obj = new Object();
-console.log(obj.constructor === Object);
+const Obj = new Object()
+console.log(obj.constructor === Object)
 ```
 
 ### 3) 생성자 함수에 의해 생성된 객체
@@ -412,18 +413,18 @@ console.log(obj.constructor === Object);
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
 }
 
 Person.prototype.sayHello = function () {
-  console.log(`${this.name}`);
-};
+  console.log(`${this.name}`)
+}
 
-const me = new Person('Lee'); // Lee
-const you = new Person('Kim'); // Kim
-me.sayHello();
+const me = new Person("Lee") // Lee
+const you = new Person("Kim") // Kim
+me.sayHello()
 
-console.log(me.hasOwnProperty); // [Function: hasOwnProperty]
+console.log(me.hasOwnProperty) // [Function: hasOwnProperty]
 ```
 
 me와 you는 프로토타입의 sayHello를 상속 받아 사용할 수 있다. 하지만 분명 바인딩된 Person.Prototype에는 새로 추가한 sayHello와 constructor만 속성으로 가지고 있어야하는데 <u>어떻게 Object.Prototype의 hasOwnProperty도 상속 받을 수 있을까?</u>
@@ -436,18 +437,18 @@ me와 you는 프로토타입의 sayHello를 상속 받아 사용할 수 있다. 
 
 ```javascript
 function Person(name, gender) {
-  this.name = name;
-  this.gender = gender;
+  this.name = name
+  this.gender = gender
   this.sayHello = function () {
-    console.log('Hi! my name is ' + this.name);
-  };
+    console.log("Hi! my name is " + this.name)
+  }
 }
-const foo = new Person('Lee', 'male');
+const foo = new Person("Lee", "male")
 
-console.log(foo.__proto__ === Person.prototype); // true
-console.log(Person.prototype.__proto__ === Object.prototype); // true
-console.log(Person.__proto__ === Function.prototype); // true
-console.log(Function.prototype.__proto__ === Object.prototype); // true
+console.log(foo.__proto__ === Person.prototype) // true
+console.log(Person.prototype.__proto__ === Object.prototype) // true
+console.log(Person.__proto__ === Function.prototype) // true
+console.log(Function.prototype.__proto__ === Object.prototype) // true
 ```
 
 위 코드를 보면 첫번째 호출에서 생성자함수와 인스턴스가 같은 프로토타입을 가리키는 것을 알 수 있고, Person 생성자 함수의 프로토타입의 프로토타입이 Object.prototype이라는 것을 알 수 있다. 또한 빌트인 생성자함수인 Function의 프로토타입도 Object.Prototype인 것을 알 수 있다.
@@ -460,23 +461,23 @@ console.log(Function.prototype.__proto__ === Object.prototype); // true
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
 }
 
 Person.prototype.sayHello = function () {
-  console.log(`Prototype ${this.name}`);
-};
+  console.log(`Prototype ${this.name}`)
+}
 
-const me = new Person('lee');
+const me = new Person("lee")
 me.sayHello = function () {
-  console.log(`instance ${this.name}`);
-};
+  console.log(`instance ${this.name}`)
+}
 
-me.sayHello(); // instance lee
+me.sayHello() // instance lee
 
-delete me.sayHello;
+delete me.sayHello
 
-me.sayHello(); // Prototype lee
+me.sayHello() // Prototype lee
 ```
 
 sayHello를 프로토타입 체인에서 찾을 때 가장 먼저 인스턴스에서 속성을 찾기 때문에 먼저` instance lee`가 호출된 것을 볼 수 있고, 인스턴스의 sayHello를 제거한 후에는 없기 때문에 프로토타입 체인을 이용해 Person.prototype의 sayHello를 이용해 `Prototype lee`가 호출된 것을 볼 수 있다.
@@ -493,19 +494,19 @@ sayHello를 프로토타입 체인에서 찾을 때 가장 먼저 인스턴스�
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
 }
 
 Person.prototype = {
   constructor: Person,
   sayHello() {
-    console.log(this.name);
+    console.log(this.name)
   },
-};
+}
 
-const me = new Person('lee');
+const me = new Person("lee")
 
-console.log(me.constructor === Person);
+console.log(me.constructor === Person)
 ```
 
 ### 2) 인스턴스로 프로토타입 바꾸기
@@ -514,22 +515,22 @@ console.log(me.constructor === Person);
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
 }
 
-const me = new Person('lee');
+const me = new Person("lee")
 
 const parent = {
   sayHello() {
-    console.log(this.name);
+    console.log(this.name)
   },
-};
+}
 
-Object.setPrototypeOf(me, parent);
-me.sayHello();
+Object.setPrototypeOf(me, parent)
+me.sayHello()
 
-console.log(me.constructor === Person); // false
-console.log(me.constructor === Object); // true
+console.log(me.constructor === Person) // false
+console.log(me.constructor === Object) // true
 ```
 
 위 코드에서 me의 프로토타입이 바뀌면서 기존의 Person.Prototype이 constructor가 아니라 parent의 constructor인 Object.Prototype이 constructor가 되는 것을 볼 수 있다.
@@ -544,35 +545,35 @@ Instanceof 키워드는 **객체의 프로토타입 체인에 생성자함수의
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
 }
 
-const me = new Person('Choi');
+const me = new Person("Choi")
 
-console.log(me instanceof Person); // true
-console.log(me instanceof Object); // true
+console.log(me instanceof Person) // true
+console.log(me instanceof Object) // true
 
-const parent = {};
-Object.setPrototypeOf(me, parent);
-console.log(me instanceof Person); // false
-console.log(me instanceof Object); // true
+const parent = {}
+Object.setPrototypeOf(me, parent)
+console.log(me instanceof Person) // false
+console.log(me instanceof Object) // true
 ```
 
 위 코드에서 `Object.setPrototypeOf`을 이용해 me의 prototype이 바뀐 것을 볼 수 있다. 바뀌고 난 후에 `instanceOf`를 이용해 확인했을 때, 기존 프로토타입이었던 Person.Prototype이 프로토타입 체인에서 사라지게 되어 false로, 새롭게 부모가 된 객체 리터럴의 Prototype인 Object.Prototype은 true 나오는 것을 볼 수 있다.
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
 }
 
-const parent = { x: 1 };
-Person.prototype = parent;
+const parent = { x: 1 }
+Person.prototype = parent
 
-const me = new Person('hi');
+const me = new Person("hi")
 
-console.log(parent.constructor === Person); //false
-console.log(me); // { name: 'hi' }
-console.log(me instanceof Person); //true
+console.log(parent.constructor === Person) //false
+console.log(me) // { name: 'hi' }
+console.log(me instanceof Person) //true
 ```
 
 이 부분을 정리하면서 헷갈렸던 것은 생성자 함수의 프로토타입을 parent로 바꾼다고 해서 생성자 함수를 이용해 만들어진 인스턴스의 모습에 영향을 주지 않는다는 것이었다. 인스턴스의 프로토타입만 바뀔 뿐, me자체가 `{ x: 1 }`이 되는 것이 아니다. 그리고 새롭게 바꾼 프로토타입의 constructor가 인스턴스의 생성자함수를 가리키고 있지 않아도 프로토타입 체인에 존재한다면 instanceOf는 true를 반환한다.
@@ -582,13 +583,13 @@ console.log(me instanceof Person); //true
 객체를 만드는 방법 중 마지막 방법이었던 `Object.create()`는 프로토타입을 직접 정해서 새로운 객체를 생성한다. 직접 상속을 정해 주는 것이기 때문에 new 키워드 없이도 객체를 만들 수 있고, 객체 리터럴도 상속받을 수 있다.
 
 ```javascript
-const obj1 = Object.create(null);
-console.log(obj.toString()); // TypeError: obj.toString is not a function
+const obj1 = Object.create(null)
+console.log(obj.toString()) // TypeError: obj.toString is not a function
 
-const parent = { x: 1 };
-const child = Object.create(parent);
-console.log(child.x); // 1
-console.log(Object.getPrototypeOf(child) === parent); // true
+const parent = { x: 1 }
+const child = Object.create(parent)
+console.log(child.x) // 1
+console.log(Object.getPrototypeOf(child) === parent) // true
 ```
 
 위 코드에서 null을 프로토타입으로 만든 객체는 프로토타입의 종점에 해당하기 때문에 Object.Prototype의 내부 메소드를 사용할 수 없는 것을 볼 수 있다. Object.create에 Parent를 이용해 child를 만들면, child는 parent의 x속성을 상속 받고 parent를 프로토타입으로 가지고 있는 것을 볼 수 있다.
@@ -599,26 +600,27 @@ console.log(Object.getPrototypeOf(child) === parent); // true
 
 ```javascript
 function Person(name) {
-  this.name = name;
+  this.name = name
 }
 
 Person.prototype.sayHello = function () {
-  console.log(this.name);
-};
+  console.log(this.name)
+}
 
-Person.staticProp = `static Prop`;
+Person.staticProp = `static Prop`
 Person.staticMethod = function () {
-  console.log('static method');
-};
+  console.log("static method")
+}
 
-const me = new Person('choi');
-Person.staticMethod(); // static method
-me.staticMethod(); // TypeError: me.staticMethod is not a function
+const me = new Person("choi")
+Person.staticMethod() // static method
+me.staticMethod() // TypeError: me.staticMethod is not a function
 ```
 
 위 코드에서 생성자 함수 자체가 가지는 속성과 메소드는 인스턴스에서 사용할 수 없는 것을 볼 수 있다. 앞서 본 그림에서 상속은 프로토타입 체인을 이용해 이루어지기 때문에 생성자 함수 자체가 가지고 있는 static 속성과 메소드는 상속받을 수 없다는 것을 알 수 있다.
 
 ![static](static.png)
+
 ## 🤗 객체 속 속성 존재 여부 확인과 나열
 
 ### 1) 속성 존재 여부
@@ -627,22 +629,22 @@ me.staticMethod(); // TypeError: me.staticMethod is not a function
 
 ```javascript
 const Person = {
-  name: 'choi',
-};
+  name: "choi",
+}
 
-console.log('name' in Person); // true
-console.log('hasOwnProperty' in Person); // true
+console.log("name" in Person) // true
+console.log("hasOwnProperty" in Person) // true
 ```
 
 만약 객체가 가지고 있는 고유 속성만 확인하고 싶다면 hasOwnProperty를 이용해서 확인할 수 있다.
 
 ```javascript
 const Person = {
-  name: 'choi',
-};
+  name: "choi",
+}
 
-console.log(Person.hasOwnProperty('name')); // true
-console.log(Person.hasOwnProperty('hasOwnProperty')); //false
+console.log(Person.hasOwnProperty("name")) // true
+console.log(Person.hasOwnProperty("hasOwnProperty")) //false
 ```
 
 ### 2) 나열하기
@@ -651,13 +653,13 @@ console.log(Person.hasOwnProperty('hasOwnProperty')); //false
 
 ```javascript
 const Person = {
-  name: 'choi',
-};
+  name: "choi",
+}
 
-Object.setPrototypeOf(Person, { x: 1 });
+Object.setPrototypeOf(Person, { x: 1 })
 
 for (const key in Person) {
-  console.log(key);
+  console.log(key)
 }
 // name
 // x
@@ -667,15 +669,16 @@ for (const key in Person) {
 
 ```javascript
 const Person = {
-  name: 'choi',
-};
+  name: "choi",
+}
 
-Object.setPrototypeOf(Person, { x: 1 });
+Object.setPrototypeOf(Person, { x: 1 })
 
-console.log(Object.keys(Person)); // ["name"]
-console.log(Object.values(Person)); // ["choi"]
+console.log(Object.keys(Person)) // ["name"]
+console.log(Object.values(Person)) // ["choi"]
 ```
 
 [참고]
+
 - [모던 자바스크립트 딥다이브](http://www.yes24.com/Product/Goods/92742567)
 - [프로토타입](https://poiemaweb.com/js-prototype)

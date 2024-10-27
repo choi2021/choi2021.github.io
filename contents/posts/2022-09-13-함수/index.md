@@ -1,9 +1,10 @@
 ---
-title: '함수'
+title: "함수"
 date: 2022-09-13
 slug: javascript-function
-tags: ['javascript']
+tags: ["javascript"]
 ---
+
 ### 시작하기 앞서
 
 매일 TIL로 짤막하게 공부한 내용을 정리하려 했지만 하나의 주제의 맥락을 다 담기 힘든 부분이 있어서 작은 주제 하나씩 정하고 글을 써나가 보려 한다.
@@ -15,7 +16,7 @@ tags: ['javascript']
 
 ```javascript
 function multiply(a, b) {
-  return a * b;
+  return a * b
 }
 ```
 
@@ -35,15 +36,15 @@ function multiply(a, b) {
 ```javascript
 //함수 표현식의 첫번재 방법
 let multiply = function (a, b) {
-  return a * b;
-};
+  return a * b
+}
 
 //함수 표현식의 두번째 방법:arrow function
 mulitiply = (a, b) => {
-  return a * b;
-};
+  return a * b
+}
 
-multiply = (a, b) => a * b;
+multiply = (a, b) => a * b
 ```
 
 함수는 오브젝트이기 때문에 함수를 가리키고 있는 주소 값을 가진다. 이 주소 값을 변수에 할당한 문이 "함수표현식"이며 구조는 할당하는 부분을 제외하고 선언문과 유사하다. 함수 표현식에는 위와 같은 방법 외에 <b>화살표 함수 (arrow function)</b>으로도 나타낼 수 있다. 화살표 함수는 함수 표현식보다 간략하게 표현할 수 있는 방법으로 인자를 먼저 작성한 후 =>와 함께 코드블럭을 작성한다. 이때 코드블럭 내 특정한 일을 하지 않고 반환 값만 존재한다면 생략하고 반환할 값만 작성할 수도 있다.
@@ -54,20 +55,20 @@ multiply = (a, b) => a * b;
 
 ```javascript
 function multiply(a, b) {
-  console.log(arguments); //[1,2]
-  return a * b;
+  console.log(arguments) //[1,2]
+  return a * b
 }
-mulitply(1, 2);
+mulitply(1, 2)
 ```
 
 다음과 같이 전달된 인자들은 arguments 배열에 각 요소로 저장되어 있으며, 얼마나 많은 인자들이 들어올지 모를 때는 다음과 같이 <b>Rest parameters</b> 을 사용할 수 있다.
 
 ```javascript
 function showRestParams(a, b, ...numbers) {
-  console.log(arguments); //[1,2,3,4]
-  console.log(numbers); //[3,4]
+  console.log(arguments) //[1,2,3,4]
+  console.log(numbers) //[3,4]
 }
-mulitply(1, 2, 3, 4);
+mulitply(1, 2, 3, 4)
 ```
 
 ## 4) 콜백함수 (Callback function)
@@ -85,8 +86,8 @@ mulitply(1, 2, 3, 4);
 
 ```javascript
 setTimeout(() => {
-  console.log(Date.now());
-}, 1000);
+  console.log(Date.now())
+}, 1000)
 ```
 
 setTimeOut은 정해진 시간 후에 전달 받은 함수를 실행하는 브라우저 API로 <b>고차함수</b>, 전달된 함수를 <b>콜백함수 (일급함수) </b>라 할 수 있다.
@@ -99,22 +100,22 @@ setTimeOut은 정해진 시간 후에 전달 받은 함수를 실행하는 브�
 
 ```javascript
 function changeToRedColor(a) {
-  a = 'Red';
-  return a;
+  a = "Red"
+  return a
 }
-const prevColor = 'blue';
-changeToRedColor(prevColor); //반환은 "Red"이지만 prevColor는 "blue"
+const prevColor = "blue"
+changeToRedColor(prevColor) //반환은 "Red"이지만 prevColor는 "blue"
 ```
 
 원시형의 경우에는 전달 받은 인자의 값을 변경하더라도 블럭 외부의 변수에 영향을 끼치지 않는다. 문제는 전달한 인자가 오브젝트일 때 생긴다.
 
 ```javascript
 function changeToRedColor(a) {
-  a.color = 'Red';
+  a.color = "Red"
 }
-const prevColor = { color: 'blue' };
-changeToRedColor(color);
-console.log(a); //{color:"Red"}
+const prevColor = { color: "blue" }
+changeToRedColor(color)
+console.log(a) //{color:"Red"}
 ```
 
 위는 반환도 하지 않았지만 오브젝트 속성값이 바뀌어 버렸다. 이처럼 함수 내부에서 받은 인자를 바꾸는 코드는 예상하지 못할 에러를 만들 수 있으므로, 꼭 인자의 값을 수정해서 사용해야 한다면 이를 해결하기 위해 `{...obj}`와 같이 새롭게 오브젝트를 만드는 방법을 통해 사용해야 한다.

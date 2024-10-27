@@ -1,5 +1,5 @@
 ---
-title: 'Intersection observer'
+title: "Intersection observer"
 date: 2022-09-10
 slug: intersection-observer
 tags: [javascript, 브라우저, web]
@@ -47,10 +47,10 @@ threshold는 관찰하는 영역에 어느정도 들어왔을 때, callback함�
 
 ```javascript
 const callback = (entries, observer) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     // observer과 관찰하는 대상의 정보
-  });
-};
+  })
+}
 ```
 
 callback 함수는 entries와 observer를 인자로 받는 함수로, entries는 관찰하고 있는 대상의 정보를 담고 있는 배열이다. 배열 내에 관찰하는 item들의 객체에는 **boundingClientRect**로 관찰하고 있는 요소의 위치,크기와 같은 정보를 주고, **intersectionRatio**로 현재 영역에 얼마만큼 들어와 있는지, **isIntersecting**으로 앞으로 들어올 대상인지 이미 보이고 있어서 사라질 지를 알려준다. 이외에도 대상의 다양한 정보들을 담고 있다.
@@ -60,11 +60,11 @@ observer를 쓰는 예제는 아직 보지 못해 사용하지 않았다.
 ### Observer
 
 ```javascript
-const observer = new IntersectionObserver(callback, option);
-const sections = document.querySelectorAll('.section');
-sections.forEach((section) => {
-  observer.observe(section);
-});
+const observer = new IntersectionObserver(callback, option)
+const sections = document.querySelectorAll(".section")
+sections.forEach(section => {
+  observer.observe(section)
+})
 ```
 
 앞서 알아본 callback과 option을 observer에 전달하면 observer.observe()의 인자로 대상을 전달해 관찰할 수 있다.

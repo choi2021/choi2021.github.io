@@ -1,5 +1,5 @@
 ---
-title: '포트폴리오 제작-메인 페이지 제작'
+title: "포트폴리오 제작-메인 페이지 제작"
 date: 2022-09-29
 slug: 포트폴리오-제작-메인-페이지-제작
 tags: [포트폴리오]
@@ -12,37 +12,37 @@ series: 포트폴리오
 
 ```javascript
 function Main(props) {
-  const [selectedSection, setSelectedSection] = useState(null);
-  const onClick = (event) => {
+  const [selectedSection, setSelectedSection] = useState(null)
+  const onClick = event => {
     const {
       dataset: { section },
-    } = event.currentTarget;
-    console.log(section);
-    setSelectedSection(section);
-  };
+    } = event.currentTarget
+    console.log(section)
+    setSelectedSection(section)
+  }
   return (
     <MainLayout>
       <Header></Header>
       <List>
-        <SectionBox data-section={'About me'} onClick={onClick}>
+        <SectionBox data-section={"About me"} onClick={onClick}>
           <AboutPreview></AboutPreview>
         </SectionBox>
-        <SectionBox data-section='Skills' onClick={onClick}>
+        <SectionBox data-section="Skills" onClick={onClick}>
           <SkillsPreview />
         </SectionBox>
-        <SectionBox data-section='Projects' onClick={onClick}>
+        <SectionBox data-section="Projects" onClick={onClick}>
           <ProjectsPreview></ProjectsPreview>
         </SectionBox>
-        <SectionBox data-section='Contact' onClick={onClick}>
+        <SectionBox data-section="Contact" onClick={onClick}>
           <ContactPreview></ContactPreview>
         </SectionBox>
       </List>
       <Navbar selected={selectedSection} setSelected={setSelectedSection} />
     </MainLayout>
-  );
+  )
 }
 
-export default Main;
+export default Main
 ```
 
 간단하게 추가한 로직이지만 조금 의문이 들었던 점은 Javascript로만 개발할 때는 **부모 component 하나에 이벤트 위임**을 해서 자식 tag에 dataset의 값을 받아오는 식으로 연결이 가능했는데, react에서는 불가능했다.
@@ -52,13 +52,13 @@ export default Main;
 동일한 로직이 Navbar의 버튼들에도 적용하기 위해 prop으로 각각 전달해주었다. 이때 NavButton에도 일일이 전달해주고 싶지 않아 컴포넌트 밖에 전달해줄 정보를 담은 배열을 만들고 mapping으로 component를 만들어 코드 중복을 줄였다. 리액트 함수형 component는 렌더링 되면서 처음부터 다시 함수 내부를 실행하기 때문에 새로 업데이트가 필요없을 것 같아, 배열을 컴포넌트 밖에 만들어 두었다.
 
 ```javascript
-const buttons = ['About me', 'Skills', 'Projects', 'Contact'];
+const buttons = ["About me", "Skills", "Projects", "Contact"]
 
 function Navbar({ selected, setSelected }) {
-  console.log(selected);
+  console.log(selected)
   return (
     <NavbarLayout>
-      {buttons.map((button) => (
+      {buttons.map(button => (
         <NavButton
           key={button}
           name={button}
@@ -67,10 +67,10 @@ function Navbar({ selected, setSelected }) {
         ></NavButton>
       ))}
     </NavbarLayout>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar
 ```
 
 ## 2. About me, SKills, Contact 스타일링과 애니메이션
@@ -91,28 +91,28 @@ const overlayVariant = {
   exit: {
     opacity: 0,
   },
-};
+}
 
 function Overlay({ selected, setSelected }) {
-  const onClick = () => setSelected(null);
+  const onClick = () => setSelected(null)
   return (
     <OverlayLayout
       // onClick={onClick}
       variants={overlayVariant}
-      initial='invisible'
-      animate='visible'
-      exit='exit'
+      initial="invisible"
+      animate="visible"
+      exit="exit"
     >
       <ExitBtn onClick={onClick}>
-        <i className='fa-solid fa-xmark'></i>
+        <i className="fa-solid fa-xmark"></i>
       </ExitBtn>
-      {selected === 'About me' && <About></About>}
-      {selected === 'Skills' && <Skills></Skills>}
+      {selected === "About me" && <About></About>}
+      {selected === "Skills" && <Skills></Skills>}
     </OverlayLayout>
-  );
+  )
 }
 
-export default Overlay;
+export default Overlay
 ```
 
 About me 페이지를 만들면서 이미지를 불러올 수 없어서 조금 애먹었지만 [indol.log](https://velog.io/@ingdol2/React-image-%EA%B2%BD%EB%A1%9C-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0) 님블로그를 참고해서 해결할 수 있었다.

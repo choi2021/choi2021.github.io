@@ -1,5 +1,5 @@
 ---
-title: '모으잡-DB연결과 크롤링 기능 연결'
+title: "모으잡-DB연결과 크롤링 기능 연결"
 date: 2022-11-29
 slug: 모으잡-DB연결과-크롤링-기능-연결
 tags: [사이드프로젝트, 모으잡]
@@ -16,47 +16,47 @@ DB는 이전 채용공고들을 받아오는 getJobs, 새로운 채용공고를 
 
 ```typescript
 export interface DBService {
-  addJob: (job: ModifiedJobType) => Promise<void>;
-  getJobs: () => Promise<ModifiedJobsType>;
-  removeJob: (job: ModifiedJobType) => Promise<void>;
-  updateJob: (job: ModifiedJobType) => Promise<void>;
+  addJob: (job: ModifiedJobType) => Promise<void>
+  getJobs: () => Promise<ModifiedJobsType>
+  removeJob: (job: ModifiedJobType) => Promise<void>
+  updateJob: (job: ModifiedJobType) => Promise<void>
 }
 
 export class DBServiceImpl implements DBService {
-  db: Database;
+  db: Database
   constructor(private app: FirebaseApp) {
-    this.db = getDatabase(this.app);
+    this.db = getDatabase(this.app)
   }
 
   addJob(job: ModifiedJobType) {
-    const userId = localStorage.getItem(UserId);
-    return set(ref(this.db, `users/${userId}/jobs/${job.id}`), job);
+    const userId = localStorage.getItem(UserId)
+    return set(ref(this.db, `users/${userId}/jobs/${job.id}`), job)
   }
 
   updateJob(job: ModifiedJobType) {
-    const userId = localStorage.getItem(UserId);
-    return set(ref(this.db, `users/${userId}/jobs/${job.id}`), job);
+    const userId = localStorage.getItem(UserId)
+    return set(ref(this.db, `users/${userId}/jobs/${job.id}`), job)
   }
 
   async getJobs(): Promise<ModifiedJobsType> {
-    const userId = localStorage.getItem(UserId);
-    const dbRef = ref(this.db);
+    const userId = localStorage.getItem(UserId)
+    const dbRef = ref(this.db)
     return get(child(dbRef, `users/${userId}/jobs`))
-      .then((snapshot) => {
+      .then(snapshot => {
         if (snapshot.exists()) {
-          return snapshot.val();
+          return snapshot.val()
         } else {
-          return [];
+          return []
         }
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch(error => {
+        console.error(error)
+      })
   }
 
   removeJob(job: ModifiedJobType) {
-    const userId = localStorage.getItem(UserId);
-    return remove(ref(this.db, `users/${userId}/jobs/${job.id}`));
+    const userId = localStorage.getItem(UserId)
+    return remove(ref(this.db, `users/${userId}/jobs/${job.id}`))
   }
 }
 ```
@@ -67,27 +67,27 @@ getJobs를 사용하는 곳은 JobList 컴포넌트로 메인페이지와 상세
 
 ```tsx
 export default function JobList() {
-  const { query } = useRouter();
-  const { id } = query;
-  const dbService = useDBService();
+  const { query } = useRouter()
+  const { id } = query
+  const dbService = useDBService()
   const { data: jobs, isLoading } = useQuery(
-    ['jobs'],
+    ["jobs"],
     () => dbService.getJobs(),
     {
       select: (data: ModifiedJobsType) => {
-        return Object.values(data).filter((item) => item.id !== id);
+        return Object.values(data).filter(item => item.id !== id)
       },
     }
-  );
+  )
 
   if (isLoading) {
-    return <div>채용공고를 불러오는 중입니다...</div>;
+    return <div>채용공고를 불러오는 중입니다...</div>
   }
   return (
     <Wrapper>
-      {jobs && jobs.map((job) => <JobItem key={job.id} job={job} />)}
+      {jobs && jobs.map(job => <JobItem key={job.id} job={job} />)}
     </Wrapper>
-  );
+  )
 }
 ```
 
@@ -97,31 +97,31 @@ deleteJob은 JobList로 불러온 공고들의 삭제버튼에 연결되어야 �
 
 ```tsx
 export default function JobItem({ job }: { job: ModifiedJobType }) {
-  const { name, platform, img, checkPercentage } = job;
-  const queryClient = useQueryClient();
-  const dbService = useDBService();
+  const { name, platform, img, checkPercentage } = job
+  const queryClient = useQueryClient()
+  const dbService = useDBService()
   const { mutate } = useMutation(
     async (job: ModifiedJobType) => {
-      return dbService.removeJob(job);
+      return dbService.removeJob(job)
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['jobs']);
+        queryClient.invalidateQueries(["jobs"])
       },
-      onError: (error) => {
+      onError: error => {
         if (error instanceof AxiosError) {
-          const { response } = error;
+          const { response } = error
           if (response) {
-            console.log(response);
+            console.log(response)
           }
         }
       },
     }
-  );
+  )
   const handleDelete = () => {
-    mutate(job);
-  };
-  const over50Percent = checkPercentage >= 0.5;
+    mutate(job)
+  }
+  const over50Percent = checkPercentage >= 0.5
 
   return (
     <Wrapper>
@@ -130,14 +130,14 @@ export default function JobItem({ job }: { job: ModifiedJobType }) {
         <MdRemove />
       </DeleteBtn>
       <Link href={`/jobs/${job.id}`}>
-        <Img src={img} alt='job' width='200' height='180' priority />
+        <Img src={img} alt="job" width="200" height="180" priority />
         <Box>
           <h1>{name}</h1>
           <h3>{platform}</h3>
         </Box>
       </Link>
     </Wrapper>
-  );
+  )
 }
 ```
 
@@ -295,28 +295,28 @@ export default function DescriptionItem({
 기존 서버 로직을 pages/api 내부로 가져왔는데, express를 사용하지 않고 node.js와 next내부 기능을 이용해서 서버 로직을 구성했다.
 
 ```typescript
-import { NextApiRequest, NextApiResponse } from 'next';
-import Crawler from './service/CrawlerService';
+import { NextApiRequest, NextApiResponse } from "next"
+import Crawler from "./service/CrawlerService"
 
-const crawler = new Crawler();
-const POST = 'POST';
+const crawler = new Crawler()
+const POST = "POST"
 
 const JobAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === POST) {
-    const url = req.body.url;
+    const url = req.body.url
     try {
-      const job = await crawler.createJob(url);
-      res.status(201).json(job);
+      const job = await crawler.createJob(url)
+      res.status(201).json(job)
     } catch (error) {
-      const Err = error as { message: string };
-      res.status(400).json({ message: Err?.message });
+      const Err = error as { message: string }
+      res.status(400).json({ message: Err?.message })
     }
   } else {
-    res.status(404).json({ message: '잘못된 접근입니다' });
+    res.status(404).json({ message: "잘못된 접근입니다" })
   }
-};
+}
 
-export default JobAPI;
+export default JobAPI
 ```
 
 api에서 크롤링 프로그램을 진행하기 위해서는 내부 파일로 crawlerService를 만들어야 해서 간단히 추가했다. 기존 원티드 채용공고를 크롤링을 하면서 가진 문제점은 '•'을 기준으로 자르다 보니 "-"로 정리해놓은 채용공고가 처리가 안되는 문제점이 있었다. 그리고 보다 세부적인 분석을 위해서 JQuery의 selector를 어떻게 처리하는지를 조금 더 공부해 원티드 채용공고에서 필요한 정보가 특정 class Name의 section 안에 다 있다는 것을 확인했다.

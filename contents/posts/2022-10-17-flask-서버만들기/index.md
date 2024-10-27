@@ -1,5 +1,5 @@
 ---
-title: '모으잡-flask이용해 SSR서버만들기'
+title: "모으잡-flask이용해 SSR서버만들기"
 date: 2022-10-17
 slug: 모으잡-flask-SSR서버만들기
 tags: [사이드프로젝트, 모으잡]

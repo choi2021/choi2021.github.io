@@ -1,5 +1,5 @@
 ---
-title: '모으잡-기획, 디자인 수정'
+title: "모으잡-기획, 디자인 수정"
 date: 2022-12-23
 slug: 모으잡-기획-디자인-수정
 tags: [사이드프로젝트, 모으잡]
@@ -74,74 +74,74 @@ export interface DBService {
 ```tsx
 //useJobs.tsx
 
-const JOBS_KEY = 'jobs';
+const JOBS_KEY = "jobs"
 
 export const useJobs = (user?: User) => {
-  const dbService = useDBService();
-  const queryClient = useQueryClient();
-  const { query } = useRouter();
-  const { id } = query;
-  const jobId = typeof id === 'string' ? id : id?.join() || '';
+  const dbService = useDBService()
+  const queryClient = useQueryClient()
+  const { query } = useRouter()
+  const { id } = query
+  const jobId = typeof id === "string" ? id : id?.join() || ""
 
   const getJobs = useQuery([JOBS_KEY, user], async () => {
-    return dbService.getJobs(user);
-  });
+    return dbService.getJobs(user)
+  })
   const addOrUpdateJob = useMutation(
     async (job: Job) => {
-      return dbService.addOrUpdateJob(job, user);
+      return dbService.addOrUpdateJob(job, user)
     },
     {
       onSuccess: () => {
-        !user && queryClient.invalidateQueries([JOBS_KEY]);
-        user && queryClient.invalidateQueries([JOBS_KEY, user]);
+        !user && queryClient.invalidateQueries([JOBS_KEY])
+        user && queryClient.invalidateQueries([JOBS_KEY, user])
       },
     }
-  );
+  )
 
   const deleteJob = useMutation(
     async (job: Job) => {
-      return dbService.removeJob(job, user);
+      return dbService.removeJob(job, user)
     },
     {
       onSuccess: () => {
-        !user && queryClient.invalidateQueries([JOBS_KEY]);
-        user && queryClient.invalidateQueries([JOBS_KEY, user]);
+        !user && queryClient.invalidateQueries([JOBS_KEY])
+        user && queryClient.invalidateQueries([JOBS_KEY, user])
       },
-      onError: (error) => {
+      onError: error => {
         if (error instanceof AxiosError) {
-          const { response } = error;
+          const { response } = error
           if (response) {
-            console.log(response);
+            console.log(response)
           }
         }
       },
     }
-  );
+  )
 
   const getFilteredJobs = useQuery(
     [JOBS_KEY, user],
     () => dbService.getJobs(user),
     {
       select: (data: Jobs) => {
-        return Object.values(data).filter((item) => item.id !== id);
+        return Object.values(data).filter(item => item.id !== id)
       },
-      onError: (error) => {
-        console.error(error);
+      onError: error => {
+        console.error(error)
       },
     }
-  );
+  )
 
   const getJobById = useQuery([JOBS_KEY, user], () => dbService.getJobs(user), {
     select: (data: Jobs) => {
-      return data[jobId];
+      return data[jobId]
     },
-    onError: (error) => {
-      console.error(error);
+    onError: error => {
+      console.error(error)
     },
-  });
+  })
 
-  return { getJobs, addOrUpdateJob, deleteJob, getJobById, getFilteredJobs };
-};
+  return { getJobs, addOrUpdateJob, deleteJob, getJobById, getFilteredJobs }
+}
 ```
 
 useJobs에서는 user가 있을 경우 따로 받아 와야 하므로 react-query API의 key값으로 user를 포함 시켰다. 결과적으로 user의 유무로 처리하다 보니 기존의 user가 undefined일 때를 위해 따로 처리해주던 로직을 제외해 깔끔하게 나타낼 수 있었다.
@@ -205,40 +205,40 @@ export default function JobList({ session }: { session: Session | undefined }) {
 
 ```tsx
 export default function JobItem({ job }: { job: Job }) {
-  const { name, platform, img, checkPercentage } = job;
-  const { pathname, push } = useRouter();
-  const isHome = pathname === '/';
-  const [message, setMessage] = useState('');
-  const { data: session } = useSession();
-  const user = session?.user;
-  const isLoggedin = !!session;
-  const { addOrUpdateJob, deleteJob } = useJobs(user);
+  const { name, platform, img, checkPercentage } = job
+  const { pathname, push } = useRouter()
+  const isHome = pathname === "/"
+  const [message, setMessage] = useState("")
+  const { data: session } = useSession()
+  const user = session?.user
+  const isLoggedin = !!session
+  const { addOrUpdateJob, deleteJob } = useJobs(user)
   const handleDelete = () => {
     deleteJob.mutate(job, {
       onSuccess: () => {
-        setMessage('성공적으로 제거했습니다');
+        setMessage("성공적으로 제거했습니다")
       },
       onSettled: () => {
-        setTimeout(() => setMessage(''), 4000);
+        setTimeout(() => setMessage(""), 4000)
       },
-    });
-  };
+    })
+  }
   const handleAdd = () => {
     addOrUpdateJob.mutate(job, {
       onSuccess: () => {
-        setMessage('성공적으로 추가했습니다');
+        setMessage("성공적으로 추가했습니다")
       },
       onSettled: () => {
-        setTimeout(() => setMessage(''), 4000);
+        setTimeout(() => setMessage(""), 4000)
       },
-    });
-  };
+    })
+  }
 
   const handleClick = () => {
-    const link = redirectPath(pathname, job.id);
-    push(link);
-  };
-  const over50Percent = checkPercentage >= 0.5;
+    const link = redirectPath(pathname, job.id)
+    push(link)
+  }
+  const over50Percent = checkPercentage >= 0.5
 
   return (
     <>
@@ -257,7 +257,7 @@ export default function JobItem({ job }: { job: Job }) {
         <ImgBox onClick={handleClick}>
           <Img
             src={img}
-            alt='job'
+            alt="job"
             sizes='(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"'
@@ -272,7 +272,7 @@ export default function JobItem({ job }: { job: Job }) {
       </Wrapper>
       {message && <Modal message={message} />}
     </>
-  );
+  )
 }
 ```
 
@@ -285,88 +285,88 @@ export default function JobItem({ job }: { job: Job }) {
 ```tsx
 export default function AdminForm({ isNew, initialValue }: AdminFormProps) {
   const { job, onAdd, onChange, onDelete, onUpdateDescription } =
-    useForm(initialValue);
-  const [message, setMessage] = useState('');
+    useForm(initialValue)
+  const [message, setMessage] = useState("")
 
   const DescriptionList: DescriptionListType[] = [
     {
       name: JOB_SCHEMA.MAIN_WORK,
-      title: '주요 업무',
+      title: "주요 업무",
       value: job.mainWork,
     },
     {
       name: JOB_SCHEMA.QUALIFICATION,
-      title: '자격 요건',
+      title: "자격 요건",
       value: job.qualification,
     },
 
     {
       name: JOB_SCHEMA.PREFERENTIAL,
-      title: '우대 사항',
+      title: "우대 사항",
       value: job.preferential,
     },
-  ];
+  ]
 
-  const title = isNew ? '새로운 공고 추가하기' : '공고 수정하기';
-  const BtnText = isNew ? '추가하기' : '수정하기';
+  const title = isNew ? "새로운 공고 추가하기" : "공고 수정하기"
+  const BtnText = isNew ? "추가하기" : "수정하기"
 
-  const { addOrUpdateJob } = useJobs();
-  const { mutate } = addOrUpdateJob;
+  const { addOrUpdateJob } = useJobs()
+  const { mutate } = addOrUpdateJob
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { dataset } = e.currentTarget;
-    if (dataset.tag !== 'form') {
-      return;
+    e.preventDefault()
+    const { dataset } = e.currentTarget
+    if (dataset.tag !== "form") {
+      return
     }
     mutate(job, {
       onSuccess: () => {
         setMessage(
-          isNew ? '성공적으로 추가되었습니다' : '성공적으로 수정되었습니다'
-        );
+          isNew ? "성공적으로 추가되었습니다" : "성공적으로 수정되었습니다"
+        )
       },
-      onError: (error) => {
+      onError: error => {
         if (error instanceof AxiosError) {
-          const { response } = error;
+          const { response } = error
           if (response) {
-            setMessage(`${response.statusText} 에러가 발생했습니다`);
+            setMessage(`${response.statusText} 에러가 발생했습니다`)
           }
         }
       },
       onSettled: () => {
         setTimeout(() => {
-          setMessage('');
-        }, 4000);
+          setMessage("")
+        }, 4000)
       },
-    });
-  };
+    })
+  }
 
   return (
     <Wrapper>
       ...
-      <form data-tag='form' onSubmit={handleSubmit}>
+      <form data-tag="form" onSubmit={handleSubmit}>
         <AdminFormItem
           name={JOB_SCHEMA.NAME}
-          title='회사 명'
-          type='text'
+          title="회사 명"
+          type="text"
           value={job.name}
           onChange={onChange}
         />
         <AdminFormItem
           name={JOB_SCHEMA.URL}
-          title='URL'
-          type='text'
+          title="URL"
+          type="text"
           value={job.url}
           onChange={onChange}
         />
         <AdminFormItem
           name={JOB_SCHEMA.IMG}
-          title='이미지'
-          type='text'
+          title="이미지"
+          type="text"
           value={job.img}
           onChange={onChange}
         />
         <Select onChange={onChange} platform={job.platform} />
-        {DescriptionList.map((item) => (
+        {DescriptionList.map(item => (
           <AdminDescriptionList
             name={item.name}
             title={item.title}
@@ -380,51 +380,51 @@ export default function AdminForm({ isNew, initialValue }: AdminFormProps) {
       </form>
       {message && <Modal message={message} />}
     </Wrapper>
-  );
+  )
 }
 
 //useForm.tsx
 
 export const useForm = (initialValue: Job) => {
-  const [job, setJob] = useState<Job>(initialValue);
+  const [job, setJob] = useState<Job>(initialValue)
   const onAdd = (name: DescriptionNameType) => {
-    setJob((prev) => {
-      const list = prev[name];
-      const newItem: DescriptionType = { text: '', checked: false, id: uuid() };
-      return { ...prev, [name]: [...list, newItem] };
-    });
-  };
+    setJob(prev => {
+      const list = prev[name]
+      const newItem: DescriptionType = { text: "", checked: false, id: uuid() }
+      return { ...prev, [name]: [...list, newItem] }
+    })
+  }
   const onDelete = (name: DescriptionNameType, id: string) => {
-    setJob((prev) => {
-      const list = prev[name].filter((item) => item.id !== id);
-      return { ...prev, [name]: list };
-    });
-  };
+    setJob(prev => {
+      const list = prev[name].filter(item => item.id !== id)
+      return { ...prev, [name]: list }
+    })
+  }
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.currentTarget;
-    setJob((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.currentTarget
+    setJob(prev => ({ ...prev, [name]: value }))
+  }
 
   const onUpdateDescription = (
     name: DescriptionNameType,
     value: string,
     id: string
   ) => {
-    setJob((prev) => {
-      const updated = prev[name].map((item) => {
+    setJob(prev => {
+      const updated = prev[name].map(item => {
         if (item.id === id) {
-          return { ...item, text: value };
+          return { ...item, text: value }
         }
-        return item;
-      });
-      return { ...prev, [name]: updated };
-    });
-  };
+        return item
+      })
+      return { ...prev, [name]: updated }
+    })
+  }
 
-  return { job, onAdd, onDelete, onChange, onUpdateDescription };
-};
+  return { job, onAdd, onDelete, onChange, onUpdateDescription }
+}
 ```
 
 위와 같이 기획을 수정한 후에 홈페이지를 구성했을 때 다음과 같이 나타났다.
@@ -439,7 +439,6 @@ export const useForm = (initialValue: Job) => {
 [admin 페이지 ( `/admin` ), admin 상세 페이지 (`/admin/:id`) ]
 
 ![admin](./페이지3.png)
-
 
 ## 🎨 디자인 수정
 
@@ -479,7 +478,7 @@ export default function AdminDescriptionList({
   onChange,
   onNewDescriptionChange,
 }: AdminDescriptionListProps) {
-  const isString = typeof value === 'string';
+  const isString = typeof value === "string"
   return (
     <Wrapper>
       ...
@@ -492,7 +491,7 @@ export default function AdminDescriptionList({
       )}
       {!isString && (
         <ul>
-          {value.map((item) => (
+          {value.map(item => (
             <AdminDescriptionItem
               key={item.id}
               name={name}
@@ -504,16 +503,16 @@ export default function AdminDescriptionList({
         </ul>
       )}
     </Wrapper>
-  );
+  )
 }
 
 // TextArea.tsx
 export default function TextArea({ name, text, onChange }: TextAreaType) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.currentTarget;
-    onChange(name, value);
-  };
-  return <Wrapper required value={text} onChange={handleChange}></Wrapper>;
+    const { value } = e.currentTarget
+    onChange(name, value)
+  }
+  return <Wrapper required value={text} onChange={handleChange}></Wrapper>
 }
 ```
 
@@ -576,6 +575,7 @@ export const normalizeDescriptions = (
 
 [수정한 전체공고 추가 페이지 (`/admin/new`)]
 ![수정한 전체공고 추가 페이지](./수정한전체공고추가페이지.gif)
+
 ## 마치며
 
 아직 하고 싶은 것도 부족한 것도 많은 프로젝트라 매번 새로운 시도들을 할 때 즐겁다. 물론 현실은 이력서를 쓰고 떨어지는 날들의 연속이지만 `무조건 개발자가 된다`는 생각으로 지금 내가 있는 자리에서 더 잘할 수 있는 방법들을 반영하다 보면 정말 원하는 회사에서 내가 원하는 서비스를 만들고 있지 않을까. 내일 나를 한번 더 믿어보겠다는 맘으로 개발을 즐기며 이 시간을 버텨나가려 한다.

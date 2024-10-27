@@ -1,5 +1,5 @@
 ---
-title: '모으잡-서버사이드 랜더링을 이용한 성능 개선'
+title: "모으잡-서버사이드 랜더링을 이용한 성능 개선"
 date: 2022-12-25
 slug: 모으잡-서버사이드-랜더링을-이용한-성능-개선
 tags: [사이드프로젝트, 모으잡]
@@ -35,6 +35,7 @@ CSR로 무조건 SEO 최적화를 못하는 것은 아니다. [원티드 프리�
 [수정 전 light house 검색엔진 점수]
 
 ![검색엔진](검색엔진점수.png)
+
 ### Next-seo 적용과 OG 문제점
 
 개선을 위해서 `head`내용을 더 간편하게 사용할 수 있는 `Next-SEO`라이브러리를 이용해 meta태그와 SNS공유를 위한 Open Graph 내용을 추가했다. `Next-seo`는 `DefaultSeo`라는 컴포넌트가 있어 공통되는 부분을 한 곳에서 정의할 수 있다.
@@ -42,41 +43,41 @@ CSR로 무조건 SEO 최적화를 못하는 것은 아니다. [원티드 프리�
 ```tsx
 // _app.tsx
 const defaultSEO = {
-  defaultTitle: '모으잡',
-  titleTemplate: '%s | 모으잡', // %s로 페이지마다 title을 전달해줄 수 있어
-  description: '원하는 회사의 채용공고를 모으고 비교해보자',
-  canonical: 'https://moejob.vercel.app/',
-  keywords: ['moejob', 'choi2021', '모으잡'],
-  icon: '/favicon.ico',
+  defaultTitle: "모으잡",
+  titleTemplate: "%s | 모으잡", // %s로 페이지마다 title을 전달해줄 수 있어
+  description: "원하는 회사의 채용공고를 모으고 비교해보자",
+  canonical: "https://moejob.vercel.app/",
+  keywords: ["moejob", "choi2021", "모으잡"],
+  icon: "/favicon.ico",
   openGraph: {
-    type: 'website',
-    locale: 'ko_KR',
-    url: 'https://moejob.vercel.app',
-    title: '모으잡',
-    site_name: '모으잡',
-    description: '원하는 회사의 채용공고를 모으고 비교해보자',
+    type: "website",
+    locale: "ko_KR",
+    url: "https://moejob.vercel.app",
+    title: "모으잡",
+    site_name: "모으잡",
+    description: "원하는 회사의 채용공고를 모으고 비교해보자",
     images: [
       {
-        url: '/banner.jpg',
+        url: "/banner.jpg",
         width: 285,
         height: 167,
-        alt: '이미지',
+        alt: "이미지",
       },
     ],
   },
-};
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient());
-  const dbService = new DBServiceImpl(firebaseApp);
+  const [queryClient] = useState(() => new QueryClient())
+  const dbService = new DBServiceImpl(firebaseApp)
   return (
     <>
       <DefaultSeo {...defaultSEO} />
       ...
     </>
-  );
+  )
 }
-export default MyApp;
+export default MyApp
 ```
 
 각 페이지마다 내용을 `NextSeo`컴포넌트의 props로 전달해 성능을 다시 검사했을 때 간단하게 SEO 최적화를 할 수 있었다.
@@ -156,16 +157,16 @@ SSR을 적용하기 위해서는 react-query에서 SSR을 적용하는 방법을
 // react-query 공식홈페이지 예시
 
 export async function getStaticProps() {
-  const posts = await getPosts();
-  return { props: { posts } };
+  const posts = await getPosts()
+  return { props: { posts } }
 }
 
 function Posts(props) {
   const { data } = useQuery({
-    queryKey: ['posts'],
+    queryKey: ["posts"],
     queryFn: getPosts,
     initialData: props.posts,
-  });
+  })
 
   // ...
 }
@@ -181,10 +182,10 @@ import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
-} from '@tanstack/react-query';
+} from "@tanstack/react-query"
 
 export default function MyApp({ Component, pageProps }) {
-  const [queryClient] = React.useState(() => new QueryClient());
+  const [queryClient] = React.useState(() => new QueryClient())
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -192,22 +193,22 @@ export default function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </Hydrate>
     </QueryClientProvider>
-  );
+  )
 }
 
 // pages/posts.jsx
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query"
 
 export async function getStaticProps() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery(['posts'], getPosts);
+  await queryClient.prefetchQuery(["posts"], getPosts)
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
-  };
+  }
 }
 ```
 
@@ -251,39 +252,39 @@ export default MyApp;
 ```tsx
 // 기존 Joblist 컴포넌트
 export default function JobList({ session }: { session: Session | undefined }) {
-  const { pathname } = useRouter();
-  const isUser = pathname === '/user' || pathname === '/user/[id]';
-  const user = session?.user;
-  const { getFilteredJobs } = useJobs(isUser ? user : undefined);
-  const { isLoading, data: jobs } = getFilteredJobs;
-  const vacantJobs = jobs?.length === 0;
+  const { pathname } = useRouter()
+  const isUser = pathname === "/user" || pathname === "/user/[id]"
+  const user = session?.user
+  const { getFilteredJobs } = useJobs(isUser ? user : undefined)
+  const { isLoading, data: jobs } = getFilteredJobs
+  const vacantJobs = jobs?.length === 0
   if (isLoading) {
-    return <GuideBox>채용공고를 불러오는 중입니다...</GuideBox>;
+    return <GuideBox>채용공고를 불러오는 중입니다...</GuideBox>
   }
   if (vacantJobs) {
-    return <GuideBox>채용공고가 비어있습니다😉</GuideBox>;
+    return <GuideBox>채용공고가 비어있습니다😉</GuideBox>
   }
 
   return (
     <Wrapper>
-      {jobs && jobs.map((job) => <JobItem key={job.id} job={job} />)}
+      {jobs && jobs.map(job => <JobItem key={job.id} job={job} />)}
     </Wrapper>
-  );
+  )
 }
 
 // 수정한 Joblist 컴포넌트
 
 export default function JobList({ jobs }: JobListProps) {
-  const vacantJobs = jobs?.length === 0 || !jobs;
+  const vacantJobs = jobs?.length === 0 || !jobs
   if (vacantJobs) {
-    return <GuideBox>채용공고가 비어있습니다😉</GuideBox>;
+    return <GuideBox>채용공고가 비어있습니다😉</GuideBox>
   }
 
   return (
     <Wrapper>
-      {!vacantJobs && jobs.map((job) => <JobItem key={job.id} job={job} />)}
+      {!vacantJobs && jobs.map(job => <JobItem key={job.id} job={job} />)}
     </Wrapper>
-  );
+  )
 }
 ```
 
@@ -293,36 +294,36 @@ export default function JobList({ jobs }: JobListProps) {
 // pages/index.tsx
 
 function Home() {
-  const { getJobs } = useJobs();
-  const { data } = getJobs;
+  const { getJobs } = useJobs()
+  const { data } = getJobs
   return (
     <MainLayout>
       <JobSection jobs={data} />
     </MainLayout>
-  );
+  )
 }
 
-export default Home;
+export default Home
 
 export const getServerSideProps = async () => {
-  const queryClient = new QueryClient();
-  const dbService = new DBServiceImpl(firebaseApp);
+  const queryClient = new QueryClient()
+  const dbService = new DBServiceImpl(firebaseApp)
   await queryClient.prefetchQuery<Jobs, AxiosError, Jobs, [string, string]>(
-    [JOBS_KEY, 'all'],
+    [JOBS_KEY, "all"],
     () => dbService.getJobs()
-  );
+  )
 
   return {
     props: { dehydratedState: dehydrate(queryClient) },
-  };
-};
+  }
+}
 
 // pages/jobs/[id].tsx
 
 function Index() {
-  const { getFilteredJobs, getJobById } = useJobs();
-  const { data: job } = getJobById;
-  const { data: allJobs } = getFilteredJobs;
+  const { getFilteredJobs, getJobById } = useJobs()
+  const { data: job } = getJobById
+  const { data: allJobs } = getFilteredJobs
 
   return (
     <>
@@ -337,33 +338,33 @@ function Index() {
         )}
       </MainLayout>
     </>
-  );
+  )
 }
 
-export default Index;
+export default Index
 
 export const getServerSideProps = async (context: NextPageContext) => {
-  const query = context.query;
-  const id = query.id?.toString();
-  const queryClient = new QueryClient();
-  const dbService = new DBServiceImpl(firebaseApp);
+  const query = context.query
+  const id = query.id?.toString()
+  const queryClient = new QueryClient()
+  const dbService = new DBServiceImpl(firebaseApp)
   if (!id) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
       },
-    };
+    }
   }
 
   await queryClient.prefetchQuery<Jobs, AxiosError, Jobs, [string, string]>(
-    [JOBS_KEY, 'all'],
+    [JOBS_KEY, "all"],
     () => dbService.getJobs()
-  );
+  )
 
   return {
     props: { dehydratedState: dehydrate(queryClient) },
-  };
-};
+  }
+}
 ```
 
 이렇게 서버 사이드 렌더링 data-fetching으로 수정하고 다시 확인했을 때 정상적으로 카카오 톡, 페이스북, slack 모두 잘 나오는 것을 볼 수 있었다.

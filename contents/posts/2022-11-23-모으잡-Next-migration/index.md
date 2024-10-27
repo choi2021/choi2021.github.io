@@ -1,5 +1,5 @@
 ---
-title: '모으잡-Next js로 migration, 디자인 수정'
+title: "모으잡-Next js로 migration, 디자인 수정"
 date: 2022-11-23
 slug: 모으잡-Next-js로-migration-디자인-수정
 tags: [사이드프로젝트, 모으잡]
@@ -89,24 +89,23 @@ import Document, {
   NextScript,
   Head,
   Html,
-} from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+} from "next/document"
+import { ServerStyleSheet } from "styled-components"
 
 export default class MyDocument extends Document {
   static async getInitialProps(
     ctx: DocumentContext
   ): Promise<DocumentInitialProps> {
-    const sheet = new ServerStyleSheet();
-    const originalRenderPage = ctx.renderPage;
+    const sheet = new ServerStyleSheet()
+    const originalRenderPage = ctx.renderPage
 
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
-        });
+          enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
+        })
 
-      const initialProps = await Document.getInitialProps(ctx);
+      const initialProps = await Document.getInitialProps(ctx)
       return {
         ...initialProps,
         styles: (
@@ -115,9 +114,9 @@ export default class MyDocument extends Document {
             {sheet.getStyleElement()}
           </>
         ),
-      };
+      }
     } finally {
-      sheet.seal();
+      sheet.seal()
     }
   }
 
@@ -126,12 +125,12 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           <link
-            href='https://fonts.googleapis.com/css2?family=Cabin&display=optional'
-            rel='stylesheet'
+            href="https://fonts.googleapis.com/css2?family=Cabin&display=optional"
+            rel="stylesheet"
           />
           <link
-            href='https://fonts.googleapis.com/css2?family=Raleway&display=optional'
-            rel='stylesheet'
+            href="https://fonts.googleapis.com/css2?family=Raleway&display=optional"
+            rel="stylesheet"
           />
         </Head>
         <body>
@@ -139,7 +138,7 @@ export default class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }
 ```
@@ -207,15 +206,15 @@ urlForm 아래에는 크롤링한 전체 채용공고들을 보여주고 플랫�
 ```tsx
 const Img = styled(Image)`
   width: 100%;
-`;
+`
 
 //next.config.js
 
 module.exports = {
   images: {
-    domains: ['image.wanted.co.kr'],
+    domains: ["image.wanted.co.kr"],
   },
-};
+}
 ```
 
 완성한 모습은 아래 사진과 같다. 개인적으로는 굉장히 만족했고 기능을 내일부터 붙여나가 토요일까지 prototype을 완성해보는 것이 이번 주의 목표다.

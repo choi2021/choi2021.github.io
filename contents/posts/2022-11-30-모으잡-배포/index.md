@@ -1,5 +1,5 @@
 ---
-title: '모으잡-vercel부터 aws까지 배포과정'
+title: "모으잡-vercel부터 aws까지 배포과정"
 date: 2022-11-30
 slug: 모으잡-vercel부터-aws까지-배포과정
 tags: [사이드프로젝트, 모으잡]

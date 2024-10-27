@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 사전과제 2편'
+title: "원티드 프리온보딩 사전과제 2편"
 date: 2022-10-05
 slug: 원티드-프리온보딩-사전과제-과제-2번-3번
 tags: [원티드프리온보딩]
@@ -150,17 +150,17 @@ fetch를 이용해 코딩했기 때문에 에러처리를 catch를 사용해도 
 ```javascript
 //App.jsx
 
-const navigate = useNavigate();
-const [token, setToken] = useState('');
+const navigate = useNavigate()
+const [token, setToken] = useState("")
 useEffect(() => {
-  const prevToken = localStorage.getItem('loginToken');
-  prevToken && setToken(prevToken);
+  const prevToken = localStorage.getItem("loginToken")
+  prevToken && setToken(prevToken)
   if (token) {
-    navigate('/todo');
+    navigate("/todo")
   } else {
-    navigate('/');
+    navigate("/")
   }
-}, [token]);
+}, [token])
 ```
 
 생각보다 간단했지만, 회원가입과 로그인 부분에서 겹치는 부분과 분리가 필요해보여서 내일 4번과 5번 과제까지 마무리 한 후에 컴포넌트화 해볼 예정이다.

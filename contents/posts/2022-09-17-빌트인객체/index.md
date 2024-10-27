@@ -1,5 +1,5 @@
 ---
-title: '빌트인 객체'
+title: "빌트인 객체"
 date: 2022-09-17
 slug: javascript-빌트인-객체
 tags: [javascript]
@@ -20,15 +20,15 @@ tags: [javascript]
 전역 객체라고 불리는 "globalThis"는 Host에 따라 달라진다. 브라우저의 경우는 window를 지칭하고 node의 경우에 module을 가리킨다. 이러한 전역객체가 가지고 있는 메소드는 변수 선언 없이 바로 함수를 사용할 수 있다.
 
 ```javascript
-isFinite(Infinity); //True
-parseInt('12,43'); //12 (문자열을 숫자로 바꿔줘)
+isFinite(Infinity) //True
+parseInt("12,43") //12 (문자열을 숫자로 바꿔줘)
 ```
 
 ## 3. Boolean 객체
 
 ```javascript
-const Truthy = new Boolean(true);
-consol.log(Truthy); //Boolean {true}
+const Truthy = new Boolean(true)
+consol.log(Truthy) //Boolean {true}
 ```
 
 위 코드처럼 객체로 변수를 만들 수 있지만 객체는 원시형 자료형들에 비해 메모리를 많이 차지하기 때문에 그냥 사용하는 게 더 효율이 좋다.
@@ -36,10 +36,10 @@ consol.log(Truthy); //Boolean {true}
 ## 4. Number 객체
 
 ```javascript
-const num = 1234.5678;
-console.log(Number.isNaN(num)); //false
-console.log(num.toFixed(3)); //1234.568 (소숫점아래 세자리까지 반올림 표현)
-console.log(num.toLocaleString('en-US')); //1,234.568 (미국기준 단위 표기로 표현)
+const num = 1234.5678
+console.log(Number.isNaN(num)) //false
+console.log(num.toFixed(3)) //1234.568 (소숫점아래 세자리까지 반올림 표현)
+console.log(num.toLocaleString("en-US")) //1,234.568 (미국기준 단위 표기로 표현)
 ```
 
 유용해 보였던 메소드 세가지를 정리해 보았다.
@@ -51,15 +51,15 @@ console.log(num.toLocaleString('en-US')); //1,234.568 (미국기준 단위 표�
 ## 5. Math 객체
 
 ```javascript
-Math.abs(-100); //100
-Math.ceil(3.5); //4
-Math.floor(3.5); //3
-Math.round(3.5); //4
-Math.trunc(1.543); //1
-Math.max(4, 5, 6, 7, 8); //8
-Math.min(4, 5, 6, 7, 8); //4
-Math.sqrt(25); //5
-Math.random(); //0.23028324902271824
+Math.abs(-100) //100
+Math.ceil(3.5) //4
+Math.floor(3.5) //3
+Math.round(3.5) //4
+Math.trunc(1.543) //1
+Math.max(4, 5, 6, 7, 8) //8
+Math.min(4, 5, 6, 7, 8) //4
+Math.sqrt(25) //5
+Math.random() //0.23028324902271824
 ```
 
 자바스크립트를 배우면서 가장 많이 썼던 빌트인 객체라 하면 Math 객체라고 할 것 같다. 위의 코드에 사용된 메소드를 정리하면 다음과 같다.
@@ -78,29 +78,29 @@ Math.random의 경우 0과 1사이의 랜덤한 값을 반환하기 때문에 �
 
 ```javascript
 function getRandomNum(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.random() * (max - min) + min
 }
 ```
 
 ## 6. String 객체
 
 ```javascript
-const text = 'Good night';
-console.log(text.charAt(4)); //""
-console.log(text.indexOf('l')); //-1
-console.log(text.indexOf('o')); //1
-console.log(text.lastIndexOf('o')); //2
-console.log(text.includes('ight')); //true
-console.log(text.startsWith('go')); //false
-console.log(text.endsWith('ght')); //true
-console.log(text.toUpperCase()); //"GOOD NIGHT"
-console.log(text.toLowerCase()); //"good night"
-console.log(text.substring(0, 3)); //"Goo"
-console.log(text.slice(2, 6)); //"od n"
-console.log(text.trim()); //undefined
-const text2 = '      hi     ';
-console.log(text2.trim()); //"hi"
-console.log(text.split(' ')); //["Good","night"]
+const text = "Good night"
+console.log(text.charAt(4)) //""
+console.log(text.indexOf("l")) //-1
+console.log(text.indexOf("o")) //1
+console.log(text.lastIndexOf("o")) //2
+console.log(text.includes("ight")) //true
+console.log(text.startsWith("go")) //false
+console.log(text.endsWith("ght")) //true
+console.log(text.toUpperCase()) //"GOOD NIGHT"
+console.log(text.toLowerCase()) //"good night"
+console.log(text.substring(0, 3)) //"Goo"
+console.log(text.slice(2, 6)) //"od n"
+console.log(text.trim()) //undefined
+const text2 = "      hi     "
+console.log(text2.trim()) //"hi"
+console.log(text.split(" ")) //["Good","night"]
 ```
 
 string 객체의 메소드는 코딩테스트를 공부하고 정규표현식을 공부하면서 조금씩 익숙해지고 있는 것 같다. 유용한 메소드들을 정리해보면 다음과 같다.
@@ -121,16 +121,16 @@ string 객체의 메소드는 코딩테스트를 공부하고 정규표현식을
 ## 7. Date 객체
 
 ```javascript
-const date = new Date(); //Mon Sep 17 2022 03:04:41 GMT+0900 (한국 표준시)
-new Date('Feb 5,2011'); //Sat Feb 05 2011 00:00:00 GMT+0900 (한국 표준시)
-new Date('2011-2-5'); //Sat Feb 05 2011 00:00:00 GMT+0900 (한국 표준시)
-Date.now(); //1663524375771
-console.log(date.getFullYear()); //2022
-console.log(date.getMonth()); //8
-console.log(date.getDate()); //17
-console.log(date.getDay()); //6
-console.log(date.toString()); //Sat Sep 17 2022 03:07:40 GMT+0900 (한국 표준시)
-console.log(date.toLocaleString('en-US')); //9/17/2022, 3:07:40 AM
+const date = new Date() //Mon Sep 17 2022 03:04:41 GMT+0900 (한국 표준시)
+new Date("Feb 5,2011") //Sat Feb 05 2011 00:00:00 GMT+0900 (한국 표준시)
+new Date("2011-2-5") //Sat Feb 05 2011 00:00:00 GMT+0900 (한국 표준시)
+Date.now() //1663524375771
+console.log(date.getFullYear()) //2022
+console.log(date.getMonth()) //8
+console.log(date.getDate()) //17
+console.log(date.getDay()) //6
+console.log(date.toString()) //Sat Sep 17 2022 03:07:40 GMT+0900 (한국 표준시)
+console.log(date.toLocaleString("en-US")) //9/17/2022, 3:07:40 AM
 ```
 
 Date 객체에서 주로 사용했던 method는 Date.now()로, 컴포넌트나 객체의 값에 id로 전달할 때 자주 사용했다. Date 객체는 자체적으로 시간을 반환하고 객체에 알맞은 문자열의 시간을 넣으면, 그에 해당하는 시간을 반환한다. 유용한 메소드는 다음과 같이 정리된다.

@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 사전과제 1편'
+title: "원티드 프리온보딩 사전과제 1편"
 date: 2022-10-04
 slug: 원티드-프리온보딩-사전과제-과제-1
 tags: [원티드프리온보딩]
@@ -18,26 +18,26 @@ series: 원티드프리온보딩
 
 ```javascript
 const [loginInfo, setLoginInfo] = useState({
-  email: '',
-  password: '',
+  email: "",
+  password: "",
   isEmailValid: false,
   isPasswordValid: false,
-});
+})
 
-const regex = /.{8}/g;
+const regex = /.{8}/g
 
-const handleLoginChange = (e) => {
-  const { name, value } = e.currentTarget;
-  setLoginInfo((prev) => {
+const handleLoginChange = e => {
+  const { name, value } = e.currentTarget
+  setLoginInfo(prev => {
     return {
       ...prev,
       [name]: value,
-      isEmailValid: name == 'email' ? value.includes('@') : prev.isEmailValid,
+      isEmailValid: name == "email" ? value.includes("@") : prev.isEmailValid,
       isPasswordValid:
-        name == 'password' ? regex.test(value) : prev.isPasswordValid,
-    };
-  });
-};
+        name == "password" ? regex.test(value) : prev.isPasswordValid,
+    }
+  })
+}
 ```
 
 위와 같이 로그인과 관련된 상태를 만들어서 내부에 4가지 내용을 담았다. 여기서 이해가 안된 부분은 마지막 비밀번호 유효성 검사 부분이었다. 유효성 검사에서 8자이상이 되어도 계속해서 False가 나왔다. setState의 비동기성 때문에 생긴 문제라 하기에는 함수형으로 업데이트 해주기에 문제점으로 보이지 않았고, 자세히 보기위해서 콘솔에 입력해보았다니 다음과 같은 결과가 나왔다.

@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 마지막 과제회고'
+title: "원티드 프리온보딩 마지막 과제회고"
 date: 2022-11-19
 slug: wanted-pre-onboarding-last-review
 tags: [회고, 원티드프리온보딩]
@@ -106,14 +106,14 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/:path*',
-        destination: 'http://localhost:4000/:path*',
+        source: "/:path*",
+        destination: "http://localhost:4000/:path*",
       },
-    ];
+    ]
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
 ```
 
 문제는 cors 에러는 해결했지만 나에게 잘 받아드려지지 않았다. 왜냐하면 client의 모든 요청이 4000 포트로 요청을 보내는 것으로 바뀌어버렸기 때문이다. 미리 설정해둔 url중에 로그인 페이지 주소인 `/login` 과 로그인을 위한 요청의 `https://localhost:4000/login`이 연결되어버려, login을 위한 post요청이 아닌 login 페이지의 html을 응답으로 전달받게 되었다. 매번 서버의 api주소와 페이지 url을 다르게 설정하고 프로젝트를 해야할 지 고민되는 중에, 같이 수강하시는 분께서 이슈로 올려놓은 내 질문에 답변을 감사히 달아주셨다..
@@ -129,17 +129,17 @@ SEO를 위해서 간단하게 NEXT의 Head컴포넌트를 이용해 Meta데이�
 왜 SEO를 위해 NEXT를 써야하는지 조금 더 느꼈다.
 
 ```tsx
-import Head from 'next/head';
-import React from 'react';
+import Head from "next/head"
+import React from "react"
 
 export default function SEO({ text }: { text: string }) {
   return (
     <Head>
       <title>{text}</title>
-      <meta name='description' content='마지막 과제입니다.' />
-      <link rel='icon' href='/favicon.ico' />
+      <meta name="description" content="마지막 과제입니다." />
+      <link rel="icon" href="/favicon.ico" />
     </Head>
-  );
+  )
 }
 ```
 
@@ -196,44 +196,44 @@ export default class HTTPError extends Error {
     public message: string,
     private data?: string
   ) {
-    super(message);
+    super(message)
   }
   get signUpMessage() {
     if (this.statusCode === 400) {
       switch (this.data) {
         case SIGN_UP_MESSAGE.email:
-          this.message = '이메일 형식이 올바르지 않습니다';
-          break;
+          this.message = "이메일 형식이 올바르지 않습니다"
+          break
         case SIGN_UP_MESSAGE.password:
-          this.message = '4자이상의 비밀번호를 입력해주세요';
-          break;
+          this.message = "4자이상의 비밀번호를 입력해주세요"
+          break
         case SIGN_UP_MESSAGE.duplicate:
-          this.message = '이미 존재하는 계정입니다';
-          break;
+          this.message = "이미 존재하는 계정입니다"
+          break
         default:
-          throw new Error('Unknown Error');
+          throw new Error("Unknown Error")
       }
-      return this.message;
+      return this.message
     }
-    throw new Error('unknown Error');
+    throw new Error("unknown Error")
   }
 
   get signInMessage() {
     switch (this.statusCode) {
       case 400:
         if (this.data === SIGN_IN_MESSAGE.password) {
-          this.message = '비밀번호를 확인해주세요';
+          this.message = "비밀번호를 확인해주세요"
         } else if (this.data === SIGN_IN_MESSAGE.email) {
-          this.message = '존재하지 않는 계정입니다';
+          this.message = "존재하지 않는 계정입니다"
         }
-        break;
+        break
       case 404:
-        this.message = '잘못된 요청입니다. url을 확인해주세요';
-        break;
+        this.message = "잘못된 요청입니다. url을 확인해주세요"
+        break
       default:
-        throw new Error('Unknown Error');
+        throw new Error("Unknown Error")
     }
-    return this.message;
+    return this.message
   }
 }
 ```
@@ -497,46 +497,46 @@ useMutation을 사용할 때는 **어떤 함수를 실행할지**를 전달하�
 
 const userDeleteMutation = useMutation(
   async (userId: string) => {
-    return infoService?.deleteUser(userId);
+    return infoService?.deleteUser(userId)
   },
   {
     onSuccess: () => {
-      queryClient.invalidateQueries(['users', page]);
+      queryClient.invalidateQueries(["users", page])
     },
   }
-);
+)
 const settingDeleteMutation = useMutation(
   async (userId: string) => {
-    return infoService?.deleteUserSetting(userId);
+    return infoService?.deleteUserSetting(userId)
   },
   {
     onSuccess: () => {
-      queryClient.invalidateQueries(['userSetting', 'all']);
+      queryClient.invalidateQueries(["userSetting", "all"])
     },
   }
-);
+)
 const nameMutation = useMutation(
   async (info: { name: string; id: string }) => {
-    return infoService?.patchUserName(info);
+    return infoService?.patchUserName(info)
   },
   {
     onSuccess: () => {
-      queryClient.invalidateQueries(['users', page]);
+      queryClient.invalidateQueries(["users", page])
     },
   }
-);
+)
 
 //userTableItem.tsx
 
 const handleEdit = () => {
-  nameMutation.mutate({ id: item.id.toString(), name: userName });
-  toggleIsModifying();
-};
+  nameMutation.mutate({ id: item.id.toString(), name: userName })
+  toggleIsModifying()
+}
 
 const handleDelete = () => {
-  userDeleteMutation.mutate(item.id.toString());
-  settingDeleteMutation.mutate(userSetting?.id.toString() || '');
-};
+  userDeleteMutation.mutate(item.id.toString())
+  settingDeleteMutation.mutate(userSetting?.id.toString() || "")
+}
 ```
 
 ## ❗ 캐쉬 데이터가 사라지는 이슈 발생
@@ -572,22 +572,22 @@ React query로 받은 데이터를 정제하는 과정에서 select라는 옵션
 ```tsx
 //변경전
 
-const { data: allUsers } = useQuery(['users', 'all'], () => {
-  return infoService?.getAllUsers();
-});
-const { data: allAccounts } = useQuery(['accounts', 'all'], () => {
-  return infoService?.getAllAccounts();
-});
-const user = allUsers?.find((item) => item.id.toString() === id);
-const accounts = allAccounts?.filter((item) => item.user_id.toString() === id);
+const { data: allUsers } = useQuery(["users", "all"], () => {
+  return infoService?.getAllUsers()
+})
+const { data: allAccounts } = useQuery(["accounts", "all"], () => {
+  return infoService?.getAllAccounts()
+})
+const user = allUsers?.find(item => item.id.toString() === id)
+const accounts = allAccounts?.filter(item => item.user_id.toString() === id)
 
 //변경 후
 const { data: user } = useQuery(USERS.ALL, infoService.getAllUsers, {
-  select: (data) => data?.find((item) => item.id.toString() === id),
-});
+  select: data => data?.find(item => item.id.toString() === id),
+})
 const { data: accounts } = useQuery(ACCOUNTS.ALL, infoService.getAllAccounts, {
-  select: (data) => data?.filter((item) => item.user_id.toString() === id),
-});
+  select: data => data?.filter(item => item.user_id.toString() === id),
+})
 ```
 
 <br/>
@@ -599,27 +599,27 @@ const { data: accounts } = useQuery(ACCOUNTS.ALL, infoService.getAllAccounts, {
 ```typescript
 //변경전
 
-const accountCount: AccountCountType = {};
-accountData.forEach((item) => {
-  const id = item.user_id;
+const accountCount: AccountCountType = {}
+accountData.forEach(item => {
+  const id = item.user_id
   if (!accountCount[id]) {
-    accountCount[id] = 1;
+    accountCount[id] = 1
   }
-  accountCount[id] += 1;
-});
+  accountCount[id] += 1
+})
 
 //변경 후
 const accountCount: AccountCountType = accountData.reduce(
   (allAcount: AccountCountType, account) => {
     if (account.user_id in allAcount) {
-      allAcount[account.user_id]++;
+      allAcount[account.user_id]++
     } else {
-      allAcount[account.user_id] = 1;
+      allAcount[account.user_id] = 1
     }
-    return allAcount;
+    return allAcount
   },
   {}
-);
+)
 ```
 
 <br/>

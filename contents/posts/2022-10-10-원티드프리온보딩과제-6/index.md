@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 사전과제 6편'
+title: "원티드 프리온보딩 사전과제 6편"
 date: 2022-10-10
 slug: 원티드-프리온보딩-과제-6
 tags: [원티드프리온보딩]
@@ -31,38 +31,39 @@ series: 원티드프리온보딩
 
 ```jsx
 const exceptionTest = (data, setMessage, process) => {
-    if (data.statusCode >= 400) {
-      if (data.statusCode == 401) { //추가한 예외처리 부분
-        setMessage((prev) => {
-          return {
-            ...prev,
-            message: '이메일 혹은 비밀번호를 확인해주세요.',
-            success: false,
-          };
-        });
-        return;
-      }
-      setMessage((prev) => {
+  if (data.statusCode >= 400) {
+    if (data.statusCode == 401) {
+      //추가한 예외처리 부분
+      setMessage(prev => {
         return {
           ...prev,
-          message: data.message,
+          message: "이메일 혹은 비밀번호를 확인해주세요.",
           success: false,
-        };
-      });
-      return;
+        }
+      })
+      return
     }
-    if (process == 'login') {
-      navigate('/todo');
-      localStorage.setItem('access_token', data.access_token);
-    }
-    setMessage((prev) => {
+    setMessage(prev => {
       return {
         ...prev,
-        message: `${'login' ? '로그인' : '회원가입'}에 성공했습니다`,
-        success: true,
-      };
-    });
-  };
+        message: data.message,
+        success: false,
+      }
+    })
+    return
+  }
+  if (process == "login") {
+    navigate("/todo")
+    localStorage.setItem("access_token", data.access_token)
+  }
+  setMessage(prev => {
+    return {
+      ...prev,
+      message: `${"login" ? "로그인" : "회원가입"}에 성공했습니다`,
+      success: true,
+    }
+  })
+}
 ```
 
 ![에러메시지 맵핑](로그인개선.png)
@@ -191,21 +192,21 @@ api/
 
 ```javascript
 export async function postSignUp(data) {
-  const { email, password } = data;
+  const { email, password } = data
   try {
     const res = await fetch(`${BASE_URL}/auth/signup`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
         password,
       }),
-    });
-    return await res.json();
+    })
+    return await res.json()
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 ```
@@ -216,21 +217,21 @@ fetch로 사용할 때는 대신 response의 ok 프로퍼티가 false로 설정�
 
 ```javascript
 export async function postSignUp(data) {
-  const { email, password } = data;
+  const { email, password } = data
   const res = await fetch(`${BASE_URL}/auth/signup`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       email,
       password,
     }),
-  });
+  })
   if (!res.ok) {
-    console.log(`${res.status} 에러가 발생했습니다`);
+    console.log(`${res.status} 에러가 발생했습니다`)
   }
-  return await res.json();
+  return await res.json()
 }
 ```
 

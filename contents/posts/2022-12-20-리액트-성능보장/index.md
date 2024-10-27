@@ -1,5 +1,5 @@
 ---
-title: 'React study: 리액트가 성능을 보장하는 방법'
+title: "React study: 리액트가 성능을 보장하는 방법"
 slug: 리액트-성능보장
 date: 2023-01-23
 tags: [react, performance]
@@ -9,8 +9,6 @@ tags: [react, performance]
 
 저번 면접 시간에 리액트에 대한 질문이 들어왔을 때, 안다고 자신했지만 돌아보니 너무 부족했었던 모습에 리액트 문서 자체를 다시 꼼꼼히 읽고 정리해야겠다는 생각이 들었다. 그중에 이번에 기본 동작원리와 성능과 관련된 useMemo와 useCallback에 대해 정리해 보려 한다.
 
-
-
 ## ❓ 왜 리액트를 써야 할까?
 
 먼저 리액트를 쓰면서 `내가 왜 리액트를 사용하는지`에 대해서 많이 고민하지 못했다.
@@ -19,8 +17,6 @@ tags: [react, performance]
 
 Vue와 React를 모두 사용해보았다면 더 잘 정리할 수 있을 것 같아, 이후에 조금씩 시도하면서 직접 느껴보고 정리해보면 좋을 주제라고 생각되었다.
 
-
-
 ## ❗ 리액트가 해결하고 싶었던 문제
 
 이전에 CSR과 SSR 글과 Critical Rendering path에 대해 글을 쓰면서 정리했지만 SPA은 **MPA(Multi Page Application)의 문제점**을 해결하기 위해서 나오게 된 해결 방법이다. MPA의 문제점은 페이지 이동에 따라 HTML 전체를 새롭게 가져와야 하는 불필요한 비용이 발생한다는 점이었다.
@@ -28,8 +24,6 @@ Vue와 React를 모두 사용해보았다면 더 잘 정리할 수 있을 것 �
 이를 해결하기 위해 하나의 html에 javascript을 이용해 동적으로 DOM요소를 변형하는` SPA (Single Page Application) 방식`이 제안되었고 여기에 대표적인 라이브러리가 바로 **리액트**이다.
 
 하지만 SPA는 DOM요소를 자바스크립트로 직접 건드리기 때문에 Critical Rendering Path에서 브라우저가 그려줘야하는`layout -paint- composite`과정이 다시 일어나야 해서 성능이 큰 문제가 될 수 있다. 이러한 성능 문제를 해결하기 위해서 리액트는 자체적인 <u>V-DOM을 이용한 Reconcilation</u>으로 해결한다. 두가지에 대해서 알아보자.
-
-
 
 ## 🎈 V-DOM과 Reconcilation
 
@@ -94,13 +88,13 @@ key를 정해주어야 할때는 보통 배열의 요소를 mapping해줄 때 �
 리액트의 기본 원리에 따라서 상태가 바뀌면 해당 컴포넌트와 자식 컴포넌트를 모두 리랜더링을 해야 하지만, 자식 요소 중에서 전달받은 props가 변하지 않아서 UI를 변화하지 않아도 되는 경우가 존재한다. 이럴 때는 이전 UI를 그대로 사용하는 것이 더 효율적인데 이때 사용할 수 있는 것이 `React.Memo`이다.
 
 ```jsx
-import { memo } from 'react';
+import { memo } from "react"
 
 function SomeComponent(props) {
   // ...
 }
 
-const MemoizedComponent = memo(SomeComponent);
+const MemoizedComponent = memo(SomeComponent)
 ```
 
 React.memo는 해당 컴포넌트를 감싸는 HOC (Higher Order Component)로 컴포넌트의 이전 props와 state 변화로 사용될 props 비교해서 차이가 있을 때에만 리랜더링을 하게한다.이때 중요한 것은 props를 비교하는 방식인데 `얕은 비교`를 통해 비교한다.
@@ -128,7 +122,7 @@ React.Memo는 컴포넌트 자체의 props를 이용해서 리랜더링을 해�
 useMemo는 값을 저장할 수 있는 함수로 반환하는 값을 저장하게 되고, deps로 전달된 값이 변할 때만 새롭게 생성한다.
 
 ```jsx
-const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b])
 ```
 
 #### useCallback(callbackFunction, deps)
@@ -136,7 +130,7 @@ const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
 useCallback은 useMemo로 저장하던 함수를 좀 더 간단하게 저장할 수 있게 도와주는 api로, useMemo와 동일하게 deps로 전달된 값이 변할 때 새롭게 생성된다.
 
 ```jsx
-const memorizedFunction = useMemo(() => () => console.log('Hello World'), []);
+const memorizedFunction = useMemo(() => () => console.log("Hello World"), [])
 
-const memorizedFunction = useCallback(() => console.log('Hello World'), []);
+const memorizedFunction = useCallback(() => console.log("Hello World"), [])
 ```

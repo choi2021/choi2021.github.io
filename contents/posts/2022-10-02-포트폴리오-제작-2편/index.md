@@ -1,5 +1,5 @@
 ---
-title: '포트폴리오 제작-슬라이더, 페이지전환 애니메이션'
+title: "포트폴리오 제작-슬라이더, 페이지전환 애니메이션"
 date: 2022-09-29
 slug: 포트폴리오-제작-슬라이더,-페이지전환-애니메이션
 tags: [포트폴리오]
@@ -99,31 +99,31 @@ styled-components는 props를 편리하게 전달할 수 있기 때문에 보여
 
 ```jsx
 const SliderContainer = styled.div`
-  width: ${(props) => props.length};
+  width: ${props => props.length};
   height: 100%;
   transition: all 300ms ease;
-  transform: ${(props) => `translateX(${props.showing * -props.unit}%)`};
+  transform: ${props => `translateX(${props.showing * -props.unit}%)`};
   display: flex;
-`;
+`
 
 function Projects(props) {
-  const [projects, setProjects] = useState([]);
-  const [showing, setShowing] = useState(0);
+  const [projects, setProjects] = useState([])
+  const [showing, setShowing] = useState(0)
   useEffect(() => {
-    setProjects(projectsJson.projects);
-  }, []);
+    setProjects(projectsJson.projects)
+  }, [])
   const setNextItem = () => {
-    setShowing((prev) => (prev + 1 === projects.length ? prev : prev + 1));
-  };
+    setShowing(prev => (prev + 1 === projects.length ? prev : prev + 1))
+  }
   const setPrevItem = () => {
-    setShowing((prev) => (prev - 1 < 0 ? 0 : prev - 1));
-  };
+    setShowing(prev => (prev - 1 < 0 ? 0 : prev - 1))
+  }
   return (
     <ProjectsLayout>
       <Slider>
         {showing != 0 && (
           <LeftArr onClick={setPrevItem}>
-            <i className='fa-solid fa-arrow-left'></i>
+            <i className="fa-solid fa-arrow-left"></i>
           </LeftArr>
         )}
         <SliderList>
@@ -133,28 +133,28 @@ function Projects(props) {
             length={`${projects.length * 100}%`}
           >
             {projects &&
-              projects.map((project) => {
+              projects.map(project => {
                 return (
                   <SliderItem
                     key={project.title}
                     {...project}
                     length={projects.length}
                   ></SliderItem>
-                );
+                )
               })}
           </SliderContainer>
         </SliderList>
         {showing !== projects.length - 1 && (
           <RightArr onClick={setNextItem}>
-            <i className='fa-solid fa-arrow-right'></i>
+            <i className="fa-solid fa-arrow-right"></i>
           </RightArr>
         )}
       </Slider>
     </ProjectsLayout>
-  );
+  )
 }
 
-export default Projects;
+export default Projects
 ```
 
 ​
@@ -164,6 +164,7 @@ export default Projects;
 [완성된 프로젝트페이지 화면]
 
 ![프로젝트](프로젝트.png)
+
 ## 2) Home 페이지
 
 Home 페이지 디자인은 Typeit을 이용해 심플하게 문장을 보여주고, 버튼을 보여주고 클릭시 Main페이지로 페이지 이동하게 구성해보았다.
@@ -177,7 +178,7 @@ TypeIt은 텍스트 애니메이션 자바스크립트 라이브러리로 이번
 
 ```javascript
 <TypeIt
-  getBeforeInit={(instance) => {
+  getBeforeInit={instance => {
     instance
       .options({ speed: 80 })
       .type(`Hi, `)
@@ -193,11 +194,11 @@ TypeIt은 텍스트 애니메이션 자바스크립트 라이브러리로 이번
       .type(`</br></br><span class="btn"> Please Click the button</span>`)
       .exec(() => {
         setTimeout(() => {
-          setIsDone(true);
-        }, 1000);
-      });
+          setIsDone(true)
+        }, 1000)
+      })
     // Remember to return it!
-    return instance;
+    return instance
   }}
 />
 ```
@@ -219,44 +220,42 @@ Framer-motion을 공부하면서 핸드폰 잠금 방식의 버튼을 이용하�
 ```jsx
 const Button = styled(motion.button)`
   display: flex;
-  justify-content: ${(props) => props.on};
+  justify-content: ${props => props.on};
   align-items: center;
-`;
+`
 
 function Home(props) {
-  const [isDone, setIsDone] = useState(false);
-  const [isOn, setIsOn] = useState(false);
-  const navigate = useNavigate();
+  const [isDone, setIsDone] = useState(false)
+  const [isOn, setIsOn] = useState(false)
+  const navigate = useNavigate()
   const onClick = () => {
-    setIsOn(true);
+    setIsOn(true)
     setTimeout(() => {
-      navigate('/main');
-    }, 1500);
-  };
+      navigate("/main")
+    }, 1500)
+  }
   return (
     <HomeLayout
       variants={pageVariant}
-      initial='invisible'
-      animate='visible'
-      exit='exit'
+      initial="invisible"
+      animate="visible"
+      exit="exit"
     >
-     ...
+      ...
       {isDone && (
-        <Button
-          on={isOn ? 'flex-end' : 'flex-start'}
-          onClick={onClick}
-        >
+        <Button on={isOn ? "flex-end" : "flex-start"} onClick={onClick}>
           <motion.div layout></motion.div>
         </Button>
       )}
     </HomeLayout>
-  );
+  )
 }
 ```
 
 [Home 페이지]
 
 ![home](home.png)
+
 ### 2.3 화면 전환 애니메이션 추가
 
 화면이 자연스럽게 넘어가는 효과를 위해서 Framer-motion을 이용해서 App.jsx에 AnimatePresence를 추가한 후, 각 페이지 전체 container Component에 variant를 전달했다.
@@ -323,21 +322,19 @@ export default Main;
 영상에서 설명은 페이지 이동시 AnimatePresence가 작동하려면 이동하는 페이지의 url을 전달해서 전 component와 다른 component라고 알려 주어야 한다고 한다. **uselocation**을 이용해서 key로 useloaction.pathName을, location에는 선언한 useLoaction을 그대로 전달해서 해결할 수 있었다.
 
 ```jsx
-
 function App() {
-  const location = useLocation();
+  const location = useLocation()
   return (
     <AnimatePresence>
       <Routes key={location.pathname} location={location}>
-        <Route path='/' element={<Home></Home>}></Route>
-        <Route path='/main' element={<Main></Main>}></Route>
+        <Route path="/" element={<Home></Home>}></Route>
+        <Route path="/main" element={<Main></Main>}></Route>
       </Routes>
     </AnimatePresence>
-  );
+  )
 }
 
-export default App;
-
+export default App
 ```
 
 ### 마치며

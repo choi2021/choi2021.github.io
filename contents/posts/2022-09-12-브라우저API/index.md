@@ -1,5 +1,5 @@
 ---
-title: 'Browser API'
+title: "Browser API"
 date: 2022-09-12
 slug: browser-api
 tags: [javascript, 브라우저]
@@ -26,7 +26,6 @@ API라는 단어는 너무 편하게 말하지만 사실 정확히 말하라고 
 
 ![img](https://velog.velcdn.com/images%2Ftjdud0123%2Fpost%2F5fdd4197-125a-4790-b56f-5b0ef03fe7a0%2Fimage.png)
 
-
 자바스크립트는 이러한 DOM과 BOM API를 이용해 다양한 기능을 구현하는데 사용된다. 이렇게 다양한 API들이 있지만 그중에서 자주 사용되는 API들을 정리해보려 한다.
 
 ### 브라우저의 크기
@@ -51,10 +50,10 @@ API라는 단어는 너무 편하게 말하지만 사실 정확히 말하라고 
 사용해야한다.
 
 ```javascript
-window.addEventListener('resize', () => {
-  console.log(window.screen.width);
-  console.log(screen.width);
-});
+window.addEventListener("resize", () => {
+  console.log(window.screen.width)
+  console.log(screen.width)
+})
 ```
 
 ## 좌표

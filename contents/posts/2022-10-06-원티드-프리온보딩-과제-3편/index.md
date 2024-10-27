@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 사전과제 3편'
+title: "원티드 프리온보딩 사전과제 3편"
 date: 2022-10-06
 slug: 2022-10-06-원티드 프리온보딩-과제-3편
 tags: [원티드프리온보딩]
@@ -89,15 +89,15 @@ API는 createTodo와 getTodos 두 가지를 연결해야 했다. 두 API를 연�
 ```javascript
 export function postCreateTodo(todo) {
   return fetch(`${BASE_URL}/todos`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
     },
     body: JSON.stringify({
       todo,
     }),
-  });
+  })
 }
 ```
 
@@ -110,25 +110,25 @@ bearer이란 부분이 생소했는데 알아보니 헤더의 Authorization에�
 ```javascript
 export function postCreateTodo(todo) {
   return fetch(`${BASE_URL}/todos`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
     body: JSON.stringify({
       todo,
     }),
-  });
+  })
 }
 
 export function getTodos() {
   return fetch(`${BASE_URL}/todos`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
-  });
+  })
 }
 ```
 
@@ -136,25 +136,24 @@ export function getTodos() {
 
 ```jsx
 function App() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem("access_token")
     if (token) {
-      navigate('/todo');
+      navigate("/todo")
     } else {
-      navigate('/');
+      navigate("/")
     }
-  }, []);
+  }, [])
   return (
     <Routes>
-      <Route path='/' element={<Login></Login>}></Route>
-      <Route path='/todo' element={<Todo></Todo>}></Route>
+      <Route path="/" element={<Login></Login>}></Route>
+      <Route path="/todo" element={<Todo></Todo>}></Route>
     </Routes>
-  );
+  )
 }
 
-export default App;
-
+export default App
 ```
 
 ## Assignment 5)

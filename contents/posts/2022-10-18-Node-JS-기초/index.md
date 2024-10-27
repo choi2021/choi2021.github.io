@@ -1,11 +1,12 @@
 ---
-title: 'Node js:NodeJS 이용한 서버 만들기'
+title: "Node js:NodeJS 이용한 서버 만들기"
 date: 2022-10-18
 slug: node-js-nodejs-이용한-서버-만들기
 tags: [NodeJS]
 ---
 
 ![nodejs](node.png)
+
 # 🎈 Node JS란
 
 노드 JS는 브라우저밖에서도 자바스크립트를 사용할 수 있는 자바스크립트 런타임 환경이다. single thread 언어인 Javascript가 브라우저 위에서 browser API를 이용한 비동기 처리로 다양한 일을 처리할 수 있었던 것 처럼, Node JS 또한, 자체 API를 이용해서 비동기 처리를 이용해 다양한 기능을 구현할 수 있고, brower처럼 Event를 통해서 콜백을 실행하는 특징을 가진다.
@@ -21,9 +22,9 @@ tags: [NodeJS]
 말그대로 경로를 받아올 수 있는 모듈로, 다양한 디렉토리, 파일 등을 받아올 수 있는 API이다.
 
 ```javascript
-path.basename(__filename); //현재 파일의 경로
-path.extname(__filename); //현재파일의 확장자
-path.join(__dirname, 'image'); //현재폴더에 image 파일의 경로
+path.basename(__filename) //현재 파일의 경로
+path.extname(__filename) //현재파일의 확장자
+path.join(__dirname, "image") //현재폴더에 image 파일의 경로
 ```
 
 ## File system
@@ -51,33 +52,34 @@ fs.appendFile(file, data) //비동기적으로 해당 파일에 데이터를 추
 [사진 출처: [카레유 티스토리](https://curryyou.tistory.com/440) ]
 
 ![buffer](buffer.png)
+
 ```javascript
-const buf = Buffer.from('hello'); //<Buffer 68 65 6c 6c 6f>
-const buf2 = Buffer.from('hello'); //<Buffer 68 65 6c 6c 6f>
-const newBuf = Buffer.concat([buf, buf2]); //<Buffer 68 65 6c 6c 6f 68 65 6c 6c 6f> 버퍼 이어붙이기
+const buf = Buffer.from("hello") //<Buffer 68 65 6c 6c 6f>
+const buf2 = Buffer.from("hello") //<Buffer 68 65 6c 6c 6f>
+const newBuf = Buffer.concat([buf, buf2]) //<Buffer 68 65 6c 6c 6f 68 65 6c 6c 6f> 버퍼 이어붙이기
 
-const fs = require('fs');
+const fs = require("fs")
 
-const data = [];
+const data = []
 
 const readStream = fs
   .createReadStream(파일, option)
-  .on('data', (chunk) => {
+  .on("data", chunk => {
     // 데이터를 받아올 때 마다 실행해
-    data.push(chunk);
+    data.push(chunk)
   })
-  .on('end', () => {
-    console.log(data.join('')); // 데이터를 다받으면 실행해
+  .on("end", () => {
+    console.log(data.join("")) // 데이터를 다받으면 실행해
   })
-  .on('error', (error) => console.log(error)); // 에러 발생시 실행해
+  .on("error", error => console.log(error)) // 에러 발생시 실행해
 ```
 
 stream을 공부하고 느낀 가장 큰 장점은 **piping**이 가능하다는 점이다. piping은 stream들을 이어주는 것으로 stream의 결과들을 chaining이 가능하다.
 
 ```javascript
-const readStream = fs.readStream('./ex1.txt');
-const writeStream = fs.createWriteStream('./ex2.txt');
-readSream.pipe(writeStream); //ex1.txt을 읽고 ex2.txt에 쓰는 파이프
+const readStream = fs.readStream("./ex1.txt")
+const writeStream = fs.createWriteStream("./ex2.txt")
+readSream.pipe(writeStream) //ex1.txt을 읽고 ex2.txt에 쓰는 파이프
 ```
 
 ## 서버 제작
@@ -98,24 +100,24 @@ stream으로 받아온 buffer 데이터를 pipe를 이용해서 response로 보�
 pipe가 자동으로 끝내줘서 코드가 더 간단해진다.
 
 ```javascript
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+const http = require("http")
+const fs = require("fs")
+const path = require("path")
 
 const server = http.createServer((req, res) => {
-  const url = req.url;
-  const filePath = path.join(__dirname);
-  res.setHeader('content-Type', 'text/html'); //어떤 형식으로 데이터를 보낼지를 담아
-  if (url === '/') {
-    fs.createReadStream(`${filePath}/template/index.html`).pipe(res); //html을 버퍼로 읽어서 읽은 데이터를 response로 흘려보내줘
-  } else if (url === '/courses') {
-    fs.createReadStream(`${filePath}/template/courses.html`).pipe(res);
+  const url = req.url
+  const filePath = path.join(__dirname)
+  res.setHeader("content-Type", "text/html") //어떤 형식으로 데이터를 보낼지를 담아
+  if (url === "/") {
+    fs.createReadStream(`${filePath}/template/index.html`).pipe(res) //html을 버퍼로 읽어서 읽은 데이터를 response로 흘려보내줘
+  } else if (url === "/courses") {
+    fs.createReadStream(`${filePath}/template/courses.html`).pipe(res)
   } else {
-    fs.createReadStream(`${filePath}/template/not-found.html`).pipe(res);
+    fs.createReadStream(`${filePath}/template/not-found.html`).pipe(res)
   }
-});
+})
 
-server.listen(8080);
+server.listen(8080)
 ```
 
 ### JSON을 이용한 서버
@@ -125,26 +127,26 @@ JSON은 Javascript Object Notation의 약자로 네트워크통신을 위한 구
 (GET이 성공하면 200, POST가 성공하면 201)
 
 ```javascript
-const arr = [1, 2, 3];
+const arr = [1, 2, 3]
 
 const server = http.createServer((req, res) => {
-  const method = req.method;
-  if (method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'application/json' }); //head에 status_code, content-type을 담아
-    res.end(JSON.stringify(arr)); //원하는걸 담아서 보내줘
-  } else if (method === 'POST') {
-    const body = [];
-    req.on('data', (chunk) => {
-      body.push(chunk);
-    }); //req로 온 데이터를 받아
-    req.on('end', () => {
-      const item = Buffer.concat(body).toString(); //버퍼로 받아온 데이터를 이어
-      arr.push(JSON.parse(item));
-      res.writeHead(201);
-      res.end(); //아무것도 담지 않아
-    });
+  const method = req.method
+  if (method === "GET") {
+    res.writeHead(200, { "Content-Type": "application/json" }) //head에 status_code, content-type을 담아
+    res.end(JSON.stringify(arr)) //원하는걸 담아서 보내줘
+  } else if (method === "POST") {
+    const body = []
+    req.on("data", chunk => {
+      body.push(chunk)
+    }) //req로 온 데이터를 받아
+    req.on("end", () => {
+      const item = Buffer.concat(body).toString() //버퍼로 받아온 데이터를 이어
+      arr.push(JSON.parse(item))
+      res.writeHead(201)
+      res.end() //아무것도 담지 않아
+    })
   }
-});
+})
 
-server.listen(8080);
+server.listen(8080)
 ```

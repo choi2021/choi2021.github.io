@@ -1,5 +1,5 @@
 ---
-title: '모으잡-check box 수정, react-query 커스텀 훅, 크롤링 이슈'
+title: "모으잡-check box 수정, react-query 커스텀 훅, 크롤링 이슈"
 date: 2022-12-03
 slug: 모으잡-check-box-수정-react-query-커스텀-훅-크롤링-이슈
 tags: [사이드프로젝트, 모으잡]
@@ -19,44 +19,44 @@ checkbox 기능은 해당 공고의 자격 조건과 우대 사항에 얼마나 
 // 수정 전
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name } = e.currentTarget;
-  let modifiedJob;
+  const { name } = e.currentTarget
+  let modifiedJob
   if (job) {
     if (kind === Kinds.qualification) {
-      const qualification = [...job?.qualification].map((item) => {
+      const qualification = [...job?.qualification].map(item => {
         if (item.text === name) {
-          return { ...item, checked: !item.checked };
+          return { ...item, checked: !item.checked }
         }
-        return item;
-      });
-      modifiedJob = { ...job, qualification };
+        return item
+      })
+      modifiedJob = { ...job, qualification }
     } else {
-      const preferential = [...job?.preferential].map((item) => {
+      const preferential = [...job?.preferential].map(item => {
         if (item.text === name) {
-          return { ...item, checked: !item.checked };
+          return { ...item, checked: !item.checked }
         }
-        return item;
-      });
-      modifiedJob = { ...job, preferential };
+        return item
+      })
+      modifiedJob = { ...job, preferential }
     }
-    mutate(calculateChecks(modifiedJob));
+    mutate(calculateChecks(modifiedJob))
   }
-};
+}
 
 // 수정 후
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name } = e.currentTarget;
+  const { name } = e.currentTarget
   if (job && !isMainJob) {
-    const targetList = [...job[kind]].map((item) => {
+    const targetList = [...job[kind]].map(item => {
       if (item.text === name) {
-        return { ...item, checked: !item.checked };
+        return { ...item, checked: !item.checked }
       }
-      return item;
-    });
-    const modifiedJob = { ...job, [kind]: targetList };
-    mutate(calculateChecks(modifiedJob));
+      return item
+    })
+    const modifiedJob = { ...job, [kind]: targetList }
+    mutate(calculateChecks(modifiedJob))
   }
-};
+}
 ```
 
 다음으로는 메인 이슈였던 느린 체크박스 반응을 해결하기 위해서 UI를 위한 상태를 따로 놔둬서 UI 상태와 DB를 동시에 업데이트하는 방식으로 사용자가 느낄 수 있는 답답함을 해결할 수 있었다. 하지만 조금 더 나아가서, 이렇게 UI상태로 관리한다면 DB를 업데이트하는 횟수를 페이지를 떠날 때 해서 API 호출 비용을 줄이는 방향으로 개선하면 어떨까라는 추후 방향도 고민했다.
@@ -68,27 +68,27 @@ export default function DescriptionItem({
   checked,
   kind,
 }: DescriptionItemProps) {
-  const [isChecked, setIsChecked] = useState(checked);
+  const [isChecked, setIsChecked] = useState(checked)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.currentTarget;
+    const { name } = e.currentTarget
     if (job && !isMainJob) {
-      const targetList = [...job[kind]].map((item) => {
+      const targetList = [...job[kind]].map(item => {
         if (item.text === name) {
-          return { ...item, checked: !item.checked };
+          return { ...item, checked: !item.checked }
         }
-        return item;
-      });
-      const modifiedJob = { ...job, [kind]: targetList };
-      mutate(calculateChecks(modifiedJob));
+        return item
+      })
+      const modifiedJob = { ...job, [kind]: targetList }
+      mutate(calculateChecks(modifiedJob))
     }
-    setIsChecked(!isChecked);
-  };
+    setIsChecked(!isChecked)
+  }
   return (
     <S.Wrapper>
       {isMainJob && <RiCheckboxBlankCircleFill />}
       {!isMainJob && (
         <input
-          type='checkbox'
+          type="checkbox"
           name={text}
           checked={isChecked}
           onChange={handleChange}
@@ -96,7 +96,7 @@ export default function DescriptionItem({
       )}
       <span>{text}</span>
     </S.Wrapper>
-  );
+  )
 }
 ```
 
@@ -105,39 +105,39 @@ export default function DescriptionItem({
 react-query를 이용해 전역 상태로 캐쉬된 서버데이터를 편하게 받아올 수 있지만, 데이터를 불러오기 위한 로직이 계속해서 반복되기 때문에 따로 custom hook으로 분리하는 게 어떨까라는 생각에 따로 모아두기로 했다. 불러오는 키를 상수로 정해서 안전하게 관리가 가능했고, 컴포넌트 내부 로직이 깔끔해져서 좋았다. 하지만 아쉬운 점은 hook은 hook내부에서만 정리할 수 있기 때문에 hook안에서 dbService나 useRouter와 같은 반복되는 로직은 어떻게 다시 정리할 수 있을까 고민도 되었다. 이후에 좀 더 리팩토링이 필요하다.
 
 ```tsx
-const JOBS_KEY = 'jobs';
+const JOBS_KEY = "jobs"
 
 export const useGetJobs = () => {
-  const dbService = useDBService();
+  const dbService = useDBService()
   const { data: jobs, isLoading } = useQuery([JOBS_KEY], () =>
     dbService.getJobs()
-  );
-  return { jobs, isLoading };
-};
+  )
+  return { jobs, isLoading }
+}
 
 export const useGetFilteredJobs = () => {
-  const { query } = useRouter();
-  const { id } = query;
-  const dbService = useDBService();
+  const { query } = useRouter()
+  const { id } = query
+  const dbService = useDBService()
   const { data: jobs, isLoading } = useQuery(
     [JOBS_KEY],
     () => dbService.getJobs(),
     {
       select: (data: ModifiedJobsType) => {
-        return Object.values(data).filter((item) => item.id !== id);
+        return Object.values(data).filter(item => item.id !== id)
       },
     }
-  );
-  return { jobs, isLoading };
-};
+  )
+  return { jobs, isLoading }
+}
 
 //binding이 강해서 좀더 연결성을 떨어뜨려야 재사용 가능
 export const useCreateJob = (
   setMessage: React.Dispatch<React.SetStateAction<string>>,
   setUrl: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  const dbService = useDBService();
-  const queryClient = useQueryClient();
+  const dbService = useDBService()
+  const queryClient = useQueryClient()
   const { mutate, isLoading } = useMutation(
     async (url: string) => {
       const { data } = await axios.post(
@@ -145,97 +145,97 @@ export const useCreateJob = (
         {
           url,
         }
-      );
-      const job = modifyJob(data);
-      dbService.addJob(job);
+      )
+      const job = modifyJob(data)
+      dbService.addJob(job)
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([JOBS_KEY]);
-        setMessage('');
+        queryClient.invalidateQueries([JOBS_KEY])
+        setMessage("")
       },
-      onError: (error) => {
+      onError: error => {
         if (error instanceof AxiosError) {
-          const { response } = error;
+          const { response } = error
           if (response) {
-            setMessage(response.data.message);
+            setMessage(response.data.message)
           }
         }
       },
       onSettled: () => {
-        setUrl('');
+        setUrl("")
       },
     }
-  );
-  return { mutate, isLoading };
-};
+  )
+  return { mutate, isLoading }
+}
 
 export const useUpdateJob = () => {
-  const dbService = useDBService();
-  const queryClient = useQueryClient();
+  const dbService = useDBService()
+  const queryClient = useQueryClient()
   const { mutate } = useMutation(
     async (job: ModifiedJobType) => {
-      return dbService.updateJob(job);
+      return dbService.updateJob(job)
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['jobs']);
+        queryClient.invalidateQueries(["jobs"])
       },
-      onError: (error) => {
+      onError: error => {
         if (error instanceof AxiosError) {
-          const { response } = error;
+          const { response } = error
           if (response) {
-            console.log(response);
+            console.log(response)
           }
         }
       },
     }
-  );
-  return mutate;
-};
+  )
+  return mutate
+}
 
 export const useDeleteJob = () => {
-  const queryClient = useQueryClient();
-  const dbService = useDBService();
+  const queryClient = useQueryClient()
+  const dbService = useDBService()
   const { mutate } = useMutation(
     async (job: ModifiedJobType) => {
-      return dbService.removeJob(job);
+      return dbService.removeJob(job)
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['jobs']);
+        queryClient.invalidateQueries(["jobs"])
       },
-      onError: (error) => {
+      onError: error => {
         if (error instanceof AxiosError) {
-          const { response } = error;
+          const { response } = error
           if (response) {
-            console.log(response);
+            console.log(response)
           }
         }
       },
     }
-  );
-  return mutate;
-};
+  )
+  return mutate
+}
 
 export const useGetJobById = () => {
-  const { query } = useRouter();
-  const dbService = useDBService();
-  const { id } = query;
-  const jobId = typeof id === 'string' ? id : id?.join() || '';
+  const { query } = useRouter()
+  const dbService = useDBService()
+  const { id } = query
+  const jobId = typeof id === "string" ? id : id?.join() || ""
   const { data, isLoading } = useQuery(
     [JOBS_KEY],
     () => {
-      return dbService.getJobs();
+      return dbService.getJobs()
     },
     {
       select: (data: ModifiedJobsType) => {
-        return data[jobId];
+        return data[jobId]
       },
     }
-  );
-  return { data, isLoading };
-};
+  )
+  return { data, isLoading }
+}
 ```
 
 # 😥 크롤링의 문제

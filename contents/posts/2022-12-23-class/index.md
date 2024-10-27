@@ -1,5 +1,5 @@
 ---
-title: '클래스'
+title: "클래스"
 date: 2022-12-23
 slug: javascript-class
 tags: [javascript, 문법]
@@ -16,14 +16,14 @@ tags: [javascript, 문법]
 ```javascript
 class Cat {
   constructor() {
-    this.name = '야옹이';
+    this.name = "야옹이"
   }
   call() {
-    console.log(this.name);
+    console.log(this.name)
   }
 }
 
-console.log(Cat()); //TypeError: Class constructor Cat cannot be invoked without 'new'
+console.log(Cat()) //TypeError: Class constructor Cat cannot be invoked without 'new'
 ```
 
 위 코드에서 new없이 호출시 에러가 발생한 것을 볼 수 있다.
@@ -31,9 +31,9 @@ console.log(Cat()); //TypeError: Class constructor Cat cannot be invoked without
 클래스는 함수이기 때문에 호이스팅이 발생하지만, const, let으로 함수표현식과 같이 초기화 전까지 호출이 불가능한 TDZ에 빠지는 특징을 가진다.
 
 ```javascript
-const Cat = '';
+const Cat = ""
 {
-  console.log(Cat); // ReferenceError: Cannot access 'Cat' before initialization
+  console.log(Cat) // ReferenceError: Cannot access 'Cat' before initialization
   class Cat {}
 }
 ```
@@ -55,13 +55,13 @@ constructor 메소드는 class로 만들 인스턴스를 **생성**하고 **초�
 ```javascript
 class Cat {
   constructor(name) {
-    this.name = name;
-    return {};
+    this.name = name
+    return {}
   }
 }
 
-const cat = new Cat('양옹');
-console.log(cat); // {}
+const cat = new Cat("양옹")
+console.log(cat) // {}
 ```
 
 클래스로 만들어진 인스턴스도 생성자함수가 만든 인스턴스와 동일하게 프로토타입 체인에 들어가게 된다. 결국 정리하면 프로토타입 체인에서 클래스는 인스턴스를 생성하는 생성자 함수와 같은 역할을 한다고 생각할 수 있다.
@@ -75,17 +75,17 @@ console.log(cat); // {}
 ```javascript
 class Cat {
   constructor(name) {
-    this.name = name; // 인스턴스 메소드
+    this.name = name // 인스턴스 메소드
   }
   call() {
     //프로토타입 메소드
-    console.log('야옹');
+    console.log("야옹")
   }
 }
 
-const cat = new Cat('야옹이');
-cat.call(); // 야옹
-cat.__proto__.call('야옹');
+const cat = new Cat("야옹이")
+cat.call() // 야옹
+cat.__proto__.call("야옹")
 ```
 
 ### 정적 메소드
@@ -94,10 +94,10 @@ cat.__proto__.call('야옹');
 
 ```javascript
 class Cat {
-  static shout = () => console.log('야옹'); // 정적 메소드
+  static shout = () => console.log("야옹") // 정적 메소드
 }
 
-Cat.shout(); //야용
+Cat.shout() //야용
 ```
 
 ## 🥚 인스턴스 생성과정
@@ -106,20 +106,20 @@ Cat.shout(); //야용
 
 ```javascript
 class Cat {
-  static shout = () => console.log('야옹');
+  static shout = () => console.log("야옹")
 
   constructor(name) {
-    this.name = name;
+    this.name = name
   }
   call() {
-    console.log('하이');
+    console.log("하이")
   }
 }
 
-const cat = new Cat('야옹');
+const cat = new Cat("야옹")
 
-console.log(cat.hasOwnProperty('call')); //false
-console.log(cat.__proto__.hasOwnProperty('call')); //true
+console.log(cat.hasOwnProperty("call")) //false
+console.log(cat.__proto__.hasOwnProperty("call")) //true
 ```
 
 ## 🩸 클래스의 getter와 setter
@@ -129,16 +129,16 @@ console.log(cat.__proto__.hasOwnProperty('call')); //true
 ```javascript
 class Person {
   constructor(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = firstName
+    this.lastName = lastName
   }
   fullName() {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName} ${this.lastName}`
   }
 }
 
-const person1 = new Person(100, 90);
-console.log(person1.averageScore()); //함수를 이용해야해
+const person1 = new Person(100, 90)
+console.log(person1.averageScore()) //함수를 이용해야해
 ```
 
 위의 코드의 점수의 평균 값을 얻고 싶은 상황에서 메소드로 평균 점수를 받을 수 있지만 averageScore를 속성으로 만들고 싶다. 그래서 우선은 초기 값으로 먼저 받아올 때 계산해서 속성으로 추가할 수 있다.
@@ -146,16 +146,16 @@ console.log(person1.averageScore()); //함수를 이용해야해
 ```javascript
 class Person {
   constructor(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.fullName = `${this.firstName} ${this.lastName}`;
+    this.firstName = firstName
+    this.lastName = lastName
+    this.fullName = `${this.firstName} ${this.lastName}`
   }
 }
 
-const me = new Person('Youngjun', 'Choi');
-console.log(me.fullName); // Youngjun Choi
-me.firstName = 'hi';
-console.log(me.fullName); // Youngjun Choi
+const me = new Person("Youngjun", "Choi")
+console.log(me.fullName) // Youngjun Choi
+me.firstName = "hi"
+console.log(me.fullName) // Youngjun Choi
 ```
 
 하지만 문제점은 초기화로 값이 정해져버려 수학 점수를 수정했을 때 평균값은 반영이 안되고 있다. 이때 사용할 수 있는 것이 Getter와 Setter다.
@@ -163,21 +163,21 @@ console.log(me.fullName); // Youngjun Choi
 ```javascript
 class Person {
   constructor(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = firstName
+    this.lastName = lastName
   }
   get fullName() {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName} ${this.lastName}`
   }
 
   set fullName(value) {
-    this.fullName = value;
+    this.fullName = value
   }
 }
 
-const me = new Person('Youngjun', 'Choi');
-console.log(me.fullName);
-me.fullName = 'yj Choi'; // RangeError: Maximum call stack size exceeded
+const me = new Person("Youngjun", "Choi")
+console.log(me.fullName)
+me.fullName = "yj Choi" // RangeError: Maximum call stack size exceeded
 ```
 
 getter와 setter는 내부적으로 함수이기 때문 속성에 접근해 값을 반환해주고 변경할 수 있지만 사용 시에는 속성으로 사용할 수 있어 우리가 원하는 결과를 얻을 수 있다. 하지만 이때 주의할 점은 setter가 변경하는 속성의 이름과 접근하는 속성의 이름이 같을 경우 계속해서 **재귀적으로 호출**해 에러가 발생한다. 이를 해결하기 위해서는 값을 setter 속성을 직접 변경하는 것이 아니라 내부 속성을 이용해서 수정해야 한다.
@@ -185,22 +185,22 @@ getter와 setter는 내부적으로 함수이기 때문 속성에 접근해 값�
 ```javascript
 class Person {
   constructor(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = firstName
+    this.lastName = lastName
   }
   get fullName() {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName} ${this.lastName}`
   }
 
   set fullName(name) {
-    [this.firstName, this.lastName] = name.split(' ');
+    ;[this.firstName, this.lastName] = name.split(" ")
   }
 }
 
-const me = new Person('Youngjun', 'Choi');
-console.log(me.fullName); // Youngjun Choi
-me.fullName = 'yj Choi';
-console.log(me.fullName); // yj Choi
+const me = new Person("Youngjun", "Choi")
+console.log(me.fullName) // Youngjun Choi
+me.fullName = "yj Choi"
+console.log(me.fullName) // yj Choi
 ```
 
 getter와 setter는 클래스 레벨의 접근자이기 때문에 프로토타입의 속성이 된다.
@@ -213,31 +213,31 @@ getter와 setter는 클래스 레벨의 접근자이기 때문에 프로토타�
 
 ```javascript
 class Person {
-  #name = '비밀';
+  #name = "비밀"
   get name() {
-    return this.#name;
+    return this.#name
   }
 }
 
-const me = new Person();
+const me = new Person()
 
-console.log(me.name);
-console.log(me.#name); // SyntaxError: Private field '#name' must be declared in an enclosing class
+console.log(me.name)
+console.log(me.#name) // SyntaxError: Private field '#name' must be declared in an enclosing class
 ```
 
 클래스 필드에 `static`을 이용하면 앞서 클래스 레벨의 메소드를 만든 것처럼 속성도 추가할 수 있다.
 
 ```javascript
 class Person {
-  #name = '비밀';
-  static male = '남자';
+  #name = "비밀"
+  static male = "남자"
   get name() {
-    return this.#name;
+    return this.#name
   }
 }
 
-const me = new Person();
-console.log(Person.male); // 남자
+const me = new Person()
+console.log(Person.male) // 남자
 ```
 
 ## 🐔 클래스의 상속
@@ -260,7 +260,7 @@ class Child extends Parent {
   constructor() {}
 }
 
-const child = new Child();
+const child = new Child()
 ```
 
 2. 자식 클래스의 constructor에서 super를 호출하기 전에 this를 참조할 수 없다.
@@ -271,12 +271,12 @@ class Parent {}
 class Child extends Parent {
   constructor() {
     //ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
-    this.a = 1;
-    super();
+    this.a = 1
+    super()
   }
 }
 
-const child = new Child();
+const child = new Child()
 ```
 
 3. 자식의 constructor 함수에서만 super가 호출될 수 있다.
@@ -286,16 +286,16 @@ class Parent {}
 
 class Child extends Parent {
   constructor() {
-    this.a = 1;
-    super();
+    this.a = 1
+    super()
   }
 
   foo() {
-    super(); // SyntaxError: 'super' keyword unexpected here
+    super() // SyntaxError: 'super' keyword unexpected here
   }
 }
 
-const child = new Child();
+const child = new Child()
 ```
 
 두 번째로 `super`를 이용해 부모 클래스의 메소드를 참조할 수 있다.
@@ -303,22 +303,22 @@ const child = new Child();
 ```javascript
 class Parent {
   constructor(name) {
-    this.name = name;
+    this.name = name
   }
 
   sayHi() {
-    return `${this.name}`;
+    return `${this.name}`
   }
 }
 
 class Child extends Parent {
   sayHi() {
-    return `${super.sayHi()}`; //parent.sayHi()
+    return `${super.sayHi()}` //parent.sayHi()
   }
 }
 
-const child = new Child('yj');
-console.log(child.sayHi());
+const child = new Child("yj")
+console.log(child.sayHi())
 ```
 
 위 예제는 super를 통해 Parent 클래스의 프로토타입의 sayHi를 참조했다. 이때 this는 인스턴스를 가리키고 있기 때문에 name을 참조할 수 있다.
@@ -330,17 +330,17 @@ super를 자식 클래스의 정적 메소드에서 이용하면 부모의 정�
 ```javascript
 class Parent {
   static sayHi() {
-    return `Hi `;
+    return `Hi `
   }
 }
 
 class Child extends Parent {
   static sayHi() {
-    return `${super.sayHi()}`;
+    return `${super.sayHi()}`
   }
 }
 
-console.log(Child.sayHi()); // hi
+console.log(Child.sayHi()) // hi
 ```
 
 이제 실제로 상속을 통해 객체를 만드는 과정에 대해 알아보자.
@@ -348,41 +348,41 @@ console.log(Child.sayHi()); // hi
 ```javascript
 class Circle {
   constructor(radius) {
-    this.radius = radius; // 반지름
+    this.radius = radius // 반지름
   }
 
   getPerimeter() {
-    return 2 * Math.PI * this.radius;
+    return 2 * Math.PI * this.radius
   }
 
   getArea() {
-    return Math.PI * this.radius ** 2;
+    return Math.PI * this.radius ** 2
   }
 }
 
 // 자식 클래스
 class Cylinder extends Circle {
   constructor(radius, height) {
-    super(radius);
-    this.height = height;
+    super(radius)
+    this.height = height
   }
 
   getArea() {
-    return this.height * super.getPerimeter() + 2 * super.getArea();
+    return this.height * super.getPerimeter() + 2 * super.getArea()
   }
 
   getVolume() {
-    return super.getArea() * this.height;
+    return super.getArea() * this.height
   }
 }
 
-const cylinder = new Cylinder(2, 10);
+const cylinder = new Cylinder(2, 10)
 
-console.log(cylinder.getPerimeter());
+console.log(cylinder.getPerimeter())
 
-console.log(cylinder.getArea()); // 150.79644737231007
+console.log(cylinder.getArea()) // 150.79644737231007
 
-console.log(cylinder.getVolume()); // 125.66370614359172
+console.log(cylinder.getVolume()) // 125.66370614359172
 ```
 
 위의 예제로 인스턴스 cylinder가 만들어지는 과정을 순서대로 정리하면 다음과 같다.
@@ -418,5 +418,6 @@ super호출로 Circle클래스는 인스턴스를 생성하기 위해 먼저 `{}
 생성자 함수와 프로토타입을 이해하고 클래스를 다시 보면서 공통점과 차이점을 새롭게 알게 되었다. 이후에 타입스크립트에서 좀 더 강력한 객체 지향 요소들을 함께 정리할 예정이다.
 
 [참조]
+
 - [모던 자바스크립트 딥다이브](http://www.yes24.com/Product/Goods/92742567)
 - [프로토타입](https://poiemaweb.com/es6-class)

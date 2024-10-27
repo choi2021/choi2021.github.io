@@ -1,5 +1,5 @@
 ---
-title: '원티드 프리온보딩 1-2 과제회고'
+title: "원티드 프리온보딩 1-2 과제회고"
 date: 2022-10-31
 slug: wanted-pre-onboarding-1-2-review
 tags: [회고, 원티드프리온보딩]
@@ -80,18 +80,18 @@ context API는 전역상태를 관리하는 방법으로, provider내부의 컴�
 context API 자체에서 api를 이용해 값을 넣어둘까 생각을 했지만, 내부에서 계속 값이 바뀌면 받는 시점에 따라 다른 데이터가 전달될 수도 있을 것 같아 단순이 데이터만 보관하고 변경할 수 있는 함수를 context로 같이 제공하는 방식으로 코드를 구성했다.
 
 ```javascript
-import { useMemo, useState, createContext } from 'react';
+import { useMemo, useState, createContext } from "react"
 
-export const ListContext = createContext();
+export const ListContext = createContext()
 export const ListContextProvider = ({ children }) => {
-  const [issues, setIssues] = useState({});
-  const setNextPage = () => setPage(page + 1);
+  const [issues, setIssues] = useState({})
+  const setNextPage = () => setPage(page + 1)
   const value = useMemo(
     () => ({ issues, page, setNextPage, setIssues }),
     [issues, page]
-  );
-  return <ListContext.Provider value={value}>{children}</ListContext.Provider>;
-};
+  )
+  return <ListContext.Provider value={value}>{children}</ListContext.Provider>
+}
 ```
 
 ### Custom Hook: useFetch
@@ -102,34 +102,34 @@ useEffect 내부에서는 async await으로 함수를 감싸면 promise가 반�
 
 ```javascript
 const useFetch = () => {
-  const { issues, setIssues, page } = useContext(ListContext);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { issues, setIssues, page } = useContext(ListContext)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState("")
   const getList = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const data = await getIssueList(page);
+      const data = await getIssueList(page)
       if (data.length === 0) {
-        setLastPage(true);
+        setLastPage(true)
       }
-      setIssues((prev) => {
-        const updated = { ...prev };
-        data.forEach((issue) => {
-          updated[issue.id] = issue;
-        });
-        return updated;
-      });
+      setIssues(prev => {
+        const updated = { ...prev }
+        data.forEach(issue => {
+          updated[issue.id] = issue
+        })
+        return updated
+      })
     } catch (error) {
-      setError(error.errorMessage);
+      setError(error.errorMessage)
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
   useEffect(() => {
-    getList();
-  }, [page]);
+    getList()
+  }, [page])
 
-  return [isLoading, error, issues, lastPage];
-};
+  return [isLoading, error, issues, lastPage]
+}
 ```
 
 ### issues 전역상태 자료구조
@@ -142,8 +142,8 @@ context 내부 상태를 처음에는 배열을 이용해 api 데이터들을 �
 
 ```javascript
 const IssueList = () => {
-  const { setNextPage } = useContext(ListContext);
-  const [isLoading, error, issues, lastPage] = useFetch();
+  const { setNextPage } = useContext(ListContext)
+  const [isLoading, error, issues, lastPage] = useFetch()
 
   return (
     <>
@@ -151,34 +151,34 @@ const IssueList = () => {
         {Object.values(issues)
           .sort((a, b) => b.comments - a.comments)
           .map((issue, idx) => {
-            return <IssueItem key={issue.id} {...issue} />;
+            return <IssueItem key={issue.id} {...issue} />
           })}
         {isLoading && <Loader />}
       </S.List>
     </>
-  );
-};
+  )
+}
 
-export default IssueList;
+export default IssueList
 ```
 
 자료구조를 object로 바꾼 덕분에 detail페이지에서 보여줄 때도 다른 api 호출없이 useParam으로 받아온 id값으로 issues에 접근해 데이터를 불러올 수 있었다.
 
 ```jsx
-import React, { memo } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import S from './styles';
-import formatDate from '../../utils/formatDate';
+import React, { memo } from "react"
+import { useNavigate, useParams } from "react-router"
+import S from "./styles"
+import formatDate from "../../utils/formatDate"
 
 const IssueItem = ({ id, number, title, user, created_at, comments }) => {
-  const navigate = useNavigate();
-  const params = useParams();
-  const date = formatDate(created_at);
+  const navigate = useNavigate()
+  const params = useParams()
+  const date = formatDate(created_at)
   const handleClick = () => {
     if (!params.id) {
-      navigate(`/detail/${id}`);
+      navigate(`/detail/${id}`)
     }
-  };
+  }
   return (
     <S.List onClick={handleClick} params={!!params.id}>
       <S.LeftBox>
@@ -196,11 +196,10 @@ const IssueItem = ({ id, number, title, user, created_at, comments }) => {
         {comments}
       </S.RightBox>
     </S.List>
-  );
-};
+  )
+}
 
-export default memo(IssueItem);
-
+export default memo(IssueItem)
 ```
 
 ## 3. 다섯번째 셀에 광고 보여주기
@@ -208,18 +207,18 @@ export default memo(IssueItem);
 list의 특정부분에 추가된 것을 보여준 것을 해본 적이 없어서 고민하다, mapping을 할 때 index가 4가 되었을 때 issueItem 컴포넌트와 함께 adBox 컴포넌트를 보여주는 방식을 선택했다. 하지만 key가 계속해서 중복된다는 에러가 발생했다.
 
 ```jsx
-import React, { useContext } from 'react';
-import S from './styles';
-import IssueItem from '../issueItem/IssueItem';
-import AdBox from '../adBox/AdBox';
-import useFetch from '../../hooks/useFetch';
-import useObservation from '../../hooks/useObservation';
-import { ListContext } from '../../context/ListContext';
-import Loader from '../loader/Loader';
+import React, { useContext } from "react"
+import S from "./styles"
+import IssueItem from "../issueItem/IssueItem"
+import AdBox from "../adBox/AdBox"
+import useFetch from "../../hooks/useFetch"
+import useObservation from "../../hooks/useObservation"
+import { ListContext } from "../../context/ListContext"
+import Loader from "../loader/Loader"
 
 const IssueList = () => {
-  const { setNextPage } = useContext(ListContext);
-  const [isLoading, error, issues, lastPage] = useFetch();
+  const { setNextPage } = useContext(ListContext)
+  const [isLoading, error, issues, lastPage] = useFetch()
 
   return (
     <>
@@ -233,19 +232,19 @@ const IssueList = () => {
                   <AdBox />
                   <IssueItem key={issue.id} {...issue} />
                 </>
-              );
+              )
             }
-            return <IssueItem key={issue.id} {...issue} />;
+            return <IssueItem key={issue.id} {...issue} />
           })}
         {isLoading && <Loader />}
       </S.List>
     </>
-  );
-};
+  )
+}
 
-export default IssueList;
-
+export default IssueList
 ```
+
  <br/>
 
 <img width="800px" src="./ad에러.PNG"/>
@@ -254,19 +253,18 @@ export default IssueList;
 어디서 계속해서 에러가 나오는지 찾는 중에 issueItem에 key값을 주었기 때문에 에러가 발생되었다는 것을 알게되었다. 해결하기 위해서 fragment가 아니라 div로 감싸주고 div에 key값을 전달해줘 에러를 해결할 수 있었다.
 
 ```jsx
-import React, { useContext } from 'react';
-import S from './styles';
-import IssueItem from '../issueItem/IssueItem';
-import AdBox from '../adBox/AdBox';
-import useFetch from '../../hooks/useFetch';
-import useObservation from '../../hooks/useObservation';
-import { ListContext } from '../../context/ListContext';
-import Loader from '../loader/Loader';
+import React, { useContext } from "react"
+import S from "./styles"
+import IssueItem from "../issueItem/IssueItem"
+import AdBox from "../adBox/AdBox"
+import useFetch from "../../hooks/useFetch"
+import useObservation from "../../hooks/useObservation"
+import { ListContext } from "../../context/ListContext"
+import Loader from "../loader/Loader"
 
 const IssueList = () => {
-  const { setNextPage } = useContext(ListContext);
-  const [isLoading, error, issues, lastPage] = useFetch();
-
+  const { setNextPage } = useContext(ListContext)
+  const [isLoading, error, issues, lastPage] = useFetch()
 
   return (
     <>
@@ -280,9 +278,9 @@ const IssueList = () => {
                   <AdBox />
                   <IssueItem {...issue} />
                 </div>
-              );
+              )
             }
-            return <IssueItem key={issue.id} {...issue} />;
+            return <IssueItem key={issue.id} {...issue} />
           })}
         {isLoading && <Loader />}
       </S.List>
@@ -292,11 +290,10 @@ const IssueList = () => {
         <S.Banner>마지막 페이지입니다🎈</S.Banner>
       )}
     </>
-  );
-};
+  )
+}
 
-export default IssueList;
-
+export default IssueList
 ```
 
 (나중에 안 사실이지만 react.fragment에도 key값을 줄 수 있다고 한다.)
@@ -314,63 +311,62 @@ export default IssueList;
 Observation을 하는 로직을 관심사 분리를 할 수 있게 useObservation이라는 Hook으로 로직들을 정리했다. Hook은 관찰할 ref를 반환해 ref를 우리가 원하는 타겟으로 연결할 수 있다.
 
 ```jsx
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from "react"
 
 const option = {
   root: null,
-  rootMargin: '0px',
+  rootMargin: "0px",
   threshold: 1,
-};
+}
 
 const useObservation = onIntersect => {
-  const ref = useRef(null);
+  const ref = useRef(null)
   const callback = useCallback(
     (entries, observer) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) onIntersect(entry, observer);
-      });
+        if (entry.isIntersecting) onIntersect(entry, observer)
+      })
     },
     [onIntersect]
-  );
+  )
 
   useEffect(() => {
     if (!ref.current) {
-      return;
+      return
     }
-    const observer = new IntersectionObserver(callback, option);
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [ref.current, callback]);
-  return ref;
-};
+    const observer = new IntersectionObserver(callback, option)
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [ref.current, callback])
+  return ref
+}
 
-export default useObservation;
-
+export default useObservation
 ```
 
 어려웠던 점은 **초기 렌더링 시에 전달해주었던 callback이 실행되어서 계속해서 page 2인 상태로 시작되는 점**이었다. 이것을 막기 위해서 useFetch의 isLoading상태를 이용해서 로딩이 아닐 때만 useObservation에 전달해준 callback 함수가 실행되게 했다.
 
 ```jsx
-import React, { useContext } from 'react';
-import S from './styles';
-import IssueItem from '../issueItem/IssueItem';
-import AdBox from '../adBox/AdBox';
-import useFetch from '../../hooks/useFetch';
-import useObservation from '../../hooks/useObservation';
-import { ListContext } from '../../context/ListContext';
-import Loader from '../loader/Loader';
+import React, { useContext } from "react"
+import S from "./styles"
+import IssueItem from "../issueItem/IssueItem"
+import AdBox from "../adBox/AdBox"
+import useFetch from "../../hooks/useFetch"
+import useObservation from "../../hooks/useObservation"
+import { ListContext } from "../../context/ListContext"
+import Loader from "../loader/Loader"
 
 const IssueList = () => {
-  const { setNextPage } = useContext(ListContext);
-  const [isLoading, error, issues] = useFetch();
+  const { setNextPage } = useContext(ListContext)
+  const [isLoading, error, issues] = useFetch()
   const onObserve = (entry, observer) => {
-    observer.unobserve(entry.target);
+    observer.unobserve(entry.target)
     if (!isLoading) {
-      setNextPage();
+      setNextPage()
     }
-  };
+  }
 
-  const targetRef = useObservation(onObserve);
+  const targetRef = useObservation(onObserve)
 
   return (
     <>
@@ -384,19 +380,18 @@ const IssueList = () => {
                   <AdBox />
                   <IssueItem {...issue} />
                 </div>
-              );
+              )
             }
-            return <IssueItem key={issue.id} {...issue} />;
+            return <IssueItem key={issue.id} {...issue} />
           })}
         {isLoading && <Loader />}
       </S.List>
       <S.Target ref={targetRef} />
     </>
-  );
-};
+  )
+}
 
-export default IssueList;
-
+export default IssueList
 ```
 
 ### 마지막 페이지 무한 API 호출

@@ -1,5 +1,5 @@
 ---
-title: 'HTTP 정리'
+title: "HTTP 정리"
 date: 2022-10-06
 slug: http-정리
 tags: [네트워크]
@@ -10,7 +10,6 @@ tags: [네트워크]
 ## HTTP 프로토콜이란
 
 HTTP 프로토콜은 HyperText Transfer Protocol의 약자로 클라이언트와 서버가 서로 통신하는데 필요한 규약/약속을 의미한다. request와 response의 protocol로, client가 request(요청)를 서버에 보내게 되면 서버는 요청에 맞는 response(응답)을 보내는 과정을 의미한다.
-
 
 ![http](http.png)
 위의 그림을 조금 더 세부적으로 나누어 설명하면 다음과 같이 정리할 수 있다.
@@ -197,4 +196,5 @@ async deleteTodo(tweetId) {
 위 4가지를 함께 CRUD(Create,Read,Update,Delete)라고도 부르는 대표적인 요청으로 꼭 기억하고 있어야할 부분이다. 이외에도 HEAD나 PATCH와 같은 Method가 있지만 나올 때마다 조금씩 정리해 나가려한다.
 
 [참조]
+
 - [캡틴판교님 블로그 HTTP 통신과정](https://joshua1988.github.io/web-development/http-part1/)

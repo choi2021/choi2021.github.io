@@ -1,5 +1,5 @@
 ---
-title: '제너레이터와 Async-Await'
+title: "제너레이터와 Async-Await"
 date: 2022-12-02
 slug: javascript-generator-async-await
 tags: [javascript, 문법]
@@ -30,19 +30,19 @@ EO 채널의 시니어 개발자분들의 이력서 관련 팁을 말씀해 주�
 ```javascript
 const fibonacci = {
   [Symbol.iterator]() {
-    let [pre, cur] = [0, 1];
-    const max = 10;
+    let [pre, cur] = [0, 1]
+    const max = 10
     return {
       next() {
-        [pre, cur] = [cur, pre + cur];
-        return { value: cur, done: cur >= max };
+        ;[pre, cur] = [cur, pre + cur]
+        return { value: cur, done: cur >= max }
       },
-    };
+    }
   },
-};
+}
 
 for (const num of fibonacci) {
-  console.log(num);
+  console.log(num)
 }
 ```
 
@@ -54,16 +54,16 @@ for (const num of fibonacci) {
 
 ```javascript
 const fibonacciGen = (function* () {
-  let [pre, cur] = [0, 1];
-  const max = 10;
+  let [pre, cur] = [0, 1]
+  const max = 10
   while (pre + cur <= max) {
-    [pre, cur] = [cur, pre + cur];
-    yield cur;
+    ;[pre, cur] = [cur, pre + cur]
+    yield cur
   }
-})();
+})()
 
 for (const num of fibonacciGen) {
-  console.log(num);
+  console.log(num)
 }
 ```
 
@@ -72,19 +72,19 @@ for (const num of fibonacciGen) {
 ```javascript
 function* genFunc() {
   try {
-    yield 1;
-    yield 2;
-    yield 3;
+    yield 1
+    yield 2
+    yield 3
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
 }
 
-const generator = genFunc();
-console.log(generator.next()); // { value: 1, done: false }
-console.log(generator.next()); // { value: 2, done: false }
-console.log(generator.next()); // { value: 3, done: false }
-console.log(generator.next()); // { value: undefined, done: true }
+const generator = genFunc()
+console.log(generator.next()) // { value: 1, done: false }
+console.log(generator.next()) // { value: 2, done: false }
+console.log(generator.next()) // { value: 3, done: false }
+console.log(generator.next()) // { value: undefined, done: true }
 ```
 
 두번째 예제는 yield를 이용해 값을 할당한 예제다. 실행 과정을 정리하면 다음과 같다.
@@ -95,22 +95,22 @@ console.log(generator.next()); // { value: undefined, done: true }
 
 ```javascript
 function* genFunc() {
-  const x = yield 1;
-  console.log('x', x); // x 10
-  const y = yield x + 10;
-  console.log('y', y); // y 20
-  return x + y;
+  const x = yield 1
+  console.log("x", x) // x 10
+  const y = yield x + 10
+  console.log("y", y) // y 20
+  return x + y
 }
 
-const generator = genFunc(0);
+const generator = genFunc(0)
 
-let res = generator.next();
-console.log(res); // { value: 1, done: false }
-res = generator.next(10);
-console.log(res); // { value: 20, done: false }
-res = generator.next(20);
-console.log(res); // { value: 30, done: true }
-console.log(generator.next()); // { value: undefined, done: true }
+let res = generator.next()
+console.log(res) // { value: 1, done: false }
+res = generator.next(10)
+console.log(res) // { value: 20, done: false }
+res = generator.next(20)
+console.log(res) // { value: 30, done: true }
+console.log(generator.next()) // { value: undefined, done: true }
 ```
 
 제너레이터가 어떻게 함수 내부 실행을 제어하는지에 대해 알아봤다. 그러면 제너레이터를 <u>어디에</u> 사용해야 할까?
@@ -130,23 +130,23 @@ console.log(generator.next()); // { value: undefined, done: true }
 7. fetchTodo가 끝났기 때문에 result.done은 true가되어 undefined를 반환하며 종료한다.
 
 ```javascript
-const async = (generatorFunc) => {
-  const generator = generatorFunc();
-  const onResolved = (arg) => {
-    const result = generator.next(arg);
+const async = generatorFunc => {
+  const generator = generatorFunc()
+  const onResolved = arg => {
+    const result = generator.next(arg)
     return result.done
       ? result.value
-      : result.value.then((res) => onResolved(res));
-  };
-  return onResolved;
-};
+      : result.value.then(res => onResolved(res))
+  }
+  return onResolved
+}
 
 async(function* fetchTodo() {
-  const url = 'https://jsonplaceholder.typicode.com/todos/1';
-  const response = yield fetch(url);
-  const todo = yield response.json();
-  console.log(todo);
-})();
+  const url = "https://jsonplaceholder.typicode.com/todos/1"
+  const response = yield fetch(url)
+  const todo = yield response.json()
+  console.log(todo)
+})()
 ```
 
 ### Async- Await
@@ -157,10 +157,10 @@ async,await은 위의 예제보다 훨씬 가독성이 좋게 이용될 수 있�
 
 ```javascript
 async function fetchTodo() {
-  const url = 'https://jsonplaceholder.typicode.com/todos/1';
-  const response = await fetch(url);
-  const todo = await response.json();
-  console.log(todo);
+  const url = "https://jsonplaceholder.typicode.com/todos/1"
+  const response = await fetch(url)
+  const todo = await response.json()
+  console.log(todo)
 }
 ```
 
@@ -169,24 +169,24 @@ await은 promise가 settled된 상태(성공,실패와 상관없이 처리가 �
 ```javascript
 //수정 전
 async function foo() {
-  const a = await new Promise((resolve) => setTimeout(() => resolve(1), 3000));
-  const b = await new Promise((resolve) => setTimeout(() => resolve(2), 2000));
-  const c = await new Promise((resolve) => setTimeout(() => resolve(3), 1000));
-  console.log([a, b, c]);
+  const a = await new Promise(resolve => setTimeout(() => resolve(1), 3000))
+  const b = await new Promise(resolve => setTimeout(() => resolve(2), 2000))
+  const c = await new Promise(resolve => setTimeout(() => resolve(3), 1000))
+  console.log([a, b, c])
 }
 
-foo(); // 6초 뒤 [1,2,3]
+foo() // 6초 뒤 [1,2,3]
 
 async function foo() {
   const res = await Promise.all([
-    new Promise((resolve) => setTimeout(() => resolve(1), 3000)),
-    new Promise((resolve) => setTimeout(() => resolve(2), 2000)),
-    new Promise((resolve) => setTimeout(() => resolve(3), 1000)),
-  ]);
-  console.log(res);
+    new Promise(resolve => setTimeout(() => resolve(1), 3000)),
+    new Promise(resolve => setTimeout(() => resolve(2), 2000)),
+    new Promise(resolve => setTimeout(() => resolve(3), 1000)),
+  ])
+  console.log(res)
 }
 
-foo(); // 3초 뒤 [1,2,3]
+foo() // 3초 뒤 [1,2,3]
 ```
 
 [참고]
