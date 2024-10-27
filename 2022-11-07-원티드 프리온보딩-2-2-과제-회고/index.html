@@ -274,33 +274,33 @@ data-styled.g45[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"yzdKT,ivqWaF,"}
 <h3>📖 Interface</h3>
 <p>이번 과제에서 만들었던 class는 두가지 광고 데이터를 api로 불러오는 모듈이 필요했다. 그래서 interface는 다음과 같은 두 가지 함수를 가지고 있다.</p>
 <div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">type</span> <span class="token class-name">GetAdListResponse</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
-  ads<span class="token operator">:</span> AdType<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-  counts<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+  ads<span class="token operator">:</span> AdType<span class="token punctuation">[</span><span class="token punctuation">]</span>
+  counts<span class="token operator">:</span> <span class="token builtin">number</span>
+<span class="token punctuation">}</span>
 
 <span class="token keyword">type</span> <span class="token class-name">GetTrendResponse</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
   report<span class="token operator">:</span> <span class="token punctuation">{</span>
-    daily<span class="token operator">:</span> TrendType<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+    daily<span class="token operator">:</span> TrendType<span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
 <span class="token keyword">interface</span> <span class="token class-name">AdService</span> <span class="token punctuation">{</span>
-  <span class="token function-variable function">getAdList</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>GetAdListResponse<span class="token operator">></span><span class="token punctuation">;</span>
-  <span class="token function-variable function">getTrend</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>GetTrendResponse<span class="token operator">></span><span class="token punctuation">;</span>
+  <span class="token function-variable function">getAdList</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>GetAdListResponse<span class="token operator">></span>
+  <span class="token function-variable function">getTrend</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>GetTrendResponse<span class="token operator">></span>
 <span class="token punctuation">}</span></code></pre></div>
 <p>API 통신을 위한 class이므로 각 메소드는 통신결과인 promise를 반환하고 promise 내부의 데이터 타입을 정해주면 interface를 작성할 수 있다.</p>
 <h3>📁 Class</h3>
 <p>우리가 정의한 interface를 구현하는 class인 AdserviceImpl를 다음과 같이 만들 수 있다.</p>
-<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">{</span> AxiosError<span class="token punctuation">,</span> AxiosInstance <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">{</span> AxiosError<span class="token punctuation">,</span> AxiosInstance <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"axios"</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span>
   AdService<span class="token punctuation">,</span>
   GetAdListResponse<span class="token punctuation">,</span>
   GetTrendResponse<span class="token punctuation">,</span>
-<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'models/interface'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> HTTPError <span class="token keyword">from</span> <span class="token string">'../network/httpError'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"models/interface"</span>
+<span class="token keyword">import</span> HTTPError <span class="token keyword">from</span> <span class="token string">"../network/httpError"</span>
 
-<span class="token keyword">const</span> <span class="token constant">AD_LIST_URL</span> <span class="token operator">=</span> <span class="token string">'/ad-list-data-set.json'</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> <span class="token constant">AD_TREND_URL</span> <span class="token operator">=</span> <span class="token string">'/trend-data-set.json'</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">AD_LIST_URL</span> <span class="token operator">=</span> <span class="token string">"/ad-list-data-set.json"</span>
+<span class="token keyword">const</span> <span class="token constant">AD_TREND_URL</span> <span class="token operator">=</span> <span class="token string">"/trend-data-set.json"</span>
 
 <span class="token keyword">class</span> <span class="token class-name">AdServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">AdService</span> <span class="token punctuation">{</span>
   <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> axiosInstance<span class="token operator">:</span> AxiosInstance<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
@@ -309,49 +309,49 @@ data-styled.g45[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"yzdKT,ivqWaF,"}
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
       <span class="token keyword">const</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>axiosInstance<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">get</span><span class="token generic class-name"><span class="token operator">&lt;</span>GetAdListResponse<span class="token operator">></span></span></span><span class="token punctuation">(</span>
         <span class="token constant">AD_LIST_URL</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span> data<span class="token punctuation">;</span>
+      <span class="token punctuation">)</span>
+      <span class="token keyword">return</span> data
     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">const</span> <span class="token punctuation">{</span> response <span class="token punctuation">}</span> <span class="token operator">=</span> error <span class="token keyword">as</span> <span class="token builtin">unknown</span> <span class="token keyword">as</span> AxiosError<span class="token punctuation">;</span>
+      <span class="token keyword">const</span> <span class="token punctuation">{</span> response <span class="token punctuation">}</span> <span class="token operator">=</span> error <span class="token keyword">as</span> <span class="token builtin">unknown</span> <span class="token keyword">as</span> AxiosError
       <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">HTTPError</span><span class="token punctuation">(</span>response<span class="token operator">?.</span>status<span class="token punctuation">,</span> response<span class="token operator">?.</span>statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">HTTPError</span><span class="token punctuation">(</span>response<span class="token operator">?.</span>status<span class="token punctuation">,</span> response<span class="token operator">?.</span>statusText<span class="token punctuation">)</span>
       <span class="token punctuation">}</span>
-      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Unknown Error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"Unknown Error"</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
 
   <span class="token function-variable function">getTrend</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
       <span class="token keyword">const</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>axiosInstance<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">get</span><span class="token generic class-name"><span class="token operator">&lt;</span>GetTrendResponse<span class="token operator">></span></span></span><span class="token punctuation">(</span>
         <span class="token constant">AD_TREND_URL</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span> data<span class="token punctuation">;</span>
+      <span class="token punctuation">)</span>
+      <span class="token keyword">return</span> data
     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">const</span> <span class="token punctuation">{</span> response <span class="token punctuation">}</span> <span class="token operator">=</span> error <span class="token keyword">as</span> <span class="token builtin">unknown</span> <span class="token keyword">as</span> AxiosError<span class="token punctuation">;</span>
+      <span class="token keyword">const</span> <span class="token punctuation">{</span> response <span class="token punctuation">}</span> <span class="token operator">=</span> error <span class="token keyword">as</span> <span class="token builtin">unknown</span> <span class="token keyword">as</span> AxiosError
       <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">HTTPError</span><span class="token punctuation">(</span>response<span class="token operator">?.</span>status<span class="token punctuation">,</span> response<span class="token operator">?.</span>statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">HTTPError</span><span class="token punctuation">(</span>response<span class="token operator">?.</span>status<span class="token punctuation">,</span> response<span class="token operator">?.</span>statusText<span class="token punctuation">)</span>
       <span class="token punctuation">}</span>
-      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Unknown Error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"Unknown Error"</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> AdServiceImpl<span class="token punctuation">;</span></code></pre></div>
+<span class="token keyword">export</span> <span class="token keyword">default</span> AdServiceImpl</code></pre></div>
 <p>이전부터 항상 사용해오던 HTTPError class는 원하는 에러메시지를 커스텀할 수 있게 하는 정도로 사용했지만 에러가 다양해지고 복잡해지면 class에 내용만 추가하면 되니까 훨씬 유지 보수에 유용할 것이란 예상을 할 수 있다.</p>
 <div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">HTTPError</span> <span class="token keyword">extends</span> <span class="token class-name">Error</span> <span class="token punctuation">{</span>
   <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> statusCode<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span> <span class="token keyword">public</span> message<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">super</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
   <span class="token punctuation">}</span>
 
   <span class="token keyword">get</span> <span class="token function">errorMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">switch</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>statusCode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
       <span class="token keyword">case</span> <span class="token number">404</span><span class="token operator">:</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>message <span class="token operator">=</span> <span class="token string">'잘못된 요청입니다. url을 확인해주세요'</span><span class="token punctuation">;</span>
-        <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>message <span class="token operator">=</span> <span class="token string">"잘못된 요청입니다. url을 확인해주세요"</span>
+        <span class="token keyword">break</span>
       <span class="token keyword">default</span><span class="token operator">:</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Unknown Error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"Unknown Error"</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>message
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre></div>
 <h3>💊 Dependency Injection</h3>
@@ -360,44 +360,42 @@ data-styled.g45[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"yzdKT,ivqWaF,"}
 <img width='800' src='/static/context에 class instance를 넣으려하니 생긴에러-4309cb2836fd35a2ee7c65237068fd40.png'>
 <p>여기서 조금 주의할 부분은 전달하면서 instance가 this를 잃어버린다는 점이다. 그래서 bind로 adService를 binding을 해주거나, method 자체를 <strong>arrow function</strong>으로 바꾸게 되면, this binding 문제를 해결할 수 있다.</p>
 <div class="gatsby-highlight" data-language="tsx"><pre class="language-tsx"><code class="language-tsx"><span class="token comment">//index.tsx</span>
-<span class="token keyword">const</span> <span class="token constant">BASE_URL</span> <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">REACT_APP_BASE_URL</span> <span class="token operator">||</span> <span class="token string">''</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> axiosInstance <span class="token operator">=</span> <span class="token function">createAxiosClient</span><span class="token punctuation">(</span><span class="token constant">BASE_URL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> adService <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AdService</span><span class="token punctuation">(</span>axiosInstance<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">BASE_URL</span> <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">REACT_APP_BASE_URL</span> <span class="token operator">||</span> <span class="token string">""</span>
+<span class="token keyword">const</span> axiosInstance <span class="token operator">=</span> <span class="token function">createAxiosClient</span><span class="token punctuation">(</span><span class="token constant">BASE_URL</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> adService <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AdService</span><span class="token punctuation">(</span>axiosInstance<span class="token punctuation">)</span>
 
-<span class="token keyword">const</span> root <span class="token operator">=</span> ReactDOM<span class="token punctuation">.</span><span class="token function">createRoot</span><span class="token punctuation">(</span>
-  document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'root'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> HTMLElement
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> root <span class="token operator">=</span> ReactDOM<span class="token punctuation">.</span><span class="token function">createRoot</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"root"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> HTMLElement<span class="token punctuation">)</span>
 
 root<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">React.StrictMode</span></span><span class="token punctuation">></span></span><span class="token plain-text">
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">AdServiceProvider</span></span> <span class="token attr-name">adService</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>adService<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token plain-text">..</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">AdServiceProvider</span></span><span class="token punctuation">></span></span><span class="token plain-text">
   </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">React.StrictMode</span></span><span class="token punctuation">></span></span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">)</span>
 
 <span class="token comment">//AdServiceContext.tsx</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> AdService <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'models/interface'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> createContext<span class="token punctuation">,</span> useMemo<span class="token punctuation">,</span> useContext <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> AdService <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"models/interface"</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> createContext<span class="token punctuation">,</span> useMemo<span class="token punctuation">,</span> useContext <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"react"</span>
 
-<span class="token keyword">const</span> AdServiceContext <span class="token operator">=</span> <span class="token generic-function"><span class="token function">createContext</span><span class="token generic class-name"><span class="token operator">&lt;</span>AdService <span class="token operator">|</span> <span class="token keyword">null</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">useAds</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">useContext</span><span class="token punctuation">(</span>AdServiceContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> AdServiceContext <span class="token operator">=</span> <span class="token generic-function"><span class="token function">createContext</span><span class="token generic class-name"><span class="token operator">&lt;</span>AdService <span class="token operator">|</span> <span class="token keyword">null</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">useAds</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">useContext</span><span class="token punctuation">(</span>AdServiceContext<span class="token punctuation">)</span>
 
 <span class="token keyword">export</span> <span class="token keyword">const</span> AdServiceProvider <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
   children<span class="token punctuation">,</span>
   adService<span class="token punctuation">,</span>
 <span class="token punctuation">}</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-  children<span class="token operator">:</span> React<span class="token punctuation">.</span>ReactNode<span class="token punctuation">;</span>
-  adService<span class="token operator">:</span> AdService<span class="token punctuation">;</span> <span class="token comment">//interface로 바로 type정해줄 수 있어</span>
+  children<span class="token operator">:</span> React<span class="token punctuation">.</span>ReactNode
+  adService<span class="token operator">:</span> AdService <span class="token comment">//interface로 바로 type정해줄 수 있어</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token punctuation">{</span> getAdList<span class="token punctuation">,</span> getTrend <span class="token punctuation">}</span> <span class="token operator">=</span> adService<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> getAdList<span class="token punctuation">,</span> getTrend <span class="token punctuation">}</span> <span class="token operator">=</span> adService
   <span class="token keyword">const</span> value <span class="token operator">=</span> <span class="token function">useMemo</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token punctuation">{</span> getAdList<span class="token punctuation">,</span> getTrend <span class="token punctuation">}</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>getAdList<span class="token punctuation">,</span> getTrend<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span> getAdList<span class="token punctuation">,</span> getTrend <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>getAdList<span class="token punctuation">,</span> getTrend<span class="token punctuation">]</span><span class="token punctuation">)</span>
   <span class="token keyword">return</span> <span class="token punctuation">(</span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">AdServiceContext.Provider</span></span> <span class="token attr-name">value</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>value<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token plain-text">
       </span><span class="token punctuation">{</span>children<span class="token punctuation">}</span><span class="token plain-text">
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">AdServiceContext.Provider</span></span><span class="token punctuation">></span></span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre></div>
 <h2>🛠React Query를 이용한 Refactoring</h2>
 <p>기능을 우선으로 코드를 작성하다 보니 너무 비슷한 코드가 두 번이나 사용되었는데, 코드 양이 너무 많아 가독성이 떨어지는 문제를 가지고 있었다.</p>
 <div class="gatsby-highlight" data-language="tsx"><pre class="language-tsx"><code class="language-tsx"><span class="token keyword">const</span> getAdList <span class="token operator">=</span> <span class="token function">useCallback</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
@@ -436,40 +434,40 @@ root<span class="token punctuation">.</span><span class="token function">render<
 <p>위 상황은 두 가지 API 함수로 호출을 하는 상황이고 각각의 데이터를 상태로 전달해줘야 하는 상황이었다. (React query가 나서기 딱 좋은 상황이다)</p>
 <p>이를 받아온 결과들만 뽑아서 상태를 전달하니, 훨씬 코드가 간단해지고 구분이 잘된 것을 볼 수 있다.</p>
 <div class="gatsby-highlight" data-language="tsx"><pre class="language-tsx"><code class="language-tsx"><span class="token keyword">const</span> <span class="token punctuation">{</span> isLoading<span class="token punctuation">,</span> data<span class="token operator">:</span> trendData <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useQuery</span><span class="token punctuation">(</span>
-  <span class="token punctuation">[</span><span class="token string">'trend'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span><span class="token string">"trend"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> adService<span class="token operator">?.</span><span class="token function">getTrend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span>
     staleTime<span class="token operator">:</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">,</span>
     cacheTime<span class="token operator">:</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">,</span>
   <span class="token punctuation">}</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> <span class="token punctuation">{</span> data<span class="token operator">:</span> listData <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useQuery</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'adList'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> adService<span class="token operator">?.</span><span class="token function">getAdList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span> data<span class="token operator">:</span> listData <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useQuery</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"adList"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> adService<span class="token operator">?.</span><span class="token function">getAdList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
   staleTime<span class="token operator">:</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">,</span>
   cacheTime<span class="token operator">:</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
   <span class="token function">trendDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
     type<span class="token operator">:</span> DataActionEnum<span class="token punctuation">.</span><span class="token constant">SET_DATA</span><span class="token punctuation">,</span>
     data<span class="token operator">:</span> trendData<span class="token operator">?.</span>report<span class="token punctuation">.</span>daily <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">trendDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token operator">:</span> DataActionEnum<span class="token punctuation">.</span><span class="token constant">SET_IS_LOADING</span><span class="token punctuation">,</span> isLoading <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>trendData<span class="token punctuation">,</span> isLoading<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token function">trendDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token operator">:</span> DataActionEnum<span class="token punctuation">.</span><span class="token constant">SET_IS_LOADING</span><span class="token punctuation">,</span> isLoading <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>trendData<span class="token punctuation">,</span> isLoading<span class="token punctuation">]</span><span class="token punctuation">)</span>
 
 <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
   <span class="token function">listDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
     type<span class="token operator">:</span> DataActionEnum<span class="token punctuation">.</span><span class="token constant">SET_DATA</span><span class="token punctuation">,</span>
     data<span class="token operator">:</span> listData<span class="token operator">?.</span>ads <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>listData<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>listData<span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre></div>
 <h2>😅Typescript Error</h2>
 <p>역시 Typescript는 아직 어렵다... 마주했던 에러들을 기록해 이후에 까먹을 내가 참고하려한다.</p>
 <h3>Object Key Type</h3>
 <p>저번 과제에서 Detail 페이지를 구성할때 api로 받은 데이터 중에서 param값과 같은 id를 갖는 데이터를 찾아서 가져왔다. 이렇게 할 때 만약에 데이터가 커진다면 찾는데 훨씬 오랜 시간이 걸리는 문제가 발생한다 (배열에서 찾기는 O(n)). 그래서 Object로 자료구조를 바꾸려 했었는데 Type을 어떻게 설정할지 몰라 포기했던 경험이 있다.</p>
 <p>이번에는 데이터를 계산하면서 Object.keys() 메소드를 이용했는데, 나열하려면 index의 type을 결정해줘야 했다.</p>
 <div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">type</span> <span class="token class-name">ResultType</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
-  <span class="token punctuation">[</span>index<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">[</span>index<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">number</span>
+<span class="token punctuation">}</span>
 
 <span class="token keyword">const</span> <span class="token function-variable function">calculateData</span> <span class="token operator">=</span> <span class="token punctuation">(</span>data<span class="token operator">:</span> TrendType<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
   <span class="token keyword">const</span> result<span class="token operator">:</span> ResultType <span class="token operator">=</span> <span class="token punctuation">{</span>
@@ -483,27 +481,27 @@ root<span class="token punctuation">.</span><span class="token function">render<
     cpc<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
     cpa<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
     roas<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
 
-  data<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
-    Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  data<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>item <span class="token operator">=></span> <span class="token punctuation">{</span>
+    Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>key <span class="token operator">=></span> <span class="token punctuation">{</span>
       <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token keyword">in</span> result<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token function">Number</span><span class="token punctuation">(</span>item<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token function">Number</span><span class="token punctuation">(</span>item<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span>
       <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token keyword">return</span> result
+<span class="token punctuation">}</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> calculateData<span class="token punctuation">;</span></code></pre></div>
+<span class="token keyword">export</span> <span class="token keyword">default</span> calculateData</code></pre></div>
 <p>만약 저번 과제에서 해결 못했던 Object의 key로 데이터의 id를 사용하고 데이터를 value로 한 자료구조의 type 경우는 다음과 같이 적용할 수 있다.</p>
 <div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">type</span> <span class="token class-name">Type</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
-  <span class="token punctuation">[</span>index<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">{</span> data<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">[</span>index<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">{</span> data<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
 <span class="token keyword">const</span> obj<span class="token operator">:</span> Type <span class="token operator">=</span> <span class="token punctuation">{</span>
-  <span class="token string-property property">'123123'</span><span class="token operator">:</span> <span class="token punctuation">{</span> data<span class="token operator">:</span> <span class="token string">'hi'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+  <span class="token string-property property">"123123"</span><span class="token operator">:</span> <span class="token punctuation">{</span> data<span class="token operator">:</span> <span class="token string">"hi"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span></code></pre></div>
 <h1>😥아쉬웠던 점</h1>
 <p>이번 과제는 너무 디테일한 UI들과 selector를 이용해 받은 데이터들을 필터 해야 하는 부분들이 많아, 완전히 구현하지 못했다. 필터링 로직을 많이 구현하다 시간이 없어 그래프의 형식들도 신경 쓰지 못했고, adList 데이터로 수정하기 부분도 구현하지 못했다. 아직 너무 많이 부족하다는 것을 많이 느낀다. 코딩을 하면서 저번에 했던 코드를 복사해 수정해서 사용하다 보니, "정말 내가 이 코드들을 제대로 이해하고 있는 걸까"라는 생각도 들고, 부족함에 좌절하기도 많이 했다.</p>
 <p>그래도 매번 과제를 하면서 내가 가진 장점은, 프로젝트 내의 <strong>문제점을 잘 찾는다</strong>는 점과 <strong>배운 것을 적용할 수 있는 능력</strong>이라고 생각한다. 내 프로젝트에서 부족한 점들을 기록해서 최대한 채웠고, 멘토님이 말씀해 주셨던 부분들을 담아서 코딩하다 보니 이전과는 다른 시야와 다른 수준으로 코딩하고 있다는 생각을 한다.</p>
@@ -513,4 +511,4 @@ root<span class="token punctuation">.</span><span class="token function">render<
           >
             window.___chunkMapping="{\"app\":[\"/app-3c2d88cd53407e6a11e7.js\"],\"component---src-pages-404-jsx\":[\"/component---src-pages-404-jsx-7fdf3d1b5138b7a32e91.js\"],\"component---src-pages-index-jsx\":[\"/component---src-pages-index-jsx-6095fd843527b6e9fcad.js\"],\"component---src-pages-search-jsx\":[\"/component---src-pages-search-jsx-847cb90fac88e28474f7.js\"],\"component---src-pages-series-jsx\":[\"/component---src-pages-series-jsx-f864481daa3a690f301c.js\"],\"component---src-pages-tags-jsx\":[\"/component---src-pages-tags-jsx-00928f82fc13ecb98333.js\"],\"component---src-templates-post-jsx\":[\"/component---src-templates-post-jsx-5e9c6baf7ea6d2f4a92e.js\"],\"component---src-templates-series-jsx\":[\"/component---src-templates-series-jsx-1c6bd7bf1b3f13e67442.js\"]}";
           </script>
-        <script>window.___webpackCompilationHash="f38f8e4a46b2c4cae893";</script><script src="/webpack-runtime-1d46c25a35dbedacead1.js" async></script><script src="/framework-d648f6ac43f7f9a627e2.js" async></script><script src="/app-3c2d88cd53407e6a11e7.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
+        <script>window.___webpackCompilationHash="d58de06c5b60a5646d17";</script><script src="/webpack-runtime-1d46c25a35dbedacead1.js" async></script><script src="/framework-d648f6ac43f7f9a627e2.js" async></script><script src="/app-3c2d88cd53407e6a11e7.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
