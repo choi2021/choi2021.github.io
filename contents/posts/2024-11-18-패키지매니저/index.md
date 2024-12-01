@@ -1,7 +1,7 @@
 ---
 title: "패키지 매니저 비교해보기"
 date: 2024-11-18
-description: "패키지 매니저 비교해보기"
+description: "패키지 매니저의 역할을 정리해보고 npm, yarn, pnpm, yarn berry에 대해 비교해보자"
 slug: package-manager
 tags: [frontend, javascript]
 ---
