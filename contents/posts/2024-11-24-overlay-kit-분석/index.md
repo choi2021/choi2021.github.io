@@ -196,9 +196,9 @@ function checkIfSnapshotChanged<T>(inst: {
 }
 ```
 
-useSyncExternalStore의 내부 구현을 분석해보면 `getSnapshot` 함수를 통해 외부 상태의 현재 값을 읽어오고 `subscribe` 함수를 통해 외부 상태의 변경을 구독하며, 외부 상태가 변경될 때마다 `getSnapshot`의 반환값을 이전 값과 비교하여 값이 변경되었다면 컴포넌트를 재렌더링하는 방식으로 동작한다.
+useSyncExternalStore의 내부 구현을 분석해보면 `getSnapshot` 함수를 통해 외부 상태의 현재 값을 읽어오고 `subscribe` 함수를 통해 외부 상태의 변경을 구독하며, 외부 상태가 변경될 때마다 `getSnapshot`의 반환값을 이전 값과 비교하여 값이 변경되었다면 컴포넌트를 리렌더링하는 방식으로 동작한다.
 
-리액트에서 리렌더링을 발생시키기 위해서는 상태가 변경되어야 하기 때문에, 외부 상태의 변경을 구독하여 외부 상태가 변경될 때마다 컴포넌트를 재렌더링하는 방식으로 동작하는 것을 볼 수 있다.
+리액트에서 리렌더링을 발생시키기 위해서는 상태가 변경되어야 하기 때문에, 외부 상태의 변경을 구독하여 외부 상태가 변경될 때마다 컴포넌트를 리렌더링하는 방식으로 리액트와 javascript 상태가 연결되는 것을 알 수 있다.
 
 그러면 overlay kit에서는 어떻게 사용되고 있는지 살펴보자.
 
@@ -263,15 +263,15 @@ export const registerOverlaysStore = {
 type OverlayId = string
 
 export type OverlayItem = {
-  id: OverlayId // 오버레이 식별자
-  isOpen: boolean // 열림/닫힘 상태
-  controller: OverlayControllerComponent // 오버레이 제어 컴포넌트
+  id: OverlayId
+  isOpen: boolean
+  controller: OverlayControllerComponent
 }
 
 export type OverlayData = {
-  current: OverlayId | null // 현재 활성화된 오버레이
-  overlayOrderList: OverlayId[] // 오버레이 순서 관리 (z-index 등)
-  overlayData: Record<OverlayId, OverlayItem> // 각 오버레이의 상세 정보
+  current: OverlayId | null
+  overlayOrderList: OverlayId[]
+  overlayData: Record<OverlayId, OverlayItem>
 }
 ```
 
@@ -279,13 +279,13 @@ OverlayItem은 id, isOpen, controller로 구성된다.
 
 - id: overlay 식별자
 - isOpen: overlay 열림/닫힘 상태
-- controller: overlay 컴포넌트
+- controller: overlay로 보여줄 컴포넌트
 
 OverlayData는 current, overlayOrderList, overlayData로 구성된다.
 
 - current: 현재 상위 노출되는 overlay id
-- overlayOrderList: 현재 메모리에 등록된 오버레이 순서 관리
-- overlayData: id를 키로 사용하여 각 오버레이의 상세 정보 관리
+- overlayOrderList: 현재 메모리에 등록된 오버레이 목록
+- overlayData: id를 키로 사용하는 각 오버레이의 상세 데이터
 
 이러한 데이터 구조를 통해 오버레이 상태를 관리하고 있는 것을 알 수 있다.
 
@@ -486,7 +486,7 @@ export function useSyncOverlayStore() {
 
 이렇게 만들어진 useSyncOverlayStore는 OverlayProvider에서 사용되어 오버레이 상태를 구독하고 있는 것을 볼 수 있다.
 
-OverlayProvider는 오버레이 상태를 구독하고 있는 useSyncOverlayStore를 통해 현재 상태를 읽어와 오버레이 컴포넌트를 렌더링하는 역할을 한다. 내부 코드를 보면 unMount또는 리렌더링이 일어날때 기존 오버레이들을 닫는 action을 발생시키고, 오버레이 목록을 순회하며 오버레이 컴포넌트를 렌더링하는데 children으로 전달받은 컴포넌트 밑에 렌더링함으로서 기존 페이지 컴포넌트 상위에 그려질 수 있게 한다.
+OverlayProvider는 오버레이 상태를 구독하고 있는 useSyncOverlayStore를 통해 현재 상태를 읽어와 오버레이 컴포넌트를 렌더링하는 역할을 한다. 내부 코드를 보면 unMount 또는 리렌더링이 일어날때 기존 오버레이들을 닫는 action을 발생시키고, 오버레이 목록을 순회하며 오버레이 컴포넌트를 렌더링하는데 children으로 전달받은 컴포넌트 밑에 렌더링함으로서 기존 페이지 컴포넌트 상위에 그려질 수 있게 한다.
 
 ```jsx
 export function OverlayProvider({ children }: PropsWithChildren) {
@@ -502,19 +502,41 @@ export function OverlayProvider({ children }: PropsWithChildren) {
     <OverlayContextProvider value={overlayState}>
       {children}
       {overlayState.overlayOrderList.map(item => {
-        // 오버레이 컴포넌트 렌더링
+        const {
+          id: currentOverlayId,
+          isOpen,
+          controller: currentController,
+        } = overlayState.overlayData[item]
+
+        return (
+          <ContentOverlayController
+            key={currentOverlayId}
+            isOpen={isOpen}
+            current={overlayState.current}
+            overlayId={currentOverlayId}
+            onMounted={() => {
+              requestAnimationFrame(() => {
+                dispatchOverlay({ type: "OPEN", overlayId: currentOverlayId })
+              })
+            }}
+            onCloseModal={() => overlay.close(currentOverlayId)}
+            onExitModal={() => overlay.unmount(currentOverlayId)}
+            controller={currentController}
+          />
+        )
       })}
     </OverlayContextProvider>
   )
 }
 ```
 
-ContentOverlayController는 overlay 상태에 있는 오버레이 컴포넌트를 주입받아 렌더링한다.
-오버레이 컴포넌트로 정의된 인터페이스의 isOpen, close, unmount를 overlayState에서 prop으로 전달받아 사용하게 된다.
+ContentOverlayController는 overlay 상태에 있는 오버레이 컴포넌트를 주입받아 렌더링하는데 오버레이 컴포넌트로 정의된 인터페이스의 isOpen, close, unmount를 overlayState에서 prop으로 전달받아 사용하게 된다.
 
 내부적으로 onMounted, onCloseModal, onExitModal로 정의된 이벤트 액션을 오버레이 컴포넌트에 전달하는 것을 볼 수 있다.
 
-이때 onMounted에는 requestAnimationFrame을 이용해 액션을 발생시키는데, 컴포넌트 내부에서는 ref를 활용해 불필요한 렌더링을 방지하면서 이벤트를 처리하고 있다. 추가적으로 OverlayAsyncControllerProps를 이용해 비동기로 처리할 수 있도록 하고 있다.
+이때 onMounted에는 requestAnimationFrame을 open 이벤트를 발생시키는데, 컴포넌트 내부에서는 ref를 활용해 불필요한 렌더링을 방지하면서 해당 이벤트를 처리하고 있다. requestAnimationFrame을 이용하기 때문에 브라우저의 렌더링 타이밍에 맞춰 최적화된 시점에 실행되게 구현되어 있다.
+
+추가적으로 OverlayAsyncControllerProps를 정의해 비동기로 처리할 수 있도록 하고 있다.
 
 ```jsx
 
@@ -625,9 +647,6 @@ export function overlayReducer(state: OverlayData, action: OverlayReducerAction)
 
       return {
         current: action.overlay.id,
-        /**
-         * @description Brings the overlay to the front when reopened after closing without unmounting.
-         */
         overlayOrderList: [...state.overlayOrderList.filter((item) => item !== action.overlay.id), action.overlay.id],
         overlayData: isExisted
           ? state.overlayData
@@ -655,16 +674,6 @@ export function overlayReducer(state: OverlayData, action: OverlayReducerAction)
       );
       const targetIndexInOpenedList = openedOverlayOrderList.findIndex((item) => item === action.overlayId);
 
-      /**
-       * @description If closing the last overlay, specify the overlay before it.
-       * @description If closing intermediate overlays, specifies the last overlay.
-       *
-       * @example open - [1, 2, 3, 4]
-       * close 2 => current: 4
-       * close 4 => current: 3
-       * close 3 => current: 1
-       * close 1 => current: null
-       */
       const currentOverlayId =
         targetIndexInOpenedList === openedOverlayOrderList.length - 1
           ? openedOverlayOrderList[targetIndexInOpenedList - 1] ?? null
@@ -693,18 +702,8 @@ export function overlayReducer(state: OverlayData, action: OverlayReducerAction)
 
       const current = state.current
         ? remainingOverlays.includes(state.current)
-          ? /**
-             * @description If `unmount` was executed after `close`
-             */
-            state.current
-          : /**
-             * @description If you only run `unmount`, there is no `current` in `remainingOverlays`
-             */
-            remainingOverlays.at(-1) ?? null
-        : /**
-           * @description The case where `current` is `null`
-           */
-          null;
+          ? state.current
+          : null
 
       return {
         current,
@@ -1041,16 +1040,6 @@ function unmount(overlayId: string) {
       );
       const targetIndexInOpenedList = openedOverlayOrderList.findIndex((item) => item === action.overlayId);
 
-      /**
-       * @description If closing the last overlay, specify the overlay before it.
-       * @description If closing intermediate overlays, specifies the last overlay.
-       *
-       * @example open - [1, 2, 3, 4]
-       * close 2 => current: 4
-       * close 4 => current: 3
-       * close 3 => current: 1
-       * close 1 => current: null
-       */
       const currentOverlayId =
         targetIndexInOpenedList === openedOverlayOrderList.length - 1
           ? openedOverlayOrderList[targetIndexInOpenedList - 1] ?? null
@@ -1079,18 +1068,9 @@ function unmount(overlayId: string) {
 
       const current = state.current
         ? remainingOverlays.includes(state.current)
-          ? /**
-             * @description If `unmount` was executed after `close`
-             */
-            state.current
-          : /**
-             * @description If you only run `unmount`, there is no `current` in `remainingOverlays`
-             */
-            remainingOverlays.at(-1) ?? null
-        : /**
-           * @description The case where `current` is `null`
-           */
-          null;
+          ? state.current
+          : remainingOverlays.at(-1) ?? null
+        : null;
 
       return {
         current,
