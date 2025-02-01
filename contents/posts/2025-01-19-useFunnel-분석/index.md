@@ -1,8 +1,8 @@
 ---
-title: "useFunnel 분석"
+title: "new useFunnel 분석해보기"
 date: 2025-01-19
 description: "새로운 토스의 useFunnel 패키지 코드를 분석해보고 어떻게 동작하는지 알아보자"
-slug: use-funnel
+slug: new-use-funnel
 tags: [frontend, open-source, toss, react]
 ---
 
