@@ -3,7 +3,7 @@ title: "패키지 매니저 비교해보기"
 date: 2024-11-18
 description: "패키지 매니저의 역할을 정리해보고 npm, yarn, pnpm, yarn berry에 대해 비교해보자"
 slug: package-manager
-tags: [frontend, javascript]
+tags: [frontend, javascript, package-manager]
 ---
 
 토스에 입사한 후 프론트엔드의 다양한 기술 주제에 대해 새롭게 알게 되면서 하나씩 정리해보고자 한다.

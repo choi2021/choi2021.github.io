@@ -122,7 +122,7 @@ module.exports = {
       },
     },
     `gatsby-plugin-resolve-src`,
-    `gatsby-plugin-sitemap`,
+    "gatsby-plugin-advanced-sitemap",
     {
       resolve: `gatsby-plugin-feed`,
       options: {

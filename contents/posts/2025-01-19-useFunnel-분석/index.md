@@ -3,7 +3,7 @@ title: "new useFunnel 분석해보기"
 date: 2025-01-19
 description: "새로운 토스의 useFunnel 패키지 코드를 분석해보고 어떻게 동작하는지 알아보자"
 slug: new-use-funnel
-tags: [frontend, open-source, toss, react]
+tags: [frontend, open-source, toss, react, useFunnel]
 ---
 
 useFunnel 라이브러리는 2023 토스 Slash의 [퍼널: 쏟아지는 페이지 한 방에 관리하기 발표](https://www.youtube.com/watch?v=NwLWX2RNVcw&t=50s)에서 복잡한 퍼널간 상태관리를 위한 라이브러리 useFunnel을 소개되었고, 토스 프론트엔드 액셀러레이터 과정의 2주차 주제였던 `퍼널간 상태 관리하기`라는 주제를 진행하고 [분석하는 글](https://choi2021.github.io/2024-09-17-useFunnel-%EB%B6%84%EC%84%9D%ED%95%B4%EB%B3%B4%EA%B8%B0/)을 작성했다.

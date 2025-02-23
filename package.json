@@ -1,6 +1,5 @@
 {
   "name": "gatsby-starter-hoodie",
-  "private": false,
   "description": "gatsby-starter-hoodie is a gatsby theme developed for developers to write tech blogs.",
   "homepage": "https://devhudi.github.io/gatsby-starter-hoodie/",
   "version": "0.2.0",
@@ -10,6 +9,7 @@
     "babel-plugin-styled-components": "^2.1.4",
     "gatsby": "^5.11.0",
     "gatsby-image": "^2.4.21",
+    "gatsby-plugin-advanced-sitemap": "^2.1.0",
     "gatsby-plugin-catch-links": "^5.11.0",
     "gatsby-plugin-feed": "^5.11.0",
     "gatsby-plugin-google-fonts": "^1.0.1",
@@ -84,6 +84,5 @@
   },
   "bugs": {
     "url": "https://github.com/devHudi/gatsby-starter-hoodie"
-  },
-  "packageManager": "yarn@4.5.1+sha512.341db9396b6e289fecc30cd7ab3af65060e05ebff4b3b47547b278b9e67b08f485ecd8c79006b405446262142c7a38154445ef7f17c1d5d1de7d90bf9ce7054d"
+  }
 }
