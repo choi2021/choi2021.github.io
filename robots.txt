@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://choi2021.github.io/sitemap-index.xml
+Sitemap: https://choi2021.github.io/sitemap.xml
 Host: https://choi2021.github.io
