@@ -129,7 +129,12 @@ module.exports = {
       },
     },
     `gatsby-plugin-resolve-src`,
-    "gatsby-plugin-advanced-sitemap",
+    {
+      resolve: "gatsby-plugin-advanced-sitemap",
+      options: {
+        createLinkInHead: true,
+      },
+    },
     {
       resolve: `gatsby-plugin-feed`,
       options: {
