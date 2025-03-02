@@ -1,6 +1,6 @@
 ---
 title: "2025년 2월 회고"
-date: 2025-01-27
+date: 2025-02-27
 description: "2025년 2월 회고"
 slug: 2025-february-retrospective
 tags: [회고, toss]
